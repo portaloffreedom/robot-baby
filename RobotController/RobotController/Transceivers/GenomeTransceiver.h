@@ -18,6 +18,8 @@ public:
     
     virtual void send(ip::address address) = 0;
     virtual void receive() = 0;
+    
+    virtual void step() = 0;
 };
 
 #endif /* defined(__RobotController__GenomeTransceiver__) */

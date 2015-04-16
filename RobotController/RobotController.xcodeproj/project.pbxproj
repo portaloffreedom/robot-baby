@@ -7,11 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		581F1D2A1AD5744D00E9001C /* Mutator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 581F1D241AD5744D00E9001C /* Mutator.cpp */; };
-		581F1D2B1AD5744D00E9001C /* PartRepresentation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 581F1D261AD5744D00E9001C /* PartRepresentation.cpp */; };
-		581F1D2C1AD5744D00E9001C /* RobotRepresentation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 581F1D281AD5744D00E9001C /* RobotRepresentation.cpp */; };
 		6174AACA1AD568D900224D5C /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6174AAC91AD568D900224D5C /* main.cpp */; };
 		6185B6C51AD7D2B500C0B139 /* UDPTransceiver.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6185B6C31AD7D2B500C0B139 /* UDPTransceiver.cpp */; };
+		618E01EE1ADFB8DB00113B53 /* libboost_system.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 618E01ED1ADFB8DB00113B53 /* libboost_system.dylib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -38,6 +36,7 @@
 		6185B6C21AD7D29800C0B139 /* GenomeTransceiver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GenomeTransceiver.h; sourceTree = "<group>"; };
 		6185B6C31AD7D2B500C0B139 /* UDPTransceiver.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = UDPTransceiver.cpp; sourceTree = "<group>"; };
 		6185B6C41AD7D2B500C0B139 /* UDPTransceiver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UDPTransceiver.h; sourceTree = "<group>"; };
+		618E01ED1ADFB8DB00113B53 /* libboost_system.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libboost_system.dylib; path = ../../../../../../../../usr/local/lib/libboost_system.dylib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -45,6 +44,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				618E01EE1ADFB8DB00113B53 /* libboost_system.dylib in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -68,6 +68,7 @@
 			isa = PBXGroup;
 			children = (
 				6174AAC81AD568D900224D5C /* RobotController */,
+				618E01EC1ADFB7B600113B53 /* Libraries */,
 				6174AAC71AD568D900224D5C /* Products */,
 			);
 			sourceTree = "<group>";
@@ -98,6 +99,14 @@
 				6185B6C41AD7D2B500C0B139 /* UDPTransceiver.h */,
 			);
 			path = Transceivers;
+			sourceTree = "<group>";
+		};
+		618E01EC1ADFB7B600113B53 /* Libraries */ = {
+			isa = PBXGroup;
+			children = (
+				618E01ED1ADFB8DB00113B53 /* libboost_system.dylib */,
+			);
+			name = Libraries;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -156,10 +165,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				581F1D2A1AD5744D00E9001C /* Mutator.cpp in Sources */,
 				6185B6C51AD7D2B500C0B139 /* UDPTransceiver.cpp in Sources */,
-				581F1D2C1AD5744D00E9001C /* RobotRepresentation.cpp in Sources */,
-				581F1D2B1AD5744D00E9001C /* PartRepresentation.cpp in Sources */,
 				6174AACA1AD568D900224D5C /* main.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
