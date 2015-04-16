@@ -29,18 +29,16 @@
 
 #include <boost/random/uniform_int_distribution.hpp>
 #include <boost/random/uniform_01.hpp>
-#include "evolution/engine/Mutator.h"
+#include "Mutator.h"
 #include "PartList.h"
 
 namespace robogen {
 
 Mutator::Mutator(boost::shared_ptr<EvolverConfiguration> conf,
-		boost::random::mt19937 &rng) :
-		conf_(conf), rng_(rng), brainMutate_(0),
-		weightCrossover_(0) {
-        // RBP Edit: replaced these with 0 to avoid brain mutations:
-        // conf->pBrainMutate
-        // conf->pBrainCrossover
+    boost::random::mt19937 &rng) :
+		conf_(conf), rng_(rng), brainMutate_(conf->pBrainMutate),
+		weightCrossover_(conf->pBrainCrossover) {
+
 	if (conf_->evolutionMode == EvolverConfiguration::FULL_EVOLVER) {
 		subtreeRemovalDist_ =
 				boost::random::bernoulli_distribution<double>(
@@ -196,6 +194,7 @@ double clip(double value, double min, double max) {
 }
 
 bool Mutator::mutateBrain(boost::shared_ptr<RobotRepresentation>& robot) {
+    /*
 	bool mutated = false;
 	std::vector<double*> weights;
 	std::vector<double*> params;
@@ -273,7 +272,9 @@ bool Mutator::mutateBrain(boost::shared_ptr<RobotRepresentation>& robot) {
 	if (mutated) {
 		robot->setDirty();
 	}
-	return mutated;
+	return mutated; */
+    
+    return false;
 }
 
 bool Mutator::crossover(boost::shared_ptr<RobotRepresentation>& a,

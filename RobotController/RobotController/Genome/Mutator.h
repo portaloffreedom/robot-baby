@@ -90,7 +90,8 @@ private:
 	/**
 	 * Mutation operators
 	 */
-	//bool mutateBrain(boost::shared_ptr<RobotRepresentation>& robot); RBP: Don't need.
+    // RBP Edit: mutateBrain always returns false to show no mutation has occurred
+	bool mutateBrain(boost::shared_ptr<RobotRepresentation>& robot);
 	bool mutateBody(boost::shared_ptr<RobotRepresentation>& robot);
 	bool removeSubtree(boost::shared_ptr<RobotRepresentation>& robot);
 	bool duplicateSubtree(boost::shared_ptr<RobotRepresentation>& robot);
