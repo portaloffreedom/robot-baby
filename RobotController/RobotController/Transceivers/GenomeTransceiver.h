@@ -9,14 +9,10 @@
 #ifndef __RobotController__GenomeTransceiver__
 #define __RobotController__GenomeTransceiver__
 
-#include <boost/asio.hpp>
-using namespace boost::asio;
-
 class GenomeTransceiver {
 public:
     virtual void broadcastGenome() = 0;
     
-    virtual void send(ip::address address) = 0;
     virtual void receive() = 0;
     
     virtual void step() = 0;

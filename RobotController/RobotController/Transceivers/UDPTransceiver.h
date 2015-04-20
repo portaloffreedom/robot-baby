@@ -10,26 +10,34 @@
 #define __RobotController__UDPTransceiver__
 
 #include "GenomeTransceiver.h"
-#include <boost/asio.hpp>
-
-using namespace boost::asio;
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <netinet/in.h>
+#include <netdb.h>
 
 class UDPTransceiver : public GenomeTransceiver {
 public:
-    UDPTransceiver();
-    UDPTransceiver(std::string genome);
+    UDPTransceiver(int port);
+    virtual ~UDPTransceiver();
+    UDPTransceiver(std::string genome, int port);
     
     virtual void broadcastGenome();
     
-    virtual void send(ip::address address);
+    virtual void send(struct sockaddr_in &address);
     virtual void receive();
     
     virtual void step();
     
 private:
-    io_service io;
-    ip::udp::socket socket;
+    int socketfd;
     std::string genome;
+    int port;
+    std::string localIp;
+    
+    void error(const char *msg);
+    
+    void bindLocalSocket();
+    void retrieveLocalIp();
 };
 
 #endif /* defined(__RobotController__UDPTransceiver__) */

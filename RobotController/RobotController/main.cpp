@@ -7,12 +7,18 @@
 //
 
 #include <iostream>
+#include <unistd.h>
+
 #include "UDPTransceiver.h"
 
 int main(int argc, const char * argv[]) {
-    UDPTransceiver transceiver("Hello World!");
+    UDPTransceiver transceiver("Hello World!", atoi(argv[1]));
     
-    transceiver.step();
+    while(true) {
+        transceiver.step();
         
+        usleep(100000);
+    }
+
     return 0;
 }
