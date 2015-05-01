@@ -27,7 +27,7 @@
  * @(#) $Id$
  */
 
-#include "evolution/representation/RobotRepresentation.h"
+#include "RobotRepresentation.h"
 #ifndef FAKEROBOTREPRESENTATION_H
 
 #include <iostream>
@@ -37,7 +37,7 @@
 #include <queue>
 #include <boost/regex.hpp>
 #include <boost/algorithm/string.hpp>
-#include "evolution/representation/PartRepresentation.h"
+#include "PartRepresentation.h"
 #include "utils/network/ProtobufPacket.h"
 #include "PartList.h"
 

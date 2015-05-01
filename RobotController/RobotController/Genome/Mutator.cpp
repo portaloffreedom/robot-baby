@@ -194,7 +194,6 @@ double clip(double value, double min, double max) {
 }
 
 bool Mutator::mutateBrain(boost::shared_ptr<RobotRepresentation>& robot) {
-    /*
 	bool mutated = false;
 	std::vector<double*> weights;
 	std::vector<double*> params;
@@ -272,9 +271,9 @@ bool Mutator::mutateBrain(boost::shared_ptr<RobotRepresentation>& robot) {
 	if (mutated) {
 		robot->setDirty();
 	}
-	return mutated; */
+	return mutated;
     
-    return false;
+    //return false;
 }
 
 bool Mutator::crossover(boost::shared_ptr<RobotRepresentation>& a,
@@ -597,6 +596,25 @@ bool Mutator::mutateParams(boost::shared_ptr<RobotRepresentation>& robot) {
 
 	return true;
 
+}
+    
+void Mutator::rbpMutateAndCrossover(std::string robotSpec1, std::string robotSpec2) {
+    // randomly instantiate, assign body/brain specs, and create shared pointers
+    RobotRepresentation robot1 = RobotRepresentation::RobotRepresentation();
+    RobotRepresentation robot2 = RobotRepresentation::RobotRepresentation();
+    
+    robot1->RobotRepresentation::init(robotSpec1);
+    robot2->RobotRepresentation::init(robotSpec2);
+    
+    boost::shared_ptr<RobotRepresentation> p1(robot1);
+    boost::shared_ptr<RobotRepresentation> p2(robot2);
+    
+    // crossover and mutate -- though crossover is only defined for brain ops...
+    boost::shared_ptr<RobotRepresentation> res1 = Mutator::mutate(p1, p2);
+    boost::shared_ptr<RobotRepresentation> res2 = Mutator::mutate(p1, p2);
+    
+    printf(res1->RobotRepresentation::serialize());
+    printf(res2->RobotRepresentation::serialize());
 }
 
 }

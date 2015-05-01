@@ -52,8 +52,6 @@ public:
 	 * @param brainMuteSigma sigma of normal distribution for brain mutation
 	 * @param pBrainCrossover probability for crossover among brains
 	 */
-    // RBP Edit: Since we don't want brain mutations, to avoid a whole bunch of
-    // work, we set pBrainMutate = pBrainCrossover = 0.
 	Mutator(boost::shared_ptr<EvolverConfiguration> conf,
 			boost::random::mt19937 &rng);
 
@@ -90,7 +88,6 @@ private:
 	/**
 	 * Mutation operators
 	 */
-    // RBP Edit: mutateBrain always returns false to show no mutation has occurred
 	bool mutateBrain(boost::shared_ptr<RobotRepresentation>& robot);
 	bool mutateBody(boost::shared_ptr<RobotRepresentation>& robot);
 	bool removeSubtree(boost::shared_ptr<RobotRepresentation>& robot);
