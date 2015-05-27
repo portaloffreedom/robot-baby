@@ -759,6 +759,59 @@ bool RobotRepresentation::swapSubTrees(const std::string& subtreeRoot1,
 	return true;
 
 }
+    
+bool RobotRepresentation::crossoverSubTrees(boost::shared_ptr<RobotRepresentation>& robot1,
+                                            boost::shared_ptr<RobotRepresentation>& robot2,
+                                            const std::string& subtreeRoot1,
+                                            const std::string& subtreeRoot2) {
+    // Get roots of the subtrees
+    boost::shared_ptr<PartRepresentation> root1 =
+    robot1->idToPart_[subtreeRoot1].lock();
+    boost::shared_ptr<PartRepresentation> root2 =
+    robot2->idToPart_[subtreeRoot2].lock();
+    
+    // Check none of them is the root node
+    if (root1->getId().compare(robot1->bodyTree_->getId()) == 0
+        || root2->getId().compare(robot2->bodyTree_->getId()) == 0) {
+        return false;
+    }
+    
+    // Get parents and slots of each subtree
+    PartRepresentation* parentRoot1 = root1->getParent();
+    PartRepresentation* parentRoot2 = root2->getParent();
+    
+    // Get the slots to which this nodes are connected
+    unsigned int slotParentRoot1 = 1000000;
+    
+    for (unsigned int i = 0; i < parentRoot1->getArity(); ++i) {
+        if (parentRoot1->getChild(i) != NULL) {
+            if (parentRoot1->getChild(i)->getId().compare(root1->getId())
+                == 0) {
+                slotParentRoot1 = i;
+                break;
+            }
+        }
+    }
+    
+    unsigned int slotParentRoot2 = 0;
+    for (unsigned int i = 0; i < parentRoot2->getArity(); ++i) {
+        if (parentRoot2->getChild(i) != NULL) {
+            if (parentRoot2->getChild(i)->getId().compare(root2->getId())
+                == 0) {
+                slotParentRoot2 = i;
+                break;
+            }
+        }
+    }
+    
+    // Swap the subtrees
+    parentRoot2->setChild(slotParentRoot2, root1);
+    parentRoot1->setChild(slotParentRoot1, root2);
+    
+    return true;
+    
+}
+
 
 bool RobotRepresentation::insertPart(const std::string& parentPartId,
 		unsigned int parentPartSlot,

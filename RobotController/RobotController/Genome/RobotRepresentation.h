@@ -172,6 +172,20 @@ public:
 	bool swapSubTrees(const std::string& subtreeRoot1,
 			const std::string& subtreeRoot2);
 
+    /** 
+     * Swap subtrees between two robots
+     *
+     * @param robot1 robot 1
+     * @param robot2 robot 2
+     * @param subtreeRoot1 the root of the first subtree
+     * @param subtreeRoot2 the root of the second subtree
+     * @return true if the oepration completed succesfully, false otherwise
+     */
+    bool crossoverSubTrees(boost::shared_ptr<RobotRepresentation>& robot1,
+                           boost::shared_ptr<RobotRepresentation>& robot2,
+                           const std::string& subtreeRoot1,
+                           const std::string& subtreeRoot2);
+    
 	/**
 	 * Insert a part into the body tree
 	 *

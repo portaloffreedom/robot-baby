@@ -104,6 +104,8 @@ private:
 	bool removeSubtree(boost::shared_ptr<RobotRepresentation>& robot);
 	bool duplicateSubtree(boost::shared_ptr<RobotRepresentation>& robot);
 	bool swapSubtrees(boost::shared_ptr<RobotRepresentation>& robot);
+    bool crossoverSubtrees(boost::shared_ptr<RobotRepresentation>& robot1,
+                           boost::shared_ptr<RobotRepresentation>& robot2);
 	bool insertNode(boost::shared_ptr<RobotRepresentation>& robot);
 	bool removeNode(boost::shared_ptr<RobotRepresentation>& robot);
 	bool mutateParams(boost::shared_ptr<RobotRepresentation>& robot);
