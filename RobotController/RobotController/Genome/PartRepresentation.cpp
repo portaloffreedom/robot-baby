@@ -8,7 +8,7 @@
 #include <iostream>
 #include <sstream>
 
-#include "evolution/representation/PartRepresentation.h"
+#include "PartRepresentation.h"
 #include "PartList.h"
 
 namespace robogen {

@@ -32,7 +32,7 @@
 #include <boost/regex.hpp>
 #include <boost/filesystem.hpp>
 
-#include "config/EvolverConfiguration.h"
+#include "EvolverConfiguration.h"
 #include "PartList.h"
 
 namespace robogen {
@@ -570,12 +570,12 @@ bool EvolverConfiguration::init(std::string configFileName) {
 									confFilePath.parent_path());
 					neatParamsFile = absolutePath.string();
 				}
-
+                /*
 				if (neatParams.Load(neatParamsFile.c_str()) < 0) {
 					std::cout << "Problem parsing neatParams file." <<
 							std::endl;
 					return false;
-				}
+				}*/
 			}
 		}
 	}

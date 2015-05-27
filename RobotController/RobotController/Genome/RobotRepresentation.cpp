@@ -38,15 +38,16 @@
 #include <boost/regex.hpp>
 #include <boost/algorithm/string.hpp>
 #include "PartRepresentation.h"
-#include "utils/network/ProtobufPacket.h"
+#include "ProtobufPacket.h"
 #include "PartList.h"
 
 namespace robogen {
-
+    
 RobotRepresentation::RobotRepresentation() :
 		maxid_(1000) {
 
 }
+ 
 
 RobotRepresentation::RobotRepresentation(const RobotRepresentation &r) {
 
@@ -541,7 +542,7 @@ const RobotRepresentation::IdPartMap& RobotRepresentation::getBody() const {
 const std::string& RobotRepresentation::getBodyRootId() {
 	return bodyTree_->getId();
 }
-
+/*
 void RobotRepresentation::evaluate(TcpSocket *socket,
 		boost::shared_ptr<RobogenConfig> robotConf) {
 
@@ -587,7 +588,7 @@ void RobotRepresentation::evaluate(TcpSocket *socket,
 		evaluated_ = true;
 	}
 
-}
+}*/
 
 double RobotRepresentation::getFitness() const {
 	return fitness_;

@@ -33,7 +33,7 @@
 #include <vector>
 #include <utility>
 #include <stdexcept>
-#include "evolution/neat/Parameters.h"
+#include "Parameters.h"
 
 namespace robogen {
 

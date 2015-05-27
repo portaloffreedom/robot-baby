@@ -35,17 +35,19 @@
 #include <boost/random/normal_distribution.hpp>
 #include <boost/random/bernoulli_distribution.hpp>
 
-#include "config/EvolverConfiguration.h"
-#include "evolution/representation/RobotRepresentation.h"
-#include "evolution/engine/BodyVerifier.h"
-
+#include "EvolverConfiguration.h"
+#include "RobotRepresentation.h"
+#include "ODE_Check/BodyVerifier.h"
+#include <iostream>
+#include <string>
+#include <boost/shared_ptr.hpp>
 #define MAX_MUTATION_ATTEMPTS 100 //TODO move this somewhere else
 namespace robogen {
 
 class Mutator {
 
 public:
-
+    
 	/**
 	 * Creates a Robogen brain mutator with the specified settings
 	 * @param pBrainMutate probability for a weight or bias to mutate
@@ -54,6 +56,8 @@ public:
 	 */
 	Mutator(boost::shared_ptr<EvolverConfiguration> conf,
 			boost::random::mt19937 &rng);
+    
+    Mutator();
 
 	virtual ~Mutator();
 
@@ -66,6 +70,13 @@ public:
 
 	void growBodyRandomly(boost::shared_ptr<RobotRepresentation>& robot);
 	void randomizeBrain(boost::shared_ptr<RobotRepresentation>& robot);
+    
+    /**
+     * Performs mutation and crossover on a pair of robots, 
+     * and prints resulting genome to StdOut.
+     */
+    void createChild(boost::shared_ptr<RobotRepresentation> robot1,
+                     boost::shared_ptr<RobotRepresentation> robot2);
 
 private:
 
@@ -125,7 +136,6 @@ private:
 	boost::random::bernoulli_distribution<double> nodeInsertDist_;
 	boost::random::bernoulli_distribution<double> nodeRemovalDist_;
 	boost::random::bernoulli_distribution<double> paramMutateDist_;
-
 };
 
 }
