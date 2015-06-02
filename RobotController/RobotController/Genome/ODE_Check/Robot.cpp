@@ -32,10 +32,10 @@
 #include <boost/graph/copy.hpp>
 #include <string>
 
-#include "utils/RobogenUtils.h"
+#include "RobogenUtils.h"
 #include "Models.h"
 #include "Robot.h"
-#include "model/Connection.h"
+#include "models/Connection.h"
 
 namespace robogen {
 

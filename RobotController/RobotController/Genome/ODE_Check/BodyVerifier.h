@@ -24,7 +24,7 @@
 //#include "Models.h"
 //#include "RenderModels.h"
 #include "Robot.h"
-#include "robogen.pb.h"
+#include "../robogen.pb.h"
 //#include "viewer/FileViewerLog.h"
 #include "../RobotRepresentation.h"
 

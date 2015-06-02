@@ -30,7 +30,7 @@
 
 #include <boost/shared_ptr.hpp>
 #include <string>
-#include "robogen.pb.h"
+#include "../robogen.pb.h"
 
 namespace robogen {
 

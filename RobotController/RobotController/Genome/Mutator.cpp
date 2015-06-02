@@ -92,6 +92,22 @@ boost::shared_ptr<RobotRepresentation> Mutator::mutate(
 
 	return offspring1;
 }
+    
+void Mutator::createChild(boost::shared_ptr<RobotRepresentation> robot1,
+                          boost::shared_ptr<RobotRepresentation> robot2) {
+    
+    boost::shared_ptr<RobotRepresentation> offspring1 =
+        boost::shared_ptr<RobotRepresentation>(new RobotRepresentation(*robot1.get()));
+    boost::shared_ptr<RobotRepresentation> offspring2 =
+        boost::shared_ptr<RobotRepresentation>(new RobotRepresentation(*robot2.get()));
+    
+    this->crossoverSubtrees(offspring1, offspring2);
+    this->crossover(offspring1, offspring2);
+    this->mutate(offspring1);
+    
+    std::cout << offspring1->toString() << std::endl;
+    
+}
 
 void Mutator::growBodyRandomly(boost::shared_ptr<RobotRepresentation>& robot) {
 
@@ -381,69 +397,6 @@ bool Mutator::mutateBody(boost::shared_ptr<RobotRepresentation>& robot) {
 	}
 	return mutated;
 }
-
-bool Mutator::crossoverBody(boost::shared_ptr<RobotRepresentation>& robot1,
-                            boost::shared_ptr<RobotRepresentation>& robot2) {
-    bool mutated = false;
-    MutOpPair mutOpPairs[] = { std::make_pair(&Mutator::removeSubtree, subtreeRemovalDist_),
-        std::make_pair(&Mutator::duplicateSubtree, subtreeDuplicationDist_),
-        std::make_pair(&Mutator::swapSubtrees, subtreeSwapDist_),
-        std::make_pair(&Mutator::insertNode, nodeInsertDist_),
-        std::make_pair(&Mutator::removeNode, nodeRemovalDist_),
-        std::make_pair(&Mutator::mutateParams, paramMutateDist_) };
-    
-    int numOperators = sizeof(mutOpPairs) / sizeof(MutOpPair);
-    for (int i = 0; i < numOperators; ++i) {
-        
-        MutationOperator mutOp = mutOpPairs[i].first;
-        boost::random::bernoulli_distribution<double> dist =
-        mutOpPairs[i].second;
-        
-        if (dist(rng_)) {
-            
-            for (unsigned int attempt = 0;
-                 attempt < conf_->maxBodyMutationAttempts; ++attempt) {
-                
-                std::cout << "Robot was mutated using mutation " << i << std::endl;
-                std::cout << "OldBot1: " << std::endl;
-                std::cout << robot1->toString() << std::endl;
-                std::cout << "OldBot2: " << std::endl;
-                std::cout << robot2->toString() << std::endl;
-                
-                boost::shared_ptr<RobotRepresentation> newBot =
-                boost::shared_ptr<RobotRepresentation>(
-                                                       new RobotRepresentation(*robot.get()));
-                
-                bool mutationSuccess = (this->*mutOp)(newBot);
-                
-                
-                
-                std::cout << "NewBot: " << std::endl;
-                std::cout << newBot->toString() << std::endl;
-                
-                int errorCode;
-                std::vector<std::pair<std::string, std::string> > affectedBodyParts;
-                if (mutationSuccess
-                    && BodyVerifier::verify(*newBot.get(), errorCode,
-                                            affectedBodyParts)) {
-                        
-                        if (!newBot->check()) {
-                            std::cout << "Consistency check failed in mutation operator " << i << std::endl;
-                        }
-                        
-                        robot = newBot;
-                        robot->setDirty();
-                        mutated = true;
-                        break;
-                        
-                    }
-                
-            }
-        }
-    }
-    return mutated;
-}
-
     
 bool Mutator::removeSubtree(boost::shared_ptr<RobotRepresentation>& robot) {
 
@@ -688,13 +641,6 @@ bool Mutator::mutateParams(boost::shared_ptr<RobotRepresentation>& robot) {
 	}
 
 	return true;
-
-}
-    
-void Mutator::createChild(boost::shared_ptr<RobotRepresentation> robot1,
-                          boost::shared_ptr<RobotRepresentation> robot2) {
-    // randomly instantiate, assign body/brain specs, and create shared pointers
-    std::cout << "Success!" << std::endl;
 }
 
 }

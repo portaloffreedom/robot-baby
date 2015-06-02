@@ -34,12 +34,12 @@
 #include <boost/filesystem.hpp>
 #include <boost/regex.hpp>
 
-#include "config/ConfigurationReader.h"
-#include "config/ObstaclesConfig.h"
-#include "config/RobogenConfig.h"
-#include "config/StartPosition.h"
-#include "config/StartPositionConfig.h"
-#include "config/TerrainConfig.h"
+#include "ConfigurationReader.h"
+#include "ObstaclesConfig.h"
+#include "RobogenConfig.h"
+#include "StartPosition.h"
+#include "StartPositionConfig.h"
+#include "TerrainConfig.h"
 
 #define DEFAULT_LIGHT_SOURCE_HEIGHT (0.1)
 #define DEFAULT_OBSTACLE_DENSITY (0.)

@@ -31,10 +31,10 @@
 #define ROBOGEN_ROBOGEN_CONFIG_H_
 
 #include <boost/shared_ptr.hpp>
-#include "config/ObstaclesConfig.h"
-#include "config/StartPositionConfig.h"
-#include "config/TerrainConfig.h"
-#include "robogen.pb.h"
+#include "ObstaclesConfig.h"
+#include "StartPositionConfig.h"
+#include "TerrainConfig.h"
+#include "../robogen.pb.h"
 
 namespace robogen {
 

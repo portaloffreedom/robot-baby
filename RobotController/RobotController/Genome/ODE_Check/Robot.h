@@ -38,11 +38,11 @@
 #include <vector>
 
 #include "Robogen.h"
-#include "robogen.pb.h"
-#include "model/Connection.h"
+#include "../robogen.pb.h"
+#include "models/Connection.h"
 
 extern "C" {
-#include "brain/NeuralNetwork.h"
+#include "../NeuralNetwork.h"
 }
 
 namespace robogen {
