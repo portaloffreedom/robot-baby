@@ -44,6 +44,7 @@
 		586F359B1B1DF78D004EB128 /* libboost_filesystem.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 586F359A1B1DF78D004EB128 /* libboost_filesystem.dylib */; };
 		586F359D1B1DF7A6004EB128 /* libboost_system.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 586F359C1B1DF7A6004EB128 /* libboost_system.dylib */; };
 		586F35A11B1DF814004EB128 /* libosg.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 586F35A01B1DF814004EB128 /* libosg.dylib */; };
+		5876FEDB1B25BF5400CEB355 /* libode.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5876FEDA1B25BF5400CEB355 /* libode.a */; };
 		58BEB5CB1B1DC655002222DE /* RobogenUtils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 58BEB5C91B1DC655002222DE /* RobogenUtils.cpp */; };
 		58CC17D71B0B461000F9A4FD /* NeuralNetworkRepresentation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 58CC17CD1B0B461000F9A4FD /* NeuralNetworkRepresentation.cpp */; };
 		58CC17D81B0B461000F9A4FD /* NeuronRepresentation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 58CC17CF1B0B461000F9A4FD /* NeuronRepresentation.cpp */; };
@@ -147,6 +148,7 @@
 		586F359A1B1DF78D004EB128 /* libboost_filesystem.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libboost_filesystem.dylib; path = ../../../../../usr/local/lib/libboost_filesystem.dylib; sourceTree = "<group>"; };
 		586F359C1B1DF7A6004EB128 /* libboost_system.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libboost_system.dylib; path = ../../../../../usr/local/lib/libboost_system.dylib; sourceTree = "<group>"; };
 		586F35A01B1DF814004EB128 /* libosg.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libosg.dylib; path = ../../../../../usr/local/lib/libosg.dylib; sourceTree = "<group>"; };
+		5876FEDA1B25BF5400CEB355 /* libode.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libode.a; path = ../../../../../usr/local/lib/libode.a; sourceTree = "<group>"; };
 		58BEB5C91B1DC655002222DE /* RobogenUtils.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RobogenUtils.cpp; sourceTree = "<group>"; };
 		58BEB5CA1B1DC655002222DE /* RobogenUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RobogenUtils.h; sourceTree = "<group>"; };
 		58CC17CD1B0B461000F9A4FD /* NeuralNetworkRepresentation.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = NeuralNetworkRepresentation.cpp; sourceTree = "<group>"; };
@@ -176,6 +178,7 @@
 				586F359B1B1DF78D004EB128 /* libboost_filesystem.dylib in Frameworks */,
 				586F359D1B1DF7A6004EB128 /* libboost_system.dylib in Frameworks */,
 				586F35971B1DF747004EB128 /* libboost_regex.dylib in Frameworks */,
+				5876FEDB1B25BF5400CEB355 /* libode.a in Frameworks */,
 				586F35951B1DF57F004EB128 /* libboost_program_options.dylib in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -298,6 +301,7 @@
 		6174AABD1AD568D900224D5C = {
 			isa = PBXGroup;
 			children = (
+				5876FEDA1B25BF5400CEB355 /* libode.a */,
 				586F35A01B1DF814004EB128 /* libosg.dylib */,
 				586F359C1B1DF7A6004EB128 /* libboost_system.dylib */,
 				586F359A1B1DF78D004EB128 /* libboost_filesystem.dylib */,

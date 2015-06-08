@@ -34,6 +34,11 @@
 namespace robogen {
 
 /**
+ * Initializes the ODE environment for consistency check.
+ */
+void initOdeEnv();
+    
+/**
  * Handles collisions between two ODE geometries.
  * Relies on two extern variables. See .cpp.
  * data should be a pointer to a RobogenConfig

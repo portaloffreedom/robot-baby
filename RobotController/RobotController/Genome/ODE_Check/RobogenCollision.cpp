@@ -30,14 +30,37 @@
 #include "RobogenConfig.h"
 
 // ODE World
-extern dWorldID odeWorld;
+dWorldID odeWorld;
 
 // Container for collisions
-extern dJointGroupID odeContactGroup;
+dJointGroupID odeContactGroup;
 
 namespace robogen {
 
 const int MAX_CONTACTS = 32; // maximum number of contact points per body
+
+void initOdeEnv() {
+    // ---------------------------------------
+    // Simulator initialization
+    // ---------------------------------------
+    
+    dInitODE();
+    
+    // Create ODE world
+    odeWorld = dWorldCreate();
+    
+    // Set gravity [mm/s]
+    dWorldSetGravity(odeWorld, 0, 0, -9.81);
+    
+    dWorldSetERP(odeWorld, 0.1);
+    dWorldSetCFM(odeWorld, 10e-6);
+    
+    // Create collision world
+    dSpaceID odeSpace = dSimpleSpaceCreate(0);
+    
+    // Create contact group
+    odeContactGroup = dJointGroupCreate(0);
+}
 
 void odeCollisionCallback(void *data, dGeomID o1, dGeomID o2) {
 
