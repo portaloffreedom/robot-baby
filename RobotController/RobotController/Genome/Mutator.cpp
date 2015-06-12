@@ -69,7 +69,7 @@ Mutator::Mutator(boost::shared_ptr<EvolverConfiguration> conf,
 	}
 
 }
-
+    
 Mutator::~Mutator() {
 }
 
@@ -101,12 +101,15 @@ void Mutator::createChild(boost::shared_ptr<RobotRepresentation> robot1,
     boost::shared_ptr<RobotRepresentation> offspring2 =
         boost::shared_ptr<RobotRepresentation>(new RobotRepresentation(*robot2.get()));
     
+    offspring1->prefixIDs("P0");
+    offspring2->prefixIDs("P1");
+    
+    
     this->crossoverSubtrees(offspring1, offspring2);
     this->crossover(offspring1, offspring2);
     this->mutate(offspring1);
     
     std::cout << offspring1->toString() << std::endl;
-    
 }
 
 void Mutator::growBodyRandomly(boost::shared_ptr<RobotRepresentation>& robot) {

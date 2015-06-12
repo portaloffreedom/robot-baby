@@ -524,7 +524,29 @@ robogenMessage::Robot RobotRepresentation::serialize() const {
 	return message;
 }
 
-
+/* Helper method to recursively add a prefix to all part ids in a robot */
+    
+void pref(boost::shared_ptr<PartRepresentation> part, std::string prefix) {
+    part->setId(prefix + part->getId());
+    // Print out current childrens and recursively call on them
+    for (unsigned int i = 0; i < part->getArity(); ++i) {
+        if (part->getChild(i)) {
+            pref(part->getChild(i), prefix);
+        }
+    }
+}
+    
+void RobotRepresentation::prefixIDs(std::string prefix) {
+    IdPartMap newmap;
+    for (IdPartMap::iterator it = idToPart_.begin(); it != idToPart_.end(); ++it) {
+        newmap[prefix + it->first] = it->second;
+    }
+    
+    idToPart_ = newmap;
+    
+    pref(bodyTree_, prefix);
+}
+    
 void RobotRepresentation::getBrainGenome(std::vector<double*> &weights,
 		std::vector<unsigned int> &types,
 		std::vector<double*> &params) {

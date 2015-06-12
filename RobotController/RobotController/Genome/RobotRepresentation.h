@@ -97,6 +97,8 @@ public:
 	 */
 	robogenMessage::Robot serialize() const;
 
+    void prefixIDs(std::string prefix);
+    
 	/**
 	 * Provides weight and bias handles for a mutator.
 	 * @param weights reference to a vector to be filled with weight pointers

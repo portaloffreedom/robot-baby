@@ -149,6 +149,8 @@
 		586F359C1B1DF7A6004EB128 /* libboost_system.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libboost_system.dylib; path = ../../../../../usr/local/lib/libboost_system.dylib; sourceTree = "<group>"; };
 		586F35A01B1DF814004EB128 /* libosg.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libosg.dylib; path = ../../../../../usr/local/lib/libosg.dylib; sourceTree = "<group>"; };
 		5876FEDA1B25BF5400CEB355 /* libode.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libode.a; path = ../../../../../usr/local/lib/libode.a; sourceTree = "<group>"; };
+		5878A6C61B26F79400BE4F10 /* car.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = car.txt; sourceTree = "<group>"; };
+		5878A76B1B26F79500BE4F10 /* i7alt.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = i7alt.txt; sourceTree = "<group>"; };
 		58BEB5C91B1DC655002222DE /* RobogenUtils.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RobogenUtils.cpp; sourceTree = "<group>"; };
 		58BEB5CA1B1DC655002222DE /* RobogenUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RobogenUtils.h; sourceTree = "<group>"; };
 		58CC17CD1B0B461000F9A4FD /* NeuralNetworkRepresentation.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = NeuralNetworkRepresentation.cpp; sourceTree = "<group>"; };
@@ -164,6 +166,7 @@
 		58EBB06F1AEF968C00B2B029 /* PartList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PartList.h; sourceTree = "<group>"; };
 		58EBB0781AEF98BA00B2B029 /* EvolverConfiguration.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = EvolverConfiguration.cpp; sourceTree = "<group>"; };
 		58EBB0791AEF98BA00B2B029 /* EvolverConfiguration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EvolverConfiguration.h; sourceTree = "<group>"; };
+		58F670C31B270CE500EDBB09 /* evolConf-full.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "evolConf-full.txt"; sourceTree = "<group>"; };
 		6174AAC61AD568D900224D5C /* RobotController */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = RobotController; sourceTree = BUILT_PRODUCTS_DIR; };
 		6174AAC91AD568D900224D5C /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -324,6 +327,9 @@
 		6174AAC81AD568D900224D5C /* RobotController */ = {
 			isa = PBXGroup;
 			children = (
+				58F670C31B270CE500EDBB09 /* evolConf-full.txt */,
+				5878A6C61B26F79400BE4F10 /* car.txt */,
+				5878A76B1B26F79500BE4F10 /* i7alt.txt */,
 				581F1D231AD5744D00E9001C /* Genome */,
 				6174AAC91AD568D900224D5C /* main.cpp */,
 			);
@@ -454,8 +460,8 @@
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PREPROCESSOR_DEFINITIONS = (
-					"DEBUG=1",
-					"$(inherited)",
+					"GLIBCXX_DEBUG=1",
+					"GLIBCXXDEBUGPEDANTIC=1",
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
@@ -464,10 +470,10 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				MACOSX_DEPLOYMENT_TARGET = 10.9;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
-				SDKROOT = macosx;
+				SDKROOT = macosx10.9;
 			};
 			name = Debug;
 		};
@@ -493,15 +499,19 @@
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"GLIBCXX_DEBUG=1",
+					"GLIBCXXDEBUGPEDANTIC=1",
+				);
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				MACOSX_DEPLOYMENT_TARGET = 10.9;
 				MTL_ENABLE_DEBUG_INFO = NO;
-				SDKROOT = macosx;
+				SDKROOT = macosx10.9;
 			};
 			name = Release;
 		};
