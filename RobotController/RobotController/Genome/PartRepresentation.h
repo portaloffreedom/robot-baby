@@ -204,6 +204,11 @@ public:
 	 */
 	void toString(std::stringstream& str, unsigned int depth);
 
+    /**
+     * Write recursively the body tree representation to a txt file
+     */
+    void toTextFile(std::ofstream& file, unsigned int depth);
+    
 private:
 
 	/**

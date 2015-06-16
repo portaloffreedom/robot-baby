@@ -1041,6 +1041,14 @@ std::string RobotRepresentation::toString() {
 	return str.str();
 
 }
+    
+void RobotRepresentation::toTextFile() {
+    std::ofstream file;
+    file.open("child.txt");
+    
+    file << "0 " << bodyTree_->getType() << " " << bodyTree_->getId() << " 0" << std::endl;
+    this->bodyTree_->toTextFile(file, 1);
+}
 
 }
 

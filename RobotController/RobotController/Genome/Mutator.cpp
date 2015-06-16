@@ -33,6 +33,7 @@
 #include "PartList.h"
 #include <iostream>
 #include <boost/shared_ptr.hpp>
+#include <fstream>
 
 namespace robogen {
 
@@ -109,6 +110,7 @@ void Mutator::createChild(boost::shared_ptr<RobotRepresentation> robot1,
     this->crossover(offspring1, offspring2);
     this->mutate(offspring1);
     
+    offspring1->toTextFile();
     std::cout << offspring1->toString() << std::endl;
 }
 

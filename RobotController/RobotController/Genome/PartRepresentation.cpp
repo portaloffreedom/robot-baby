@@ -7,6 +7,7 @@
 
 #include <iostream>
 #include <sstream>
+#include <fstream>
 
 #include "PartRepresentation.h"
 #include "PartList.h"
@@ -285,6 +286,27 @@ void PartRepresentation::toString(std::stringstream& str, unsigned int depth) {
 
 	}
 
+}
+    
+void PartRepresentation::toTextFile(std::ofstream& file, unsigned int depth) {
+    
+    // Print out current children and recursively call on them
+    for (unsigned int i = 0; i < arity_; ++i) {
+        
+        if (this->getChild(i)) {
+            for (unsigned int j = 0; j < depth; ++j) {
+                file << "\t";
+            }
+            
+            file.flush();
+            
+            file << i << " " << this->getChild(i)->getType() << " " << this->getChild(i)->getId() << " " << this->getOrientation() << std::endl;
+            file.flush();
+            this->getChild(i)->toTextFile(file, depth+1);
+            
+        }
+    }
+    
 }
 
 } /* namespace robogen */

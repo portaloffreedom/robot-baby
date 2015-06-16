@@ -97,6 +97,10 @@ public:
 	 */
 	robogenMessage::Robot serialize() const;
 
+    /**
+     * Prefix all the part ids with a given string.
+     * @param the prefix string.
+     */
     void prefixIDs(std::string prefix);
     
 	/**
@@ -227,6 +231,11 @@ public:
 	 * @return a string representation of the robot
 	 */
 	std::string toString();
+    
+    /**
+     * Write the genome tree of the robot to a file
+     */
+    void toTextFile();
 
 private:
 	/**
