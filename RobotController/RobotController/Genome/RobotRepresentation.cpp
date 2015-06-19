@@ -89,7 +89,8 @@ RobotRepresentation::RobotRepresentation(const RobotRepresentation &r) {
 bool robotTextFileReadPartLine(std::ifstream &file, unsigned int &indent,
 		unsigned int &slot,
 		char &type, std::string &id, unsigned int &orientation,
-		std::vector<double> &params) {
+		std::vector<double> &params,
+        std::string &idPref) {
 	// match (0 or more tabs)(digit) (type) (id) (orientation) (parameters)
 	static const boost::regex rx(
 			"^(\\t*)(\\d) ([A-Z]|(?:[A-Z][a-z]*)+) ([^\\s]+) (\\d)([ \\d\\.-]*)$");
@@ -116,7 +117,7 @@ bool robotTextFileReadPartLine(std::ifstream &file, unsigned int &indent,
 		} else {
 			type = INVERSE_PART_TYPE_MAP.at(match[3].str());
 		}
-		id = std::string(match[4]);
+		id = idPref + std::string(match[4]);
 		orientation = std::atoi(match[5].first);
 		double param;
 		std::stringstream ss(match[6]);
@@ -178,7 +179,8 @@ bool robotTextFileReadPartLine(std::ifstream &file, unsigned int &indent,
  * @return true if successful read
  */
 bool robotTextFileReadWeightLine(std::ifstream &file, std::string &from,
-		int &fromIoId, std::string &to, int &toIoId, double &value) {
+                                 int &fromIoId, std::string &to, int &toIoId,
+                                 double &value, std::string & idPref) {
 
 	static const boost::regex rx(
 			"^([^\\s]+) (\\d+) ([^\\s]+) (\\d+) (-?\\d*\\.?\\d*)$");
@@ -188,9 +190,9 @@ bool robotTextFileReadWeightLine(std::ifstream &file, std::string &from,
 	if (boost::regex_match(line.c_str(), match, rx)) {
 		// match[0]:whole string, match[1]:from, match[2]:from IO id,
 		// match[3]:to, match[4]:to IO id, match[5]:value
-		from.assign(match[1]);
+		from.assign(idPref + match[1]);
 		fromIoId = std::atoi(match[2].first);
-		to.assign(match[3]);
+		to.assign(idPref + match[3]);
 		toIoId = std::atoi(match[4].first);
 		value = std::atof(match[5].first);
 		return true;
@@ -233,7 +235,7 @@ void parseTypeString(std::string typeString, unsigned int &type) {
  * @return true if successful read
  */
 bool robotTextFileReadAddNeuronLine(std::ifstream &file, std::string &partId,
-		unsigned int &type) {
+                                    unsigned int &type, std::string &idPref) {
 
 	static const boost::regex rx("^([^\\s]+) ([^\\s]+)$");
 	boost::cmatch match;
@@ -241,7 +243,7 @@ bool robotTextFileReadAddNeuronLine(std::ifstream &file, std::string &partId,
 	std::getline(file, line);
 	if (boost::regex_match(line.c_str(), match, rx)) {
 		// match[0]:whole string, match[1]:partId match[2]:type string
-		partId.assign(match[1]);
+		partId.assign(idPref + match[1]);
 		std::string typeString = match[2];
 		parseTypeString(typeString, type);
 		return true;
@@ -263,7 +265,8 @@ bool robotTextFileReadAddNeuronLine(std::ifstream &file, std::string &partId,
  * @return true if successful read
  */
 bool robotTextFileReadParamsLine(std::ifstream &file, std::string &node,
-		int &ioId,  unsigned int &type, std::vector<double> &params) {
+                                 int &ioId,  unsigned int &type, std::vector<double> &params,
+                                 std::string &idPref) {
 
 	static const boost::regex generalRx("^([^\\s]+) (\\d+) ([^\\s]+)((?: -?\\d*\\.?\\d*)+)$");
 
@@ -289,7 +292,7 @@ bool robotTextFileReadParamsLine(std::ifstream &file, std::string &node,
 			std::cout << i << " " << match[i] << std::endl;
 		}
 		// match[0]:whole string, match[1]:node, match[2]:ioId, match[3]:value
-		node.assign(match[1]);
+		node.assign(idPref + match[1]);
 		ioId = std::atoi(match[2].first);
 		type = NeuronRepresentation::SIGMOID;
 		params.push_back(std::atof(match[3].first));
@@ -375,7 +378,7 @@ bool RobotRepresentation::init() {
 	return true;
 }
 
-bool RobotRepresentation::init(std::string robotTextFile) {
+bool RobotRepresentation::init(std::string robotTextFile, std::string idPref) {
 
 	// open file
 	std::ifstream file;
@@ -397,7 +400,7 @@ bool RobotRepresentation::init(std::string robotTextFile) {
 	// process root node
 	try {
 		if (!robotTextFileReadPartLine(file, indent, slot, type, id, orientation,
-				params) || indent) {
+				params, idPref) || indent) {
 			std::cout << "Robot text file contains no or"
 					" poorly formatted root node" << std::endl;
 			return false;
@@ -417,7 +420,7 @@ bool RobotRepresentation::init(std::string robotTextFile) {
 	// process other body parts
 	try {
 		while (robotTextFileReadPartLine(file, indent, slot, type, id,
-				orientation, params)) {
+				orientation, params, idPref)) {
 			if (!indent) {
 				std::cout << "Attempt to create multiple root nodes!"
 						<< std::endl;
@@ -477,7 +480,7 @@ bool RobotRepresentation::init(std::string robotTextFile) {
 	unsigned int neuronType;
 	// add new neurons
 	try {
-		while (robotTextFileReadAddNeuronLine(file, id, neuronType)) {
+		while (robotTextFileReadAddNeuronLine(file, id, neuronType, idPref)) {
 			std::string neuronId = neuralNetwork_->insertNeuron(ioPair(id,
 					neuralNetwork_->getBodyPartNeurons(id).size()),
 					NeuronRepresentation::HIDDEN, neuronType);
@@ -486,7 +489,7 @@ bool RobotRepresentation::init(std::string robotTextFile) {
 		}
 
 		// weights
-		while (robotTextFileReadWeightLine(file, from, fromIoId, to, toIoId, value)) {
+		while (robotTextFileReadWeightLine(file, from, fromIoId, to, toIoId, value, idPref)) {
 			if (!neuralNetwork_->setWeight(from, fromIoId, to, toIoId, value)) {
 				std::cout << "Failed to set weight" << std::endl;
 				return false;
@@ -496,7 +499,7 @@ bool RobotRepresentation::init(std::string robotTextFile) {
 		// params
 		params.clear();
 
-		while (robotTextFileReadParamsLine(file, to, toIoId, neuronType, params)) {
+		while (robotTextFileReadParamsLine(file, to, toIoId, neuronType, params, idPref)) {
 			if (!neuralNetwork_->setParams(to, toIoId, neuronType, params)) {
 				std::cout << "Failed to set neuron params" << std::endl;
 				return false;
@@ -1029,7 +1032,7 @@ bool RobotRepresentation::check() {
 	return true;
 
 }
-
+    
 std::string RobotRepresentation::toString() {
 
 	std::stringstream str;

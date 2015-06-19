@@ -7,9 +7,44 @@
 //
 
 #include <iostream>
+#include <fstream>
+#include <string>
+
+#include "./Genome/RobotRepresentation.h"
+#include "./Genome/Mutator.h"
+#include "./Genome/EvolverConfiguration.h"
+
+#include <boost/random/mersenne_twister.hpp>
+#include <boost/random/uniform_int_distribution.hpp>
+#include <boost/shared_ptr.hpp>
+
+using namespace robogen;
 
 int main(int argc, const char * argv[]) {
-    // insert code here...
-    std::cout << "Hello, World!\n";
+    if (argc < 5) {
+        std::cout << "Arguments missing. Proper usage is: ./main [robot file name] [robot file name] [conf file name] [child suffix]" << std::endl;
+        
+        return 1;
+    }
+    
+    boost::shared_ptr<RobotRepresentation> robot1(new RobotRepresentation());
+    boost::shared_ptr<RobotRepresentation> robot2(new RobotRepresentation());
+    
+    robot1->init(std::string(argv[1]), "P0");
+    robot2->init(std::string(argv[2]), "P1");
+    
+    boost::shared_ptr<EvolverConfiguration> evo(new EvolverConfiguration);
+    evo->init(std::string(argv[3]));
+    
+    boost::random::mt19937 rng;
+    
+    Mutator mut(evo, rng);
+    mut.createChild(robot1, robot2);
+    
+    std::string newFileName = "child" + std::string(argv[4]) + ".txt";
+    boost::shared_ptr<RobotRepresentation> childbot(new RobotRepresentation());
+    childbot->init(newFileName, "");
+    std::cout << childbot->toString() << std::endl;
+    
     return 0;
 }

@@ -87,9 +87,10 @@ public:
 	/**
 	 * Constructs a robot representation from a robot text file
 	 * @param robotTextFile text file of the robot description
+     * @param prefix prefix for robot ids
 	 * @todo make a better handling of formatting errors
 	 */
-	bool init(std::string robotTextFile);
+    bool init(std::string robotTextFile, std::string prefix);
 
 	/**
 	 * @return robot message of this robot to be transmitted to simulator
@@ -282,7 +283,7 @@ private:
 	 * Indicates whether robot evaluated
 	 */
 	bool evaluated_;
-
+    
 };
 
 /**
