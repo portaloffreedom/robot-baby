@@ -73,10 +73,11 @@ public:
     
     /**
      * Performs mutation and crossover on a pair of robots, 
-     * and prints resulting genome to StdOut.
+     * and writes resulting genome to a file
      */
     void createChild(boost::shared_ptr<RobotRepresentation> robot1,
-                     boost::shared_ptr<RobotRepresentation> robot2);
+                     boost::shared_ptr<RobotRepresentation> robot2,
+                     std::string filename);
 
 private:
 

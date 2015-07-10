@@ -9,6 +9,7 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <ctime>
 
 #include "./Genome/RobotRepresentation.h"
 #include "./Genome/Mutator.h"
@@ -36,15 +37,12 @@ int main(int argc, const char * argv[]) {
     boost::shared_ptr<EvolverConfiguration> evo(new EvolverConfiguration);
     evo->init(std::string(argv[3]));
     
-    boost::random::mt19937 rng;
-    
-    Mutator mut(evo, rng);
-    mut.createChild(robot1, robot2);
+    boost::random::mt19937 rng(time(0));
     
     std::string newFileName = "child" + std::string(argv[4]) + ".txt";
-    boost::shared_ptr<RobotRepresentation> childbot(new RobotRepresentation());
-    childbot->init(newFileName, "");
-    std::cout << childbot->toString() << std::endl;
+    
+    Mutator mut(evo, rng);
+    mut.createChild(robot1, robot2, newFileName);
     
     return 0;
 }

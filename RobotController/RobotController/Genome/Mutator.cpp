@@ -95,7 +95,8 @@ boost::shared_ptr<RobotRepresentation> Mutator::mutate(
 }
     
 void Mutator::createChild(boost::shared_ptr<RobotRepresentation> robot1,
-                          boost::shared_ptr<RobotRepresentation> robot2) {
+                          boost::shared_ptr<RobotRepresentation> robot2,
+                          std::string name) {
     
     boost::shared_ptr<RobotRepresentation> offspring1 =
         boost::shared_ptr<RobotRepresentation>(new RobotRepresentation(*robot1.get()));
@@ -103,10 +104,10 @@ void Mutator::createChild(boost::shared_ptr<RobotRepresentation> robot1,
         boost::shared_ptr<RobotRepresentation>(new RobotRepresentation(*robot2.get()));
     
     this->crossoverSubtrees(offspring1, offspring2);
-    this->crossover(offspring1, offspring2);
+    //this->crossover(offspring1, offspring2);
     this->mutate(offspring1);
     
-    offspring1->toTextFile();
+    offspring1->toTextFile(name);
 }
 
 void Mutator::growBodyRandomly(boost::shared_ptr<RobotRepresentation>& robot) {
@@ -180,7 +181,6 @@ void Mutator::randomizeBrain(boost::shared_ptr<RobotRepresentation>& robot) {
 
 	}
 	robot->setDirty();
-
 
 }
 

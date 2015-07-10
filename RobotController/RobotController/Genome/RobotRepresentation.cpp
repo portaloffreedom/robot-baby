@@ -784,6 +784,38 @@ bool RobotRepresentation::swapSubTrees(const std::string& subtreeRoot1,
 	return true;
 
 }
+
+/* Helper method to recursively remove all neurons attached to a subtree of the robot body */
+void removeAllNeurons(boost::shared_ptr<PartRepresentation> root,
+                      boost::shared_ptr<NeuralNetworkRepresentation> neuralNet) {
+    for (unsigned int i = 0; i < root->getArity(); ++i) {
+        if (root->getChild(i)) {
+            neuralNet->removeNeurons(root->getChild(i)->getId());
+            removeAllNeurons(root->getChild(i), neuralNet);
+        }
+    }
+}
+    
+/* Helper method to recursively add all neurons attached to a subtree of the robot body */
+void addAllNeurons(boost::shared_ptr<PartRepresentation> root,
+                   boost::shared_ptr<NeuralNetworkRepresentation> neuralNet1,
+                   boost::shared_ptr<NeuralNetworkRepresentation> neuralNet2) {
+    for (unsigned int i = 0; i < root->getArity(); ++i) {
+        if (root->getChild(i)) {
+            std::vector<boost::weak_ptr<NeuronRepresentation>> neuroVec =
+                neuralNet2->getBodyPartNeurons(root->getChild(i)->getId());
+            
+            for (std::vector<boost::weak_ptr<NeuronRepresentation>>::iterator it = neuroVec.begin();
+                 it != neuroVec.end();
+                 ++it) {
+                boost::shared_ptr<NeuronRepresentation> neuron = (*it).lock();
+                neuralNet1->insertNeuron(neuron->getIoPair(), neuron->getLayer(), neuron->getType());
+            }
+            
+            addAllNeurons(root->getChild(i), neuralNet1, neuralNet2);
+        }
+    }
+}
     
 bool RobotRepresentation::crossoverSubTrees(boost::shared_ptr<RobotRepresentation>& robot1,
                                             boost::shared_ptr<RobotRepresentation>& robot2,
@@ -829,12 +861,27 @@ bool RobotRepresentation::crossoverSubTrees(boost::shared_ptr<RobotRepresentatio
         }
     }
     
+    robot1->getBrain()->removeNeurons(root1->getId());
+    removeAllNeurons(root1, robot1->getBrain());
+    
     // Swap the subtrees
     parentRoot2->setChild(slotParentRoot2, root1);
     parentRoot1->setChild(slotParentRoot1, root2);
     
-    return true;
+    // do brain crossover
+    std::vector<boost::weak_ptr<NeuronRepresentation>> rootNeuroVec =
+        robot2->getBrain()->getBodyPartNeurons(root2->getId());
     
+    for (std::vector<boost::weak_ptr<NeuronRepresentation>>::iterator it = rootNeuroVec.begin();
+         it != rootNeuroVec.end();
+         ++it) {
+        boost::shared_ptr<NeuronRepresentation> neuron = (*it).lock();
+        robot1->getBrain()->insertNeuron(neuron->getIoPair(), neuron->getLayer(), neuron->getType());
+    }
+
+    addAllNeurons(root2, robot1->getBrain(), robot2->getBrain());
+
+    return true;
 }
 
 
@@ -1045,9 +1092,9 @@ std::string RobotRepresentation::toString() {
 
 }
     
-void RobotRepresentation::toTextFile() {
+void RobotRepresentation::toTextFile(std::string name) {
     std::ofstream file;
-    file.open("child.txt");
+    file.open(name);
     
     file << "0 " << bodyTree_->getType() << " " << bodyTree_->getId() << " 0" << std::endl;
     this->bodyTree_->toTextFile(file, 1);

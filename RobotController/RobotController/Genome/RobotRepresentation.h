@@ -236,7 +236,7 @@ public:
     /**
      * Write the genome tree of the robot to a file
      */
-    void toTextFile();
+    void toTextFile(std::string name);
 
 private:
 	/**

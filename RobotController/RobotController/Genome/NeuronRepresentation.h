@@ -91,7 +91,6 @@ public:
 	 */
 	void setParams(unsigned int type, const std::vector<double> params);
 
-
 	/**
 	 * @return true if the neuron is in the input layer
 	 */

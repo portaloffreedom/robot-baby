@@ -304,7 +304,7 @@ void NeuralNetworkRepresentation::removeIncomingConnections(
 	WeightMap::iterator it = weights_.begin();
 	while (it != weights_.end()) {
 	   if (it->first.second.compare(neuron->getId()) == 0) {
-		   std::cout << it->first.first << " -> " << it->first.second << std::endl;
+		   //std::cout << it->first.first << " -> " << it->first.second << std::endl;
 		   weights_.erase(it++);
 	   } else {
 		  it++;
@@ -317,7 +317,7 @@ void NeuralNetworkRepresentation::removeOutgoingConnections(
 	WeightMap::iterator it = weights_.begin();
 	while (it != weights_.end()) {
 	   if (it->first.first.compare(neuron->getId()) == 0) {
-		   std::cout << it->first.first << " -> " << it->first.second << std::endl;
+		   //std::cout << it->first.first << " -> " << it->first.second << std::endl;
 		   weights_.erase(it++);
 	   } else {
 		  it++;
