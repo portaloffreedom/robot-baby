@@ -1098,6 +1098,10 @@ void RobotRepresentation::toTextFile(std::string name) {
     
     file << "0 " << bodyTree_->getType() << " " << bodyTree_->getId() << " 0" << std::endl;
     this->bodyTree_->toTextFile(file, 1);
+    
+    file << std::endl << std::endl;
+    
+    this->neuralNetwork_->toTextFile(file);
 }
 
 }

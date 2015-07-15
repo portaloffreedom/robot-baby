@@ -28,6 +28,7 @@
 
 #include "NeuralNetworkRepresentation.h"
 #include <queue>
+#include <fstream>
 #include <iostream>
 #include <sstream>
 #include <stdexcept>
@@ -472,6 +473,21 @@ std::string NeuralNetworkRepresentation::toString() {
 	}
 
 	return str.str();
+}
+
+void NeuralNetworkRepresentation::toTextFile(std::ofstream& file) {
+    for (std::map<std::pair<std::string, std::string>, double>::iterator it =
+         weights_.begin(); it != weights_.end(); it++) {
+        std::string firstId = it->first.first;
+        std::string firstIO = firstId.substr(firstId.find("-") + 1);
+        firstId = firstId.substr(0, firstId.find("-"));
+        
+        std::string secondId = it->first.second;
+        std::string secondIO = secondId.substr(secondId.find("-") + 1);
+        secondId = secondId.substr(0, secondId.find("-"));
+
+        file << firstId << " " << firstIO << " " << secondId << " " << secondIO << " " << it->second << std::endl;
+    }
 }
 
 } /* namespace robogen */

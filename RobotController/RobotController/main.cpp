@@ -43,6 +43,13 @@ int main(int argc, const char * argv[]) {
     
     Mutator mut(evo, rng);
     mut.createChild(robot1, robot2, newFileName);
+    /*
+    std::cout << robot1->toString() << std::endl;
     
+    robot1->toTextFile("cartest.txt");
+    boost::shared_ptr<RobotRepresentation> robot3(new RobotRepresentation());
+    robot3->init(std::string(argv[5]), "");
+    std::cout << std::endl << robot3->toString() << std::endl;*/
+
     return 0;
 }

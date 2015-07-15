@@ -171,6 +171,12 @@ public:
 	 * @return a string representation of the neural network
 	 */
 	std::string toString();
+    
+    /*
+     * write the neural network to a robot text file
+     * @param file is the file to write to
+     */
+    void toTextFile(std::ofstream& file);
 
 private:
 	/**
