@@ -43,6 +43,7 @@
 //#include "config/RobogenConfig.h"
 #include "PartRepresentation.h"
 #include "NeuralNetworkRepresentation.h"
+#include "json2pb.h"
 //#include "utils/network/TcpSocket.h"
 #include "robogen.pb.h"
 
@@ -237,6 +238,11 @@ public:
      * Write the genome tree of the robot to a file
      */
     void toTextFile(std::string name);
+    
+    /* 
+     * Write the genome tree of the robot to a file, json formatted
+     */
+    void toJson(std::string name);
 
 private:
 	/**

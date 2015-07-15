@@ -37,6 +37,7 @@
 #include <queue>
 #include <boost/regex.hpp>
 #include <boost/algorithm/string.hpp>
+#include "json2pb.h"
 #include "PartRepresentation.h"
 #include "ProtobufPacket.h"
 #include "PartList.h"
@@ -1093,6 +1094,7 @@ std::string RobotRepresentation::toString() {
 }
     
 void RobotRepresentation::toTextFile(std::string name) {
+    /*
     std::ofstream file;
     file.open(name);
     
@@ -1101,7 +1103,20 @@ void RobotRepresentation::toTextFile(std::string name) {
     
     file << std::endl << std::endl;
     
-    this->neuralNetwork_->toTextFile(file);
+    this->neuralNetwork_->toTextFile(file);*/
+    toJson(name + ".json");
+    std::string py_command = "python json_converter.py " + name + ".json " + name + ".txt";
+    system(py_command.c_str());
+    std::string del_command = "rm -rf " + name + ".json";
+    system(del_command.c_str());
+}
+    
+void RobotRepresentation::toJson(std::string name) {
+    std::ofstream file;
+    file.open(name);
+    
+    file << pb2json(this->serialize());
+    file.close();
 }
 
 }

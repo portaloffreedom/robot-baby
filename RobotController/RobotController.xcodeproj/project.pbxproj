@@ -10,6 +10,8 @@
 		581F1D2A1AD5744D00E9001C /* Mutator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 581F1D241AD5744D00E9001C /* Mutator.cpp */; };
 		581F1D2B1AD5744D00E9001C /* PartRepresentation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 581F1D261AD5744D00E9001C /* PartRepresentation.cpp */; };
 		581F1D2C1AD5744D00E9001C /* RobotRepresentation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 581F1D281AD5744D00E9001C /* RobotRepresentation.cpp */; };
+		582E00041B5690CB00FAC1AC /* json2pb.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 582E00021B5690CB00FAC1AC /* json2pb.cpp */; };
+		582E00071B569D7000FAC1AC /* libjansson.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 582E00061B569D7000FAC1AC /* libjansson.dylib */; };
 		583CB2E91B148F4E00B1116A /* BodyVerifier.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 583CB2DE1B148F4E00B1116A /* BodyVerifier.cpp */; };
 		583CB2EA1B148F4E00B1116A /* ConfigurationReader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 583CB2E01B148F4E00B1116A /* ConfigurationReader.cpp */; };
 		583CB2EB1B148F4E00B1116A /* Robogen.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 583CB2E21B148F4E00B1116A /* Robogen.cpp */; };
@@ -74,6 +76,18 @@
 		581F1D271AD5744D00E9001C /* PartRepresentation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PartRepresentation.h; sourceTree = "<group>"; };
 		581F1D281AD5744D00E9001C /* RobotRepresentation.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RobotRepresentation.cpp; sourceTree = "<group>"; };
 		581F1D291AD5744D00E9001C /* RobotRepresentation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RobotRepresentation.h; sourceTree = "<group>"; };
+		582E00021B5690CB00FAC1AC /* json2pb.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = json2pb.cpp; sourceTree = "<group>"; };
+		582E00031B5690CB00FAC1AC /* json2pb.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = json2pb.h; sourceTree = "<group>"; };
+		582E00051B56920300FAC1AC /* bin2ascii.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = bin2ascii.h; sourceTree = "<group>"; };
+		582E00061B569D7000FAC1AC /* libjansson.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libjansson.dylib; path = ../../../../../usr/local/Cellar/jansson/2.7/lib/libjansson.dylib; sourceTree = "<group>"; };
+		582E00081B569E4D00FAC1AC /* json_converter.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = json_converter.py; sourceTree = "<group>"; };
+		582E000A1B569E4D00FAC1AC /* car.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = car.txt; sourceTree = "<group>"; };
+		582E000B1B569E4D00FAC1AC /* child2.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = child2.txt; sourceTree = "<group>"; };
+		582E000C1B569E4D00FAC1AC /* evolConf-full.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "evolConf-full.txt"; sourceTree = "<group>"; };
+		582E000D1B569E4D00FAC1AC /* i7alt.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = i7alt.txt; sourceTree = "<group>"; };
+		582E000E1B569E4D00FAC1AC /* spider9alt.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = spider9alt.txt; sourceTree = "<group>"; };
+		582E000F1B569E4D00FAC1AC /* spiderwithbrain.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = spiderwithbrain.txt; sourceTree = "<group>"; };
+		582E00101B569E4D00FAC1AC /* test.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = test.json; sourceTree = "<group>"; };
 		583CB2DE1B148F4E00B1116A /* BodyVerifier.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BodyVerifier.cpp; sourceTree = "<group>"; };
 		583CB2DF1B148F4E00B1116A /* BodyVerifier.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BodyVerifier.h; sourceTree = "<group>"; };
 		583CB2E01B148F4E00B1116A /* ConfigurationReader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ConfigurationReader.cpp; sourceTree = "<group>"; };
@@ -149,8 +163,6 @@
 		586F359C1B1DF7A6004EB128 /* libboost_system.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libboost_system.dylib; path = ../../../../../usr/local/lib/libboost_system.dylib; sourceTree = "<group>"; };
 		586F35A01B1DF814004EB128 /* libosg.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libosg.dylib; path = ../../../../../usr/local/lib/libosg.dylib; sourceTree = "<group>"; };
 		5876FEDA1B25BF5400CEB355 /* libode.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libode.a; path = ../../../../../usr/local/lib/libode.a; sourceTree = "<group>"; };
-		5878A6C61B26F79400BE4F10 /* car.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = car.txt; sourceTree = "<group>"; };
-		5878A76B1B26F79500BE4F10 /* i7alt.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = i7alt.txt; sourceTree = "<group>"; };
 		58BEB5C91B1DC655002222DE /* RobogenUtils.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RobogenUtils.cpp; sourceTree = "<group>"; };
 		58BEB5CA1B1DC655002222DE /* RobogenUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RobogenUtils.h; sourceTree = "<group>"; };
 		58CC17CD1B0B461000F9A4FD /* NeuralNetworkRepresentation.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = NeuralNetworkRepresentation.cpp; sourceTree = "<group>"; };
@@ -166,7 +178,6 @@
 		58EBB06F1AEF968C00B2B029 /* PartList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PartList.h; sourceTree = "<group>"; };
 		58EBB0781AEF98BA00B2B029 /* EvolverConfiguration.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = EvolverConfiguration.cpp; sourceTree = "<group>"; };
 		58EBB0791AEF98BA00B2B029 /* EvolverConfiguration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EvolverConfiguration.h; sourceTree = "<group>"; };
-		58F670C31B270CE500EDBB09 /* evolConf-full.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "evolConf-full.txt"; sourceTree = "<group>"; };
 		6174AAC61AD568D900224D5C /* RobotController */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = RobotController; sourceTree = BUILT_PRODUCTS_DIR; };
 		6174AAC91AD568D900224D5C /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -181,6 +192,7 @@
 				586F359B1B1DF78D004EB128 /* libboost_filesystem.dylib in Frameworks */,
 				586F359D1B1DF7A6004EB128 /* libboost_system.dylib in Frameworks */,
 				586F35971B1DF747004EB128 /* libboost_regex.dylib in Frameworks */,
+				582E00071B569D7000FAC1AC /* libjansson.dylib in Frameworks */,
 				5876FEDB1B25BF5400CEB355 /* libode.a in Frameworks */,
 				586F35951B1DF57F004EB128 /* libboost_program_options.dylib in Frameworks */,
 			);
@@ -192,6 +204,9 @@
 		581F1D231AD5744D00E9001C /* Genome */ = {
 			isa = PBXGroup;
 			children = (
+				582E00051B56920300FAC1AC /* bin2ascii.h */,
+				582E00021B5690CB00FAC1AC /* json2pb.cpp */,
+				582E00031B5690CB00FAC1AC /* json2pb.h */,
 				586D4C7E1B1DE2A300E7DBB2 /* NeuralNetwork.c */,
 				586D4C7F1B1DE2A300E7DBB2 /* NeuralNetwork.h */,
 				583CB2DD1B148F4E00B1116A /* ODE_Check */,
@@ -216,6 +231,20 @@
 				581F1D291AD5744D00E9001C /* RobotRepresentation.h */,
 			);
 			path = Genome;
+			sourceTree = "<group>";
+		};
+		582E00091B569E4D00FAC1AC /* Test */ = {
+			isa = PBXGroup;
+			children = (
+				582E000A1B569E4D00FAC1AC /* car.txt */,
+				582E000B1B569E4D00FAC1AC /* child2.txt */,
+				582E000C1B569E4D00FAC1AC /* evolConf-full.txt */,
+				582E000D1B569E4D00FAC1AC /* i7alt.txt */,
+				582E000E1B569E4D00FAC1AC /* spider9alt.txt */,
+				582E000F1B569E4D00FAC1AC /* spiderwithbrain.txt */,
+				582E00101B569E4D00FAC1AC /* test.json */,
+			);
+			path = Test;
 			sourceTree = "<group>";
 		};
 		583CB2DD1B148F4E00B1116A /* ODE_Check */ = {
@@ -304,6 +333,7 @@
 		6174AABD1AD568D900224D5C = {
 			isa = PBXGroup;
 			children = (
+				582E00061B569D7000FAC1AC /* libjansson.dylib */,
 				5876FEDA1B25BF5400CEB355 /* libode.a */,
 				586F35A01B1DF814004EB128 /* libosg.dylib */,
 				586F359C1B1DF7A6004EB128 /* libboost_system.dylib */,
@@ -327,9 +357,8 @@
 		6174AAC81AD568D900224D5C /* RobotController */ = {
 			isa = PBXGroup;
 			children = (
-				58F670C31B270CE500EDBB09 /* evolConf-full.txt */,
-				5878A6C61B26F79400BE4F10 /* car.txt */,
-				5878A76B1B26F79500BE4F10 /* i7alt.txt */,
+				582E00081B569E4D00FAC1AC /* json_converter.py */,
+				582E00091B569E4D00FAC1AC /* Test */,
 				581F1D231AD5744D00E9001C /* Genome */,
 				6174AAC91AD568D900224D5C /* main.cpp */,
 			);
@@ -394,6 +423,7 @@
 			files = (
 				58BEB5CB1B1DC655002222DE /* RobogenUtils.cpp in Sources */,
 				586D4C6F1B1DDDB000E7DBB2 /* LightSource.cpp in Sources */,
+				582E00041B5690CB00FAC1AC /* json2pb.cpp in Sources */,
 				583CB33D1B14A19300B1116A /* Robot.cpp in Sources */,
 				586D4C6D1B1DDDB000E7DBB2 /* LightSensor.cpp in Sources */,
 				586D4C6C1B1DDDB000E7DBB2 /* ImuSensor.cpp in Sources */,
@@ -526,6 +556,7 @@
 				LIBRARY_SEARCH_PATHS = (
 					/usr/local/lib,
 					/usr/local/include,
+					/usr/local/Cellar/jansson/2.7/lib,
 				);
 				OTHER_CFLAGS = "";
 				OTHER_CPLUSPLUSFLAGS = "";
@@ -544,6 +575,7 @@
 				LIBRARY_SEARCH_PATHS = (
 					/usr/local/lib,
 					/usr/local/include,
+					/usr/local/Cellar/jansson/2.7/lib,
 				);
 				OTHER_CFLAGS = "";
 				OTHER_CPLUSPLUSFLAGS = "";
