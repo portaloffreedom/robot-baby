@@ -7,9 +7,54 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		581F1D2A1AD5744D00E9001C /* Mutator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 581F1D241AD5744D00E9001C /* Mutator.cpp */; };
+		581F1D2B1AD5744D00E9001C /* PartRepresentation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 581F1D261AD5744D00E9001C /* PartRepresentation.cpp */; };
+		581F1D2C1AD5744D00E9001C /* RobotRepresentation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 581F1D281AD5744D00E9001C /* RobotRepresentation.cpp */; };
+		582E00041B5690CB00FAC1AC /* json2pb.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 582E00021B5690CB00FAC1AC /* json2pb.cpp */; };
+		582E00071B569D7000FAC1AC /* libjansson.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 582E00061B569D7000FAC1AC /* libjansson.dylib */; };
+		583CB2E91B148F4E00B1116A /* BodyVerifier.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 583CB2DE1B148F4E00B1116A /* BodyVerifier.cpp */; };
+		583CB2EA1B148F4E00B1116A /* ConfigurationReader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 583CB2E01B148F4E00B1116A /* ConfigurationReader.cpp */; };
+		583CB2EB1B148F4E00B1116A /* Robogen.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 583CB2E21B148F4E00B1116A /* Robogen.cpp */; };
+		583CB2EC1B148F4E00B1116A /* RobogenCollision.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 583CB2E41B148F4E00B1116A /* RobogenCollision.cpp */; };
+		583CB33D1B14A19300B1116A /* Robot.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 583CB33B1B14A19300B1116A /* Robot.cpp */; };
+		586D4C321B1DDA5300E7DBB2 /* Model.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 586D4C301B1DDA5300E7DBB2 /* Model.cpp */; };
+		586D4C631B1DDDB000E7DBB2 /* ActiveCardanModel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 586D4C351B1DDDB000E7DBB2 /* ActiveCardanModel.cpp */; };
+		586D4C641B1DDDB000E7DBB2 /* ActiveHingeModel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 586D4C371B1DDDB000E7DBB2 /* ActiveHingeModel.cpp */; };
+		586D4C651B1DDDB000E7DBB2 /* ActiveWheelModel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 586D4C391B1DDDB000E7DBB2 /* ActiveWheelModel.cpp */; };
+		586D4C661B1DDDB000E7DBB2 /* ActiveWhegModel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 586D4C3B1B1DDDB000E7DBB2 /* ActiveWhegModel.cpp */; };
+		586D4C671B1DDDB000E7DBB2 /* BoxObstacle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 586D4C3E1B1DDDB000E7DBB2 /* BoxObstacle.cpp */; };
+		586D4C681B1DDDB000E7DBB2 /* CardanModel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 586D4C401B1DDDB000E7DBB2 /* CardanModel.cpp */; };
+		586D4C691B1DDDB000E7DBB2 /* Connection.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 586D4C421B1DDDB000E7DBB2 /* Connection.cpp */; };
+		586D4C6A1B1DDDB000E7DBB2 /* CoreComponentModel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 586D4C441B1DDDB000E7DBB2 /* CoreComponentModel.cpp */; };
+		586D4C6B1B1DDDB000E7DBB2 /* HingeModel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 586D4C461B1DDDB000E7DBB2 /* HingeModel.cpp */; };
+		586D4C6C1B1DDDB000E7DBB2 /* ImuSensor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 586D4C481B1DDDB000E7DBB2 /* ImuSensor.cpp */; };
+		586D4C6D1B1DDDB000E7DBB2 /* LightSensor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 586D4C4A1B1DDDB000E7DBB2 /* LightSensor.cpp */; };
+		586D4C6E1B1DDDB000E7DBB2 /* LightSensorModel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 586D4C4C1B1DDDB000E7DBB2 /* LightSensorModel.cpp */; };
+		586D4C6F1B1DDDB000E7DBB2 /* LightSource.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 586D4C4E1B1DDDB000E7DBB2 /* LightSource.cpp */; };
+		586D4C701B1DDDB000E7DBB2 /* Motor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 586D4C501B1DDDB000E7DBB2 /* Motor.cpp */; };
+		586D4C711B1DDDB000E7DBB2 /* ParametricBrickModel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 586D4C521B1DDDB000E7DBB2 /* ParametricBrickModel.cpp */; };
+		586D4C721B1DDDB000E7DBB2 /* PassiveWheelModel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 586D4C541B1DDDB000E7DBB2 /* PassiveWheelModel.cpp */; };
+		586D4C731B1DDDB000E7DBB2 /* RotateJointModel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 586D4C581B1DDDB000E7DBB2 /* RotateJointModel.cpp */; };
+		586D4C741B1DDDB000E7DBB2 /* ServoMotor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 586D4C5C1B1DDDB000E7DBB2 /* ServoMotor.cpp */; };
+		586D4C751B1DDDB000E7DBB2 /* TouchSensor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 586D4C5F1B1DDDB000E7DBB2 /* TouchSensor.cpp */; };
+		586D4C761B1DDDB000E7DBB2 /* TouchSensorModel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 586D4C611B1DDDB000E7DBB2 /* TouchSensorModel.cpp */; };
+		586D4C7C1B1DE21500E7DBB2 /* StartPosition.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 586D4C781B1DE21500E7DBB2 /* StartPosition.cpp */; };
+		586D4C801B1DE2A300E7DBB2 /* NeuralNetwork.c in Sources */ = {isa = PBXBuildFile; fileRef = 586D4C7E1B1DE2A300E7DBB2 /* NeuralNetwork.c */; };
+		586F35951B1DF57F004EB128 /* libboost_program_options.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 586F35941B1DF57F004EB128 /* libboost_program_options.dylib */; };
+		586F35971B1DF747004EB128 /* libboost_regex.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 586F35961B1DF747004EB128 /* libboost_regex.dylib */; };
+		586F35991B1DF778004EB128 /* libprotobuf.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 586F35981B1DF778004EB128 /* libprotobuf.dylib */; };
+		586F359B1B1DF78D004EB128 /* libboost_filesystem.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 586F359A1B1DF78D004EB128 /* libboost_filesystem.dylib */; };
+		586F359D1B1DF7A6004EB128 /* libboost_system.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 586F359C1B1DF7A6004EB128 /* libboost_system.dylib */; };
+		586F35A11B1DF814004EB128 /* libosg.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 586F35A01B1DF814004EB128 /* libosg.dylib */; };
+		5876FEDB1B25BF5400CEB355 /* libode.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5876FEDA1B25BF5400CEB355 /* libode.a */; };
+		58BEB5CB1B1DC655002222DE /* RobogenUtils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 58BEB5C91B1DC655002222DE /* RobogenUtils.cpp */; };
+		58CC17D71B0B461000F9A4FD /* NeuralNetworkRepresentation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 58CC17CD1B0B461000F9A4FD /* NeuralNetworkRepresentation.cpp */; };
+		58CC17D81B0B461000F9A4FD /* NeuronRepresentation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 58CC17CF1B0B461000F9A4FD /* NeuronRepresentation.cpp */; };
+		58CC17D91B0B461000F9A4FD /* Parameters.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 58CC17D11B0B461000F9A4FD /* Parameters.cpp */; };
+		58CC17DA1B0B461000F9A4FD /* robogen.pb.cc in Sources */ = {isa = PBXBuildFile; fileRef = 58CC17D41B0B461000F9A4FD /* robogen.pb.cc */; };
+		58EBB0711AEF968C00B2B029 /* PartList.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 58EBB06E1AEF968C00B2B029 /* PartList.cpp */; };
+		58EBB07A1AEF98BA00B2B029 /* EvolverConfiguration.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 58EBB0781AEF98BA00B2B029 /* EvolverConfiguration.cpp */; };
 		6174AACA1AD568D900224D5C /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6174AAC91AD568D900224D5C /* main.cpp */; };
-		6185B6C51AD7D2B500C0B139 /* UDPTransceiver.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6185B6C31AD7D2B500C0B139 /* UDPTransceiver.cpp */; };
-		618E01EE1ADFB8DB00113B53 /* libboost_system.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 618E01ED1ADFB8DB00113B53 /* libboost_system.dylib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -31,12 +76,110 @@
 		581F1D271AD5744D00E9001C /* PartRepresentation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PartRepresentation.h; sourceTree = "<group>"; };
 		581F1D281AD5744D00E9001C /* RobotRepresentation.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RobotRepresentation.cpp; sourceTree = "<group>"; };
 		581F1D291AD5744D00E9001C /* RobotRepresentation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RobotRepresentation.h; sourceTree = "<group>"; };
+		582E00021B5690CB00FAC1AC /* json2pb.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = json2pb.cpp; sourceTree = "<group>"; };
+		582E00031B5690CB00FAC1AC /* json2pb.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = json2pb.h; sourceTree = "<group>"; };
+		582E00051B56920300FAC1AC /* bin2ascii.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = bin2ascii.h; sourceTree = "<group>"; };
+		582E00061B569D7000FAC1AC /* libjansson.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libjansson.dylib; path = ../../../../../usr/local/Cellar/jansson/2.7/lib/libjansson.dylib; sourceTree = "<group>"; };
+		582E00081B569E4D00FAC1AC /* json_converter.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = json_converter.py; sourceTree = "<group>"; };
+		582E000A1B569E4D00FAC1AC /* car.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = car.txt; sourceTree = "<group>"; };
+		582E000B1B569E4D00FAC1AC /* child2.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = child2.txt; sourceTree = "<group>"; };
+		582E000C1B569E4D00FAC1AC /* evolConf-full.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "evolConf-full.txt"; sourceTree = "<group>"; };
+		582E000D1B569E4D00FAC1AC /* i7alt.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = i7alt.txt; sourceTree = "<group>"; };
+		582E000E1B569E4D00FAC1AC /* spider9alt.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = spider9alt.txt; sourceTree = "<group>"; };
+		582E000F1B569E4D00FAC1AC /* spiderwithbrain.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = spiderwithbrain.txt; sourceTree = "<group>"; };
+		582E00101B569E4D00FAC1AC /* test.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = test.json; sourceTree = "<group>"; };
+		583CB2DE1B148F4E00B1116A /* BodyVerifier.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BodyVerifier.cpp; sourceTree = "<group>"; };
+		583CB2DF1B148F4E00B1116A /* BodyVerifier.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BodyVerifier.h; sourceTree = "<group>"; };
+		583CB2E01B148F4E00B1116A /* ConfigurationReader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ConfigurationReader.cpp; sourceTree = "<group>"; };
+		583CB2E11B148F4E00B1116A /* ConfigurationReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConfigurationReader.h; sourceTree = "<group>"; };
+		583CB2E21B148F4E00B1116A /* Robogen.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Robogen.cpp; sourceTree = "<group>"; };
+		583CB2E31B148F4E00B1116A /* Robogen.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Robogen.h; sourceTree = "<group>"; };
+		583CB2E41B148F4E00B1116A /* RobogenCollision.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RobogenCollision.cpp; sourceTree = "<group>"; };
+		583CB2E51B148F4E00B1116A /* RobogenCollision.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RobogenCollision.h; sourceTree = "<group>"; };
+		583CB2E61B148F4E00B1116A /* RobogenConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RobogenConfig.h; sourceTree = "<group>"; };
+		583CB33B1B14A19300B1116A /* Robot.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Robot.cpp; sourceTree = "<group>"; };
+		583CB33C1B14A19300B1116A /* Robot.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Robot.h; sourceTree = "<group>"; };
+		586D4C301B1DDA5300E7DBB2 /* Model.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Model.cpp; sourceTree = "<group>"; };
+		586D4C311B1DDA5300E7DBB2 /* Model.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Model.h; sourceTree = "<group>"; };
+		586D4C331B1DDD0000E7DBB2 /* Models.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Models.h; sourceTree = "<group>"; };
+		586D4C351B1DDDB000E7DBB2 /* ActiveCardanModel.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ActiveCardanModel.cpp; sourceTree = "<group>"; };
+		586D4C361B1DDDB000E7DBB2 /* ActiveCardanModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ActiveCardanModel.h; sourceTree = "<group>"; };
+		586D4C371B1DDDB000E7DBB2 /* ActiveHingeModel.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ActiveHingeModel.cpp; sourceTree = "<group>"; };
+		586D4C381B1DDDB000E7DBB2 /* ActiveHingeModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ActiveHingeModel.h; sourceTree = "<group>"; };
+		586D4C391B1DDDB000E7DBB2 /* ActiveWheelModel.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ActiveWheelModel.cpp; sourceTree = "<group>"; };
+		586D4C3A1B1DDDB000E7DBB2 /* ActiveWheelModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ActiveWheelModel.h; sourceTree = "<group>"; };
+		586D4C3B1B1DDDB000E7DBB2 /* ActiveWhegModel.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ActiveWhegModel.cpp; sourceTree = "<group>"; };
+		586D4C3C1B1DDDB000E7DBB2 /* ActiveWhegModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ActiveWhegModel.h; sourceTree = "<group>"; };
+		586D4C3D1B1DDDB000E7DBB2 /* ActuatedComponent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ActuatedComponent.h; sourceTree = "<group>"; };
+		586D4C3E1B1DDDB000E7DBB2 /* BoxObstacle.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BoxObstacle.cpp; sourceTree = "<group>"; };
+		586D4C3F1B1DDDB000E7DBB2 /* BoxObstacle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BoxObstacle.h; sourceTree = "<group>"; };
+		586D4C401B1DDDB000E7DBB2 /* CardanModel.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CardanModel.cpp; sourceTree = "<group>"; };
+		586D4C411B1DDDB000E7DBB2 /* CardanModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CardanModel.h; sourceTree = "<group>"; };
+		586D4C421B1DDDB000E7DBB2 /* Connection.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Connection.cpp; sourceTree = "<group>"; };
+		586D4C431B1DDDB000E7DBB2 /* Connection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Connection.h; sourceTree = "<group>"; };
+		586D4C441B1DDDB000E7DBB2 /* CoreComponentModel.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CoreComponentModel.cpp; sourceTree = "<group>"; };
+		586D4C451B1DDDB000E7DBB2 /* CoreComponentModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoreComponentModel.h; sourceTree = "<group>"; };
+		586D4C461B1DDDB000E7DBB2 /* HingeModel.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = HingeModel.cpp; sourceTree = "<group>"; };
+		586D4C471B1DDDB000E7DBB2 /* HingeModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HingeModel.h; sourceTree = "<group>"; };
+		586D4C481B1DDDB000E7DBB2 /* ImuSensor.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ImuSensor.cpp; sourceTree = "<group>"; };
+		586D4C491B1DDDB000E7DBB2 /* ImuSensor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImuSensor.h; sourceTree = "<group>"; };
+		586D4C4A1B1DDDB000E7DBB2 /* LightSensor.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = LightSensor.cpp; sourceTree = "<group>"; };
+		586D4C4B1B1DDDB000E7DBB2 /* LightSensor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LightSensor.h; sourceTree = "<group>"; };
+		586D4C4C1B1DDDB000E7DBB2 /* LightSensorModel.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = LightSensorModel.cpp; sourceTree = "<group>"; };
+		586D4C4D1B1DDDB000E7DBB2 /* LightSensorModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LightSensorModel.h; sourceTree = "<group>"; };
+		586D4C4E1B1DDDB000E7DBB2 /* LightSource.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = LightSource.cpp; sourceTree = "<group>"; };
+		586D4C4F1B1DDDB000E7DBB2 /* LightSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LightSource.h; sourceTree = "<group>"; };
+		586D4C501B1DDDB000E7DBB2 /* Motor.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Motor.cpp; sourceTree = "<group>"; };
+		586D4C511B1DDDB000E7DBB2 /* Motor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Motor.h; sourceTree = "<group>"; };
+		586D4C521B1DDDB000E7DBB2 /* ParametricBrickModel.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ParametricBrickModel.cpp; sourceTree = "<group>"; };
+		586D4C531B1DDDB000E7DBB2 /* ParametricBrickModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ParametricBrickModel.h; sourceTree = "<group>"; };
+		586D4C541B1DDDB000E7DBB2 /* PassiveWheelModel.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PassiveWheelModel.cpp; sourceTree = "<group>"; };
+		586D4C551B1DDDB000E7DBB2 /* PassiveWheelModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PassiveWheelModel.h; sourceTree = "<group>"; };
+		586D4C561B1DDDB000E7DBB2 /* PerceptiveComponent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PerceptiveComponent.h; sourceTree = "<group>"; };
+		586D4C571B1DDDB000E7DBB2 /* PositionObservable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PositionObservable.h; sourceTree = "<group>"; };
+		586D4C581B1DDDB000E7DBB2 /* RotateJointModel.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RotateJointModel.cpp; sourceTree = "<group>"; };
+		586D4C591B1DDDB000E7DBB2 /* RotateJointModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RotateJointModel.h; sourceTree = "<group>"; };
+		586D4C5A1B1DDDB000E7DBB2 /* Sensor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Sensor.h; sourceTree = "<group>"; };
+		586D4C5B1B1DDDB000E7DBB2 /* SensorGroup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SensorGroup.h; sourceTree = "<group>"; };
+		586D4C5C1B1DDDB000E7DBB2 /* ServoMotor.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ServoMotor.cpp; sourceTree = "<group>"; };
+		586D4C5D1B1DDDB000E7DBB2 /* ServoMotor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ServoMotor.h; sourceTree = "<group>"; };
+		586D4C5E1B1DDDB000E7DBB2 /* SimpleSensor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SimpleSensor.h; sourceTree = "<group>"; };
+		586D4C5F1B1DDDB000E7DBB2 /* TouchSensor.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TouchSensor.cpp; sourceTree = "<group>"; };
+		586D4C601B1DDDB000E7DBB2 /* TouchSensor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TouchSensor.h; sourceTree = "<group>"; };
+		586D4C611B1DDDB000E7DBB2 /* TouchSensorModel.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TouchSensorModel.cpp; sourceTree = "<group>"; };
+		586D4C621B1DDDB000E7DBB2 /* TouchSensorModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TouchSensorModel.h; sourceTree = "<group>"; };
+		586D4C771B1DDF7000E7DBB2 /* Environment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Environment.h; sourceTree = "<group>"; };
+		586D4C781B1DE21500E7DBB2 /* StartPosition.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = StartPosition.cpp; sourceTree = "<group>"; };
+		586D4C791B1DE21500E7DBB2 /* StartPosition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StartPosition.h; sourceTree = "<group>"; };
+		586D4C7A1B1DE21500E7DBB2 /* StartPositionConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StartPositionConfig.h; sourceTree = "<group>"; };
+		586D4C7B1B1DE21500E7DBB2 /* TerrainConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TerrainConfig.h; sourceTree = "<group>"; };
+		586D4C7D1B1DE23100E7DBB2 /* ObstaclesConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ObstaclesConfig.h; sourceTree = "<group>"; };
+		586D4C7E1B1DE2A300E7DBB2 /* NeuralNetwork.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = NeuralNetwork.c; sourceTree = "<group>"; };
+		586D4C7F1B1DE2A300E7DBB2 /* NeuralNetwork.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NeuralNetwork.h; sourceTree = "<group>"; };
+		586F35941B1DF57F004EB128 /* libboost_program_options.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libboost_program_options.dylib; path = ../../../../../usr/local/lib/libboost_program_options.dylib; sourceTree = "<group>"; };
+		586F35961B1DF747004EB128 /* libboost_regex.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libboost_regex.dylib; path = ../../../../../usr/local/lib/libboost_regex.dylib; sourceTree = "<group>"; };
+		586F35981B1DF778004EB128 /* libprotobuf.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libprotobuf.dylib; path = ../../../../../usr/local/lib/libprotobuf.dylib; sourceTree = "<group>"; };
+		586F359A1B1DF78D004EB128 /* libboost_filesystem.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libboost_filesystem.dylib; path = ../../../../../usr/local/lib/libboost_filesystem.dylib; sourceTree = "<group>"; };
+		586F359C1B1DF7A6004EB128 /* libboost_system.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libboost_system.dylib; path = ../../../../../usr/local/lib/libboost_system.dylib; sourceTree = "<group>"; };
+		586F35A01B1DF814004EB128 /* libosg.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libosg.dylib; path = ../../../../../usr/local/lib/libosg.dylib; sourceTree = "<group>"; };
+		5876FEDA1B25BF5400CEB355 /* libode.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libode.a; path = ../../../../../usr/local/lib/libode.a; sourceTree = "<group>"; };
+		58BEB5C91B1DC655002222DE /* RobogenUtils.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RobogenUtils.cpp; sourceTree = "<group>"; };
+		58BEB5CA1B1DC655002222DE /* RobogenUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RobogenUtils.h; sourceTree = "<group>"; };
+		58CC17CD1B0B461000F9A4FD /* NeuralNetworkRepresentation.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = NeuralNetworkRepresentation.cpp; sourceTree = "<group>"; };
+		58CC17CE1B0B461000F9A4FD /* NeuralNetworkRepresentation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NeuralNetworkRepresentation.h; sourceTree = "<group>"; };
+		58CC17CF1B0B461000F9A4FD /* NeuronRepresentation.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = NeuronRepresentation.cpp; sourceTree = "<group>"; };
+		58CC17D01B0B461000F9A4FD /* NeuronRepresentation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NeuronRepresentation.h; sourceTree = "<group>"; };
+		58CC17D11B0B461000F9A4FD /* Parameters.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Parameters.cpp; sourceTree = "<group>"; };
+		58CC17D21B0B461000F9A4FD /* Parameters.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Parameters.h; sourceTree = "<group>"; };
+		58CC17D31B0B461000F9A4FD /* ProtobufPacket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProtobufPacket.h; sourceTree = "<group>"; };
+		58CC17D41B0B461000F9A4FD /* robogen.pb.cc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = robogen.pb.cc; sourceTree = "<group>"; };
+		58CC17D51B0B461000F9A4FD /* robogen.pb.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = robogen.pb.h; sourceTree = "<group>"; };
+		58EBB06E1AEF968C00B2B029 /* PartList.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PartList.cpp; sourceTree = "<group>"; };
+		58EBB06F1AEF968C00B2B029 /* PartList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PartList.h; sourceTree = "<group>"; };
+		58EBB0781AEF98BA00B2B029 /* EvolverConfiguration.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = EvolverConfiguration.cpp; sourceTree = "<group>"; };
+		58EBB0791AEF98BA00B2B029 /* EvolverConfiguration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EvolverConfiguration.h; sourceTree = "<group>"; };
 		6174AAC61AD568D900224D5C /* RobotController */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = RobotController; sourceTree = BUILT_PRODUCTS_DIR; };
 		6174AAC91AD568D900224D5C /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
-		6185B6C21AD7D29800C0B139 /* GenomeTransceiver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GenomeTransceiver.h; sourceTree = "<group>"; };
-		6185B6C31AD7D2B500C0B139 /* UDPTransceiver.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = UDPTransceiver.cpp; sourceTree = "<group>"; };
-		6185B6C41AD7D2B500C0B139 /* UDPTransceiver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UDPTransceiver.h; sourceTree = "<group>"; };
-		618E01ED1ADFB8DB00113B53 /* libboost_system.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libboost_system.dylib; path = ../../../../../../../../usr/local/lib/libboost_system.dylib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -44,7 +187,14 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				618E01EE1ADFB8DB00113B53 /* libboost_system.dylib in Frameworks */,
+				586F35A11B1DF814004EB128 /* libosg.dylib in Frameworks */,
+				586F35991B1DF778004EB128 /* libprotobuf.dylib in Frameworks */,
+				586F359B1B1DF78D004EB128 /* libboost_filesystem.dylib in Frameworks */,
+				586F359D1B1DF7A6004EB128 /* libboost_system.dylib in Frameworks */,
+				586F35971B1DF747004EB128 /* libboost_regex.dylib in Frameworks */,
+				582E00071B569D7000FAC1AC /* libjansson.dylib in Frameworks */,
+				5876FEDB1B25BF5400CEB355 /* libode.a in Frameworks */,
+				586F35951B1DF57F004EB128 /* libboost_program_options.dylib in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -54,6 +204,25 @@
 		581F1D231AD5744D00E9001C /* Genome */ = {
 			isa = PBXGroup;
 			children = (
+				582E00051B56920300FAC1AC /* bin2ascii.h */,
+				582E00021B5690CB00FAC1AC /* json2pb.cpp */,
+				582E00031B5690CB00FAC1AC /* json2pb.h */,
+				586D4C7E1B1DE2A300E7DBB2 /* NeuralNetwork.c */,
+				586D4C7F1B1DE2A300E7DBB2 /* NeuralNetwork.h */,
+				583CB2DD1B148F4E00B1116A /* ODE_Check */,
+				58CC17CD1B0B461000F9A4FD /* NeuralNetworkRepresentation.cpp */,
+				58CC17CE1B0B461000F9A4FD /* NeuralNetworkRepresentation.h */,
+				58CC17CF1B0B461000F9A4FD /* NeuronRepresentation.cpp */,
+				58CC17D01B0B461000F9A4FD /* NeuronRepresentation.h */,
+				58CC17D11B0B461000F9A4FD /* Parameters.cpp */,
+				58CC17D21B0B461000F9A4FD /* Parameters.h */,
+				58CC17D31B0B461000F9A4FD /* ProtobufPacket.h */,
+				58CC17D41B0B461000F9A4FD /* robogen.pb.cc */,
+				58CC17D51B0B461000F9A4FD /* robogen.pb.h */,
+				58EBB0781AEF98BA00B2B029 /* EvolverConfiguration.cpp */,
+				58EBB0791AEF98BA00B2B029 /* EvolverConfiguration.h */,
+				58EBB06E1AEF968C00B2B029 /* PartList.cpp */,
+				58EBB06F1AEF968C00B2B029 /* PartList.h */,
 				581F1D241AD5744D00E9001C /* Mutator.cpp */,
 				581F1D251AD5744D00E9001C /* Mutator.h */,
 				581F1D261AD5744D00E9001C /* PartRepresentation.cpp */,
@@ -64,11 +233,115 @@
 			path = Genome;
 			sourceTree = "<group>";
 		};
+		582E00091B569E4D00FAC1AC /* Test */ = {
+			isa = PBXGroup;
+			children = (
+				582E000A1B569E4D00FAC1AC /* car.txt */,
+				582E000B1B569E4D00FAC1AC /* child2.txt */,
+				582E000C1B569E4D00FAC1AC /* evolConf-full.txt */,
+				582E000D1B569E4D00FAC1AC /* i7alt.txt */,
+				582E000E1B569E4D00FAC1AC /* spider9alt.txt */,
+				582E000F1B569E4D00FAC1AC /* spiderwithbrain.txt */,
+				582E00101B569E4D00FAC1AC /* test.json */,
+			);
+			path = Test;
+			sourceTree = "<group>";
+		};
+		583CB2DD1B148F4E00B1116A /* ODE_Check */ = {
+			isa = PBXGroup;
+			children = (
+				586D4C7D1B1DE23100E7DBB2 /* ObstaclesConfig.h */,
+				586D4C781B1DE21500E7DBB2 /* StartPosition.cpp */,
+				586D4C791B1DE21500E7DBB2 /* StartPosition.h */,
+				586D4C7A1B1DE21500E7DBB2 /* StartPositionConfig.h */,
+				586D4C7B1B1DE21500E7DBB2 /* TerrainConfig.h */,
+				586D4C341B1DDDB000E7DBB2 /* models */,
+				586D4C331B1DDD0000E7DBB2 /* Models.h */,
+				586D4C301B1DDA5300E7DBB2 /* Model.cpp */,
+				586D4C311B1DDA5300E7DBB2 /* Model.h */,
+				58BEB5C91B1DC655002222DE /* RobogenUtils.cpp */,
+				58BEB5CA1B1DC655002222DE /* RobogenUtils.h */,
+				583CB33B1B14A19300B1116A /* Robot.cpp */,
+				583CB33C1B14A19300B1116A /* Robot.h */,
+				583CB2DE1B148F4E00B1116A /* BodyVerifier.cpp */,
+				583CB2DF1B148F4E00B1116A /* BodyVerifier.h */,
+				583CB2E01B148F4E00B1116A /* ConfigurationReader.cpp */,
+				583CB2E11B148F4E00B1116A /* ConfigurationReader.h */,
+				583CB2E21B148F4E00B1116A /* Robogen.cpp */,
+				583CB2E31B148F4E00B1116A /* Robogen.h */,
+				583CB2E41B148F4E00B1116A /* RobogenCollision.cpp */,
+				583CB2E51B148F4E00B1116A /* RobogenCollision.h */,
+				583CB2E61B148F4E00B1116A /* RobogenConfig.h */,
+			);
+			path = ODE_Check;
+			sourceTree = "<group>";
+		};
+		586D4C341B1DDDB000E7DBB2 /* models */ = {
+			isa = PBXGroup;
+			children = (
+				586D4C771B1DDF7000E7DBB2 /* Environment.h */,
+				586D4C351B1DDDB000E7DBB2 /* ActiveCardanModel.cpp */,
+				586D4C361B1DDDB000E7DBB2 /* ActiveCardanModel.h */,
+				586D4C371B1DDDB000E7DBB2 /* ActiveHingeModel.cpp */,
+				586D4C381B1DDDB000E7DBB2 /* ActiveHingeModel.h */,
+				586D4C391B1DDDB000E7DBB2 /* ActiveWheelModel.cpp */,
+				586D4C3A1B1DDDB000E7DBB2 /* ActiveWheelModel.h */,
+				586D4C3B1B1DDDB000E7DBB2 /* ActiveWhegModel.cpp */,
+				586D4C3C1B1DDDB000E7DBB2 /* ActiveWhegModel.h */,
+				586D4C3D1B1DDDB000E7DBB2 /* ActuatedComponent.h */,
+				586D4C3E1B1DDDB000E7DBB2 /* BoxObstacle.cpp */,
+				586D4C3F1B1DDDB000E7DBB2 /* BoxObstacle.h */,
+				586D4C401B1DDDB000E7DBB2 /* CardanModel.cpp */,
+				586D4C411B1DDDB000E7DBB2 /* CardanModel.h */,
+				586D4C421B1DDDB000E7DBB2 /* Connection.cpp */,
+				586D4C431B1DDDB000E7DBB2 /* Connection.h */,
+				586D4C441B1DDDB000E7DBB2 /* CoreComponentModel.cpp */,
+				586D4C451B1DDDB000E7DBB2 /* CoreComponentModel.h */,
+				586D4C461B1DDDB000E7DBB2 /* HingeModel.cpp */,
+				586D4C471B1DDDB000E7DBB2 /* HingeModel.h */,
+				586D4C481B1DDDB000E7DBB2 /* ImuSensor.cpp */,
+				586D4C491B1DDDB000E7DBB2 /* ImuSensor.h */,
+				586D4C4A1B1DDDB000E7DBB2 /* LightSensor.cpp */,
+				586D4C4B1B1DDDB000E7DBB2 /* LightSensor.h */,
+				586D4C4C1B1DDDB000E7DBB2 /* LightSensorModel.cpp */,
+				586D4C4D1B1DDDB000E7DBB2 /* LightSensorModel.h */,
+				586D4C4E1B1DDDB000E7DBB2 /* LightSource.cpp */,
+				586D4C4F1B1DDDB000E7DBB2 /* LightSource.h */,
+				586D4C501B1DDDB000E7DBB2 /* Motor.cpp */,
+				586D4C511B1DDDB000E7DBB2 /* Motor.h */,
+				586D4C521B1DDDB000E7DBB2 /* ParametricBrickModel.cpp */,
+				586D4C531B1DDDB000E7DBB2 /* ParametricBrickModel.h */,
+				586D4C541B1DDDB000E7DBB2 /* PassiveWheelModel.cpp */,
+				586D4C551B1DDDB000E7DBB2 /* PassiveWheelModel.h */,
+				586D4C561B1DDDB000E7DBB2 /* PerceptiveComponent.h */,
+				586D4C571B1DDDB000E7DBB2 /* PositionObservable.h */,
+				586D4C581B1DDDB000E7DBB2 /* RotateJointModel.cpp */,
+				586D4C591B1DDDB000E7DBB2 /* RotateJointModel.h */,
+				586D4C5A1B1DDDB000E7DBB2 /* Sensor.h */,
+				586D4C5B1B1DDDB000E7DBB2 /* SensorGroup.h */,
+				586D4C5C1B1DDDB000E7DBB2 /* ServoMotor.cpp */,
+				586D4C5D1B1DDDB000E7DBB2 /* ServoMotor.h */,
+				586D4C5E1B1DDDB000E7DBB2 /* SimpleSensor.h */,
+				586D4C5F1B1DDDB000E7DBB2 /* TouchSensor.cpp */,
+				586D4C601B1DDDB000E7DBB2 /* TouchSensor.h */,
+				586D4C611B1DDDB000E7DBB2 /* TouchSensorModel.cpp */,
+				586D4C621B1DDDB000E7DBB2 /* TouchSensorModel.h */,
+			);
+			path = models;
+			sourceTree = "<group>";
+		};
 		6174AABD1AD568D900224D5C = {
 			isa = PBXGroup;
 			children = (
+				582E00061B569D7000FAC1AC /* libjansson.dylib */,
+				5876FEDA1B25BF5400CEB355 /* libode.a */,
+				586F35A01B1DF814004EB128 /* libosg.dylib */,
+				586F359C1B1DF7A6004EB128 /* libboost_system.dylib */,
+				586F359A1B1DF78D004EB128 /* libboost_filesystem.dylib */,
+				586F35981B1DF778004EB128 /* libprotobuf.dylib */,
+				586F35961B1DF747004EB128 /* libboost_regex.dylib */,
+				586F35941B1DF57F004EB128 /* libboost_program_options.dylib */,
 				6174AAC81AD568D900224D5C /* RobotController */,
-				618E01EC1ADFB7B600113B53 /* Libraries */,
 				6174AAC71AD568D900224D5C /* Products */,
 			);
 			sourceTree = "<group>";
@@ -84,29 +357,12 @@
 		6174AAC81AD568D900224D5C /* RobotController */ = {
 			isa = PBXGroup;
 			children = (
-				6185B6C11AD7D29800C0B139 /* Transceivers */,
+				582E00081B569E4D00FAC1AC /* json_converter.py */,
+				582E00091B569E4D00FAC1AC /* Test */,
 				581F1D231AD5744D00E9001C /* Genome */,
 				6174AAC91AD568D900224D5C /* main.cpp */,
 			);
 			path = RobotController;
-			sourceTree = "<group>";
-		};
-		6185B6C11AD7D29800C0B139 /* Transceivers */ = {
-			isa = PBXGroup;
-			children = (
-				6185B6C21AD7D29800C0B139 /* GenomeTransceiver.h */,
-				6185B6C31AD7D2B500C0B139 /* UDPTransceiver.cpp */,
-				6185B6C41AD7D2B500C0B139 /* UDPTransceiver.h */,
-			);
-			path = Transceivers;
-			sourceTree = "<group>";
-		};
-		618E01EC1ADFB7B600113B53 /* Libraries */ = {
-			isa = PBXGroup;
-			children = (
-				618E01ED1ADFB8DB00113B53 /* libboost_system.dylib */,
-			);
-			name = Libraries;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -165,8 +421,46 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6185B6C51AD7D2B500C0B139 /* UDPTransceiver.cpp in Sources */,
+				58BEB5CB1B1DC655002222DE /* RobogenUtils.cpp in Sources */,
+				586D4C6F1B1DDDB000E7DBB2 /* LightSource.cpp in Sources */,
+				582E00041B5690CB00FAC1AC /* json2pb.cpp in Sources */,
+				583CB33D1B14A19300B1116A /* Robot.cpp in Sources */,
+				586D4C6D1B1DDDB000E7DBB2 /* LightSensor.cpp in Sources */,
+				586D4C6C1B1DDDB000E7DBB2 /* ImuSensor.cpp in Sources */,
+				586D4C6E1B1DDDB000E7DBB2 /* LightSensorModel.cpp in Sources */,
+				586D4C671B1DDDB000E7DBB2 /* BoxObstacle.cpp in Sources */,
+				583CB2EB1B148F4E00B1116A /* Robogen.cpp in Sources */,
+				586D4C741B1DDDB000E7DBB2 /* ServoMotor.cpp in Sources */,
+				58EBB07A1AEF98BA00B2B029 /* EvolverConfiguration.cpp in Sources */,
+				583CB2E91B148F4E00B1116A /* BodyVerifier.cpp in Sources */,
+				586D4C721B1DDDB000E7DBB2 /* PassiveWheelModel.cpp in Sources */,
+				581F1D2A1AD5744D00E9001C /* Mutator.cpp in Sources */,
+				58CC17D81B0B461000F9A4FD /* NeuronRepresentation.cpp in Sources */,
+				586D4C801B1DE2A300E7DBB2 /* NeuralNetwork.c in Sources */,
+				581F1D2C1AD5744D00E9001C /* RobotRepresentation.cpp in Sources */,
+				586D4C711B1DDDB000E7DBB2 /* ParametricBrickModel.cpp in Sources */,
+				586D4C631B1DDDB000E7DBB2 /* ActiveCardanModel.cpp in Sources */,
+				586D4C761B1DDDB000E7DBB2 /* TouchSensorModel.cpp in Sources */,
+				586D4C751B1DDDB000E7DBB2 /* TouchSensor.cpp in Sources */,
+				58CC17D91B0B461000F9A4FD /* Parameters.cpp in Sources */,
+				586D4C321B1DDA5300E7DBB2 /* Model.cpp in Sources */,
+				586D4C701B1DDDB000E7DBB2 /* Motor.cpp in Sources */,
+				586D4C651B1DDDB000E7DBB2 /* ActiveWheelModel.cpp in Sources */,
+				58CC17D71B0B461000F9A4FD /* NeuralNetworkRepresentation.cpp in Sources */,
+				58CC17DA1B0B461000F9A4FD /* robogen.pb.cc in Sources */,
+				586D4C691B1DDDB000E7DBB2 /* Connection.cpp in Sources */,
+				586D4C731B1DDDB000E7DBB2 /* RotateJointModel.cpp in Sources */,
+				58EBB0711AEF968C00B2B029 /* PartList.cpp in Sources */,
+				581F1D2B1AD5744D00E9001C /* PartRepresentation.cpp in Sources */,
+				586D4C681B1DDDB000E7DBB2 /* CardanModel.cpp in Sources */,
+				586D4C6B1B1DDDB000E7DBB2 /* HingeModel.cpp in Sources */,
+				586D4C641B1DDDB000E7DBB2 /* ActiveHingeModel.cpp in Sources */,
+				586D4C6A1B1DDDB000E7DBB2 /* CoreComponentModel.cpp in Sources */,
+				586D4C7C1B1DE21500E7DBB2 /* StartPosition.cpp in Sources */,
 				6174AACA1AD568D900224D5C /* main.cpp in Sources */,
+				583CB2EA1B148F4E00B1116A /* ConfigurationReader.cpp in Sources */,
+				586D4C661B1DDDB000E7DBB2 /* ActiveWhegModel.cpp in Sources */,
+				583CB2EC1B148F4E00B1116A /* RobogenCollision.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -196,8 +490,8 @@
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PREPROCESSOR_DEFINITIONS = (
-					"DEBUG=1",
-					"$(inherited)",
+					"GLIBCXX_DEBUG=1",
+					"GLIBCXXDEBUGPEDANTIC=1",
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
@@ -206,16 +500,10 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				HEADER_SEARCH_PATHS = (
-					"$(inherited)",
-					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
-					/usr/local/include,
-				);
-				LIBRARY_SEARCH_PATHS = /usr/local/lib;
-				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				MACOSX_DEPLOYMENT_TARGET = 10.9;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
-				SDKROOT = macosx;
+				SDKROOT = macosx10.9;
 			};
 			name = Debug;
 		};
@@ -241,27 +529,37 @@
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"GLIBCXX_DEBUG=1",
+					"GLIBCXXDEBUGPEDANTIC=1",
+				);
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				HEADER_SEARCH_PATHS = (
-					"$(inherited)",
-					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
-					/usr/local/include,
-				);
-				LIBRARY_SEARCH_PATHS = /usr/local/lib;
-				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				MACOSX_DEPLOYMENT_TARGET = 10.9;
 				MTL_ENABLE_DEBUG_INFO = NO;
-				SDKROOT = macosx;
+				SDKROOT = macosx10.9;
 			};
 			name = Release;
 		};
 		6174AACE1AD568D900224D5C /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
+					/usr/local/include,
+				);
+				LIBRARY_SEARCH_PATHS = (
+					/usr/local/lib,
+					/usr/local/include,
+					/usr/local/Cellar/jansson/2.7/lib,
+				);
+				OTHER_CFLAGS = "";
+				OTHER_CPLUSPLUSFLAGS = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -269,6 +567,18 @@
 		6174AACF1AD568D900224D5C /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
+					/usr/local/include,
+				);
+				LIBRARY_SEARCH_PATHS = (
+					/usr/local/lib,
+					/usr/local/include,
+					/usr/local/Cellar/jansson/2.7/lib,
+				);
+				OTHER_CFLAGS = "";
+				OTHER_CPLUSPLUSFLAGS = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;

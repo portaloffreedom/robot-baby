@@ -7,8 +7,9 @@
 
 #include <iostream>
 #include <sstream>
+#include <fstream>
 
-#include "evolution/representation/PartRepresentation.h"
+#include "PartRepresentation.h"
 #include "PartList.h"
 
 namespace robogen {
@@ -285,6 +286,40 @@ void PartRepresentation::toString(std::stringstream& str, unsigned int depth) {
 
 	}
 
+}
+    
+void PartRepresentation::toTextFile(std::ofstream& file, unsigned int depth) {
+    
+    // Print out current children and recursively call on them
+    for (unsigned int i = 0; i < arity_; ++i) {
+        
+        if (this->getChild(i)) {
+            for (unsigned int j = 0; j < depth; ++j) {
+                file << "\t";
+            }
+            
+            file << i << " " << this->getChild(i)->getType() << " " << this->getChild(i)->getId() << " " << this->getOrientation();
+            
+            std::vector<double> params;
+            
+            for (unsigned int j = 0; j < this->getChild(i)->params_.size(); ++j) {
+                //convert parameters from [0,1] back to valid range
+                std::pair<double, double> ranges = PART_TYPE_PARAM_RANGE_MAP.at(std::make_pair(this->getChild(i)->getType(), j));
+                double paramValue = (this->getChild(i)->params_[j] * (ranges.second - ranges.first)) + ranges.first;
+                params.push_back(paramValue);
+            }
+            
+            for (std::vector<double>::iterator iter = params.begin(); iter != params.end(); ++iter) {
+                file << " " << *iter;
+            }
+            
+            file << std::endl;
+            
+            this->getChild(i)->toTextFile(file, depth+1);
+            
+        }
+    }
+    
 }
 
 } /* namespace robogen */

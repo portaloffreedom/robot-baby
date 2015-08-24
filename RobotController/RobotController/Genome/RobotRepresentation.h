@@ -40,10 +40,11 @@
 #include <boost/weak_ptr.hpp>
 #include <boost/random/mersenne_twister.hpp>
 
-#include "config/RobogenConfig.h"
-#include "evolution/representation/PartRepresentation.h"
-#include "evolution/representation/NeuralNetworkRepresentation.h"
-#include "utils/network/TcpSocket.h"
+//#include "config/RobogenConfig.h"
+#include "PartRepresentation.h"
+#include "NeuralNetworkRepresentation.h"
+#include "json2pb.h"
+//#include "utils/network/TcpSocket.h"
 #include "robogen.pb.h"
 
 namespace robogen {
@@ -87,9 +88,10 @@ public:
 	/**
 	 * Constructs a robot representation from a robot text file
 	 * @param robotTextFile text file of the robot description
+     * @param prefix prefix for robot ids
 	 * @todo make a better handling of formatting errors
 	 */
-	bool init(std::string robotTextFile);
+    bool init(std::string robotTextFile, std::string prefix);
 
 	/**
 	 * @return robot message of this robot to be transmitted to simulator
@@ -97,6 +99,12 @@ public:
 	 */
 	robogenMessage::Robot serialize() const;
 
+    /**
+     * Prefix all the part ids with a given string.
+     * @param the prefix string.
+     */
+    void prefixIDs(std::string prefix);
+    
 	/**
 	 * Provides weight and bias handles for a mutator.
 	 * @param weights reference to a vector to be filled with weight pointers
@@ -121,7 +129,7 @@ public:
 	 * Evaluate individual using given socket and given configuration file.
 	 * @param socket
 	 * @param robotConf
-	 */
+	 *
 	void evaluate(TcpSocket *socket,
 			boost::shared_ptr<RobogenConfig> robotConf);
 
@@ -172,6 +180,20 @@ public:
 	bool swapSubTrees(const std::string& subtreeRoot1,
 			const std::string& subtreeRoot2);
 
+    /** 
+     * Swap subtrees between two robots
+     *
+     * @param robot1 robot 1
+     * @param robot2 robot 2
+     * @param subtreeRoot1 the root of the first subtree
+     * @param subtreeRoot2 the root of the second subtree
+     * @return true if the oepration completed succesfully, false otherwise
+     */
+    bool crossoverSubTrees(boost::shared_ptr<RobotRepresentation>& robot1,
+                           boost::shared_ptr<RobotRepresentation>& robot2,
+                           const std::string& subtreeRoot1,
+                           const std::string& subtreeRoot2);
+    
 	/**
 	 * Insert a part into the body tree
 	 *
@@ -211,6 +233,16 @@ public:
 	 * @return a string representation of the robot
 	 */
 	std::string toString();
+    
+    /**
+     * Write the genome tree of the robot to a file
+     */
+    void toTextFile(std::string name);
+    
+    /* 
+     * Write the genome tree of the robot to a file, json formatted
+     */
+    void toJson(std::string name);
 
 private:
 	/**
@@ -257,7 +289,7 @@ private:
 	 * Indicates whether robot evaluated
 	 */
 	bool evaluated_;
-
+    
 };
 
 /**

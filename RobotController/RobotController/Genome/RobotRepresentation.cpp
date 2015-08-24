@@ -27,7 +27,7 @@
  * @(#) $Id$
  */
 
-#include "evolution/representation/RobotRepresentation.h"
+#include "RobotRepresentation.h"
 #ifndef FAKEROBOTREPRESENTATION_H
 
 #include <iostream>
@@ -37,16 +37,18 @@
 #include <queue>
 #include <boost/regex.hpp>
 #include <boost/algorithm/string.hpp>
-#include "evolution/representation/PartRepresentation.h"
-#include "utils/network/ProtobufPacket.h"
+#include "json2pb.h"
+#include "PartRepresentation.h"
+#include "ProtobufPacket.h"
 #include "PartList.h"
 
 namespace robogen {
-
+    
 RobotRepresentation::RobotRepresentation() :
 		maxid_(1000) {
 
 }
+ 
 
 RobotRepresentation::RobotRepresentation(const RobotRepresentation &r) {
 
@@ -88,7 +90,8 @@ RobotRepresentation::RobotRepresentation(const RobotRepresentation &r) {
 bool robotTextFileReadPartLine(std::ifstream &file, unsigned int &indent,
 		unsigned int &slot,
 		char &type, std::string &id, unsigned int &orientation,
-		std::vector<double> &params) {
+		std::vector<double> &params,
+        std::string &idPref) {
 	// match (0 or more tabs)(digit) (type) (id) (orientation) (parameters)
 	static const boost::regex rx(
 			"^(\\t*)(\\d) ([A-Z]|(?:[A-Z][a-z]*)+) ([^\\s]+) (\\d)([ \\d\\.-]*)$");
@@ -115,7 +118,7 @@ bool robotTextFileReadPartLine(std::ifstream &file, unsigned int &indent,
 		} else {
 			type = INVERSE_PART_TYPE_MAP.at(match[3].str());
 		}
-		id = std::string(match[4]);
+		id = idPref + std::string(match[4]);
 		orientation = std::atoi(match[5].first);
 		double param;
 		std::stringstream ss(match[6]);
@@ -177,7 +180,8 @@ bool robotTextFileReadPartLine(std::ifstream &file, unsigned int &indent,
  * @return true if successful read
  */
 bool robotTextFileReadWeightLine(std::ifstream &file, std::string &from,
-		int &fromIoId, std::string &to, int &toIoId, double &value) {
+                                 int &fromIoId, std::string &to, int &toIoId,
+                                 double &value, std::string & idPref) {
 
 	static const boost::regex rx(
 			"^([^\\s]+) (\\d+) ([^\\s]+) (\\d+) (-?\\d*\\.?\\d*)$");
@@ -187,9 +191,9 @@ bool robotTextFileReadWeightLine(std::ifstream &file, std::string &from,
 	if (boost::regex_match(line.c_str(), match, rx)) {
 		// match[0]:whole string, match[1]:from, match[2]:from IO id,
 		// match[3]:to, match[4]:to IO id, match[5]:value
-		from.assign(match[1]);
+		from.assign(idPref + match[1]);
 		fromIoId = std::atoi(match[2].first);
-		to.assign(match[3]);
+		to.assign(idPref + match[3]);
 		toIoId = std::atoi(match[4].first);
 		value = std::atof(match[5].first);
 		return true;
@@ -232,7 +236,7 @@ void parseTypeString(std::string typeString, unsigned int &type) {
  * @return true if successful read
  */
 bool robotTextFileReadAddNeuronLine(std::ifstream &file, std::string &partId,
-		unsigned int &type) {
+                                    unsigned int &type, std::string &idPref) {
 
 	static const boost::regex rx("^([^\\s]+) ([^\\s]+)$");
 	boost::cmatch match;
@@ -240,7 +244,7 @@ bool robotTextFileReadAddNeuronLine(std::ifstream &file, std::string &partId,
 	std::getline(file, line);
 	if (boost::regex_match(line.c_str(), match, rx)) {
 		// match[0]:whole string, match[1]:partId match[2]:type string
-		partId.assign(match[1]);
+		partId.assign(idPref + match[1]);
 		std::string typeString = match[2];
 		parseTypeString(typeString, type);
 		return true;
@@ -262,7 +266,8 @@ bool robotTextFileReadAddNeuronLine(std::ifstream &file, std::string &partId,
  * @return true if successful read
  */
 bool robotTextFileReadParamsLine(std::ifstream &file, std::string &node,
-		int &ioId,  unsigned int &type, std::vector<double> &params) {
+                                 int &ioId,  unsigned int &type, std::vector<double> &params,
+                                 std::string &idPref) {
 
 	static const boost::regex generalRx("^([^\\s]+) (\\d+) ([^\\s]+)((?: -?\\d*\\.?\\d*)+)$");
 
@@ -288,7 +293,7 @@ bool robotTextFileReadParamsLine(std::ifstream &file, std::string &node,
 			std::cout << i << " " << match[i] << std::endl;
 		}
 		// match[0]:whole string, match[1]:node, match[2]:ioId, match[3]:value
-		node.assign(match[1]);
+		node.assign(idPref + match[1]);
 		ioId = std::atoi(match[2].first);
 		type = NeuronRepresentation::SIGMOID;
 		params.push_back(std::atof(match[3].first));
@@ -374,7 +379,7 @@ bool RobotRepresentation::init() {
 	return true;
 }
 
-bool RobotRepresentation::init(std::string robotTextFile) {
+bool RobotRepresentation::init(std::string robotTextFile, std::string idPref) {
 
 	// open file
 	std::ifstream file;
@@ -396,7 +401,7 @@ bool RobotRepresentation::init(std::string robotTextFile) {
 	// process root node
 	try {
 		if (!robotTextFileReadPartLine(file, indent, slot, type, id, orientation,
-				params) || indent) {
+				params, idPref) || indent) {
 			std::cout << "Robot text file contains no or"
 					" poorly formatted root node" << std::endl;
 			return false;
@@ -416,7 +421,7 @@ bool RobotRepresentation::init(std::string robotTextFile) {
 	// process other body parts
 	try {
 		while (robotTextFileReadPartLine(file, indent, slot, type, id,
-				orientation, params)) {
+				orientation, params, idPref)) {
 			if (!indent) {
 				std::cout << "Attempt to create multiple root nodes!"
 						<< std::endl;
@@ -476,7 +481,7 @@ bool RobotRepresentation::init(std::string robotTextFile) {
 	unsigned int neuronType;
 	// add new neurons
 	try {
-		while (robotTextFileReadAddNeuronLine(file, id, neuronType)) {
+		while (robotTextFileReadAddNeuronLine(file, id, neuronType, idPref)) {
 			std::string neuronId = neuralNetwork_->insertNeuron(ioPair(id,
 					neuralNetwork_->getBodyPartNeurons(id).size()),
 					NeuronRepresentation::HIDDEN, neuronType);
@@ -485,7 +490,7 @@ bool RobotRepresentation::init(std::string robotTextFile) {
 		}
 
 		// weights
-		while (robotTextFileReadWeightLine(file, from, fromIoId, to, toIoId, value)) {
+		while (robotTextFileReadWeightLine(file, from, fromIoId, to, toIoId, value, idPref)) {
 			if (!neuralNetwork_->setWeight(from, fromIoId, to, toIoId, value)) {
 				std::cout << "Failed to set weight" << std::endl;
 				return false;
@@ -495,7 +500,7 @@ bool RobotRepresentation::init(std::string robotTextFile) {
 		// params
 		params.clear();
 
-		while (robotTextFileReadParamsLine(file, to, toIoId, neuronType, params)) {
+		while (robotTextFileReadParamsLine(file, to, toIoId, neuronType, params, idPref)) {
 			if (!neuralNetwork_->setParams(to, toIoId, neuronType, params)) {
 				std::cout << "Failed to set neuron params" << std::endl;
 				return false;
@@ -523,7 +528,29 @@ robogenMessage::Robot RobotRepresentation::serialize() const {
 	return message;
 }
 
-
+/* Helper method to recursively add a prefix to all part ids in a robot */
+    
+void pref(boost::shared_ptr<PartRepresentation> part, std::string prefix) {
+    part->setId(prefix + part->getId());
+    // Print out current childrens and recursively call on them
+    for (unsigned int i = 0; i < part->getArity(); ++i) {
+        if (part->getChild(i)) {
+            pref(part->getChild(i), prefix);
+        }
+    }
+}
+    
+void RobotRepresentation::prefixIDs(std::string prefix) {
+    IdPartMap newmap;
+    for (IdPartMap::iterator it = idToPart_.begin(); it != idToPart_.end(); ++it) {
+        newmap[prefix + it->first] = it->second;
+    }
+    
+    idToPart_ = newmap;
+    
+    pref(bodyTree_, prefix);
+}
+    
 void RobotRepresentation::getBrainGenome(std::vector<double*> &weights,
 		std::vector<unsigned int> &types,
 		std::vector<double*> &params) {
@@ -541,7 +568,7 @@ const RobotRepresentation::IdPartMap& RobotRepresentation::getBody() const {
 const std::string& RobotRepresentation::getBodyRootId() {
 	return bodyTree_->getId();
 }
-
+/*
 void RobotRepresentation::evaluate(TcpSocket *socket,
 		boost::shared_ptr<RobogenConfig> robotConf) {
 
@@ -587,7 +614,7 @@ void RobotRepresentation::evaluate(TcpSocket *socket,
 		evaluated_ = true;
 	}
 
-}
+}*/
 
 double RobotRepresentation::getFitness() const {
 	return fitness_;
@@ -758,6 +785,106 @@ bool RobotRepresentation::swapSubTrees(const std::string& subtreeRoot1,
 	return true;
 
 }
+
+/* Helper method to recursively remove all neurons attached to a subtree of the robot body */
+void removeAllNeurons(boost::shared_ptr<PartRepresentation> root,
+                      boost::shared_ptr<NeuralNetworkRepresentation> neuralNet) {
+    for (unsigned int i = 0; i < root->getArity(); ++i) {
+        if (root->getChild(i)) {
+            neuralNet->removeNeurons(root->getChild(i)->getId());
+            removeAllNeurons(root->getChild(i), neuralNet);
+        }
+    }
+}
+    
+/* Helper method to recursively add all neurons attached to a subtree of the robot body */
+void addAllNeurons(boost::shared_ptr<PartRepresentation> root,
+                   boost::shared_ptr<NeuralNetworkRepresentation> neuralNet1,
+                   boost::shared_ptr<NeuralNetworkRepresentation> neuralNet2) {
+    for (unsigned int i = 0; i < root->getArity(); ++i) {
+        if (root->getChild(i)) {
+            std::vector<boost::weak_ptr<NeuronRepresentation>> neuroVec =
+                neuralNet2->getBodyPartNeurons(root->getChild(i)->getId());
+            
+            for (std::vector<boost::weak_ptr<NeuronRepresentation>>::iterator it = neuroVec.begin();
+                 it != neuroVec.end();
+                 ++it) {
+                boost::shared_ptr<NeuronRepresentation> neuron = (*it).lock();
+                neuralNet1->insertNeuron(neuron->getIoPair(), neuron->getLayer(), neuron->getType());
+            }
+            
+            addAllNeurons(root->getChild(i), neuralNet1, neuralNet2);
+        }
+    }
+}
+    
+bool RobotRepresentation::crossoverSubTrees(boost::shared_ptr<RobotRepresentation>& robot1,
+                                            boost::shared_ptr<RobotRepresentation>& robot2,
+                                            const std::string& subtreeRoot1,
+                                            const std::string& subtreeRoot2) {
+    // Get roots of the subtrees
+    boost::shared_ptr<PartRepresentation> root1 =
+    robot1->idToPart_[subtreeRoot1].lock();
+    boost::shared_ptr<PartRepresentation> root2 =
+    robot2->idToPart_[subtreeRoot2].lock();
+    
+    // Check none of them is the root node
+    if (root1->getId().compare(robot1->bodyTree_->getId()) == 0
+        || root2->getId().compare(robot2->bodyTree_->getId()) == 0) {
+        return false;
+    }
+    
+    // Get parents and slots of each subtree
+    PartRepresentation* parentRoot1 = root1->getParent();
+    PartRepresentation* parentRoot2 = root2->getParent();
+    
+    // Get the slots to which this nodes are connected
+    unsigned int slotParentRoot1 = 1000000;
+    
+    for (unsigned int i = 0; i < parentRoot1->getArity(); ++i) {
+        if (parentRoot1->getChild(i) != NULL) {
+            if (parentRoot1->getChild(i)->getId().compare(root1->getId())
+                == 0) {
+                slotParentRoot1 = i;
+                break;
+            }
+        }
+    }
+    
+    unsigned int slotParentRoot2 = 0;
+    for (unsigned int i = 0; i < parentRoot2->getArity(); ++i) {
+        if (parentRoot2->getChild(i) != NULL) {
+            if (parentRoot2->getChild(i)->getId().compare(root2->getId())
+                == 0) {
+                slotParentRoot2 = i;
+                break;
+            }
+        }
+    }
+    
+    robot1->getBrain()->removeNeurons(root1->getId());
+    removeAllNeurons(root1, robot1->getBrain());
+    
+    // Swap the subtrees
+    parentRoot2->setChild(slotParentRoot2, root1);
+    parentRoot1->setChild(slotParentRoot1, root2);
+    
+    // do brain crossover
+    std::vector<boost::weak_ptr<NeuronRepresentation>> rootNeuroVec =
+        robot2->getBrain()->getBodyPartNeurons(root2->getId());
+    
+    for (std::vector<boost::weak_ptr<NeuronRepresentation>>::iterator it = rootNeuroVec.begin();
+         it != rootNeuroVec.end();
+         ++it) {
+        boost::shared_ptr<NeuronRepresentation> neuron = (*it).lock();
+        robot1->getBrain()->insertNeuron(neuron->getIoPair(), neuron->getLayer(), neuron->getType());
+    }
+
+    addAllNeurons(root2, robot1->getBrain(), robot2->getBrain());
+
+    return true;
+}
+
 
 bool RobotRepresentation::insertPart(const std::string& parentPartId,
 		unsigned int parentPartSlot,
@@ -953,7 +1080,7 @@ bool RobotRepresentation::check() {
 	return true;
 
 }
-
+    
 std::string RobotRepresentation::toString() {
 
 	std::stringstream str;
@@ -964,6 +1091,32 @@ std::string RobotRepresentation::toString() {
 	str << neuralNetwork_->toString();
 	return str.str();
 
+}
+    
+void RobotRepresentation::toTextFile(std::string name) {
+    /*
+    std::ofstream file;
+    file.open(name);
+    
+    file << "0 " << bodyTree_->getType() << " " << bodyTree_->getId() << " 0" << std::endl;
+    this->bodyTree_->toTextFile(file, 1);
+    
+    file << std::endl << std::endl;
+    
+    this->neuralNetwork_->toTextFile(file);*/
+    toJson(name + ".json");
+    std::string py_command = "python json_converter.py " + name + ".json " + name + ".txt";
+    system(py_command.c_str());
+    std::string del_command = "rm -rf " + name + ".json";
+    system(del_command.c_str());
+}
+    
+void RobotRepresentation::toJson(std::string name) {
+    std::ofstream file;
+    file.open(name);
+    
+    file << pb2json(this->serialize());
+    file.close();
 }
 
 }

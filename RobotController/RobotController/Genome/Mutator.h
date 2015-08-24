@@ -35,27 +35,29 @@
 #include <boost/random/normal_distribution.hpp>
 #include <boost/random/bernoulli_distribution.hpp>
 
-#include "config/EvolverConfiguration.h"
-#include "evolution/representation/RobotRepresentation.h"
-#include "evolution/engine/BodyVerifier.h"
-
+#include "EvolverConfiguration.h"
+#include "RobotRepresentation.h"
+#include "ODE_Check/BodyVerifier.h"
+#include <iostream>
+#include <string>
+#include <boost/shared_ptr.hpp>
 #define MAX_MUTATION_ATTEMPTS 100 //TODO move this somewhere else
 namespace robogen {
 
 class Mutator {
 
 public:
-
+    
 	/**
 	 * Creates a Robogen brain mutator with the specified settings
 	 * @param pBrainMutate probability for a weight or bias to mutate
 	 * @param brainMuteSigma sigma of normal distribution for brain mutation
 	 * @param pBrainCrossover probability for crossover among brains
 	 */
-    // RBP Edit: Since we don't want brain mutations, to avoid a whole bunch of
-    // work, we set pBrainMutate = pBrainCrossover = 0.
 	Mutator(boost::shared_ptr<EvolverConfiguration> conf,
 			boost::random::mt19937 &rng);
+    
+    Mutator();
 
 	virtual ~Mutator();
 
@@ -68,6 +70,14 @@ public:
 
 	void growBodyRandomly(boost::shared_ptr<RobotRepresentation>& robot);
 	void randomizeBrain(boost::shared_ptr<RobotRepresentation>& robot);
+    
+    /**
+     * Performs mutation and crossover on a pair of robots, 
+     * and writes resulting genome to a file
+     */
+    void createChild(boost::shared_ptr<RobotRepresentation> robot1,
+                     boost::shared_ptr<RobotRepresentation> robot2,
+                     std::string filename);
 
 private:
 
@@ -90,12 +100,13 @@ private:
 	/**
 	 * Mutation operators
 	 */
-    // RBP Edit: mutateBrain always returns false to show no mutation has occurred
 	bool mutateBrain(boost::shared_ptr<RobotRepresentation>& robot);
 	bool mutateBody(boost::shared_ptr<RobotRepresentation>& robot);
 	bool removeSubtree(boost::shared_ptr<RobotRepresentation>& robot);
 	bool duplicateSubtree(boost::shared_ptr<RobotRepresentation>& robot);
 	bool swapSubtrees(boost::shared_ptr<RobotRepresentation>& robot);
+    bool crossoverSubtrees(boost::shared_ptr<RobotRepresentation>& robot1,
+                           boost::shared_ptr<RobotRepresentation>& robot2);
 	bool insertNode(boost::shared_ptr<RobotRepresentation>& robot);
 	bool removeNode(boost::shared_ptr<RobotRepresentation>& robot);
 	bool mutateParams(boost::shared_ptr<RobotRepresentation>& robot);
@@ -128,7 +139,6 @@ private:
 	boost::random::bernoulli_distribution<double> nodeInsertDist_;
 	boost::random::bernoulli_distribution<double> nodeRemovalDist_;
 	boost::random::bernoulli_distribution<double> paramMutateDist_;
-
 };
 
 }
