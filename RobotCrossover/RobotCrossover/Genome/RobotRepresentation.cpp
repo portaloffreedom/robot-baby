@@ -89,18 +89,18 @@ RobotRepresentation::RobotRepresentation(const RobotRepresentation &r) {
  */
 bool robotTextFileReadPartLine(std::ifstream &file, unsigned int &indent,
 		unsigned int &slot,
-		char &type, std::string &id, unsigned int &orientation,
+       char &type, std::string &id, unsigned int &orientation, std::string &color,
 		std::vector<double> &params,
         std::string &idPref) {
 	// match (0 or more tabs)(digit) (type) (id) (orientation) (parameters)
 	static const boost::regex rx(
-			"^(\\t*)(\\d) ([A-Z]|(?:[A-Z][a-z]*)+) ([^\\s]+) (\\d)([ \\d\\.-]*)$");
+			"^(\\t*)(\\d) ([A-Z]|(?:[A-Z][a-z]*)+) ([^\\s]+) (\\d) ([A-Z]+)([ \\d\\.-]*)$");
 	boost::cmatch match;
 	std::string line;
 	std::getline(file, line);
 	if (boost::regex_match(line.c_str(), match, rx)) {
 		// match[0]:whole string, match[1]:tabs, match[2]:slot, match[3]:type,
-		// match[4]:id, match[5]:orientation, match[6]:parameters
+		// match[4]:id, match[5]:orientation, match[6]:color, match[7]:parameters
 		indent = match[1].length();
 		slot = std::atoi(match[2].first);
 
@@ -120,8 +120,9 @@ bool robotTextFileReadPartLine(std::ifstream &file, unsigned int &indent,
 		}
 		id = idPref + std::string(match[4]);
 		orientation = std::atoi(match[5].first);
+        color = std::string(match[6]);
 		double param;
-		std::stringstream ss(match[6]);
+		std::stringstream ss(match[7]);
 		params.clear();
 
 		std::vector<double> rawParams;
@@ -166,7 +167,7 @@ bool robotTextFileReadPartLine(std::ifstream &file, unsigned int &indent,
 					<< line << "\nbut expected format:\n"
 					<< "<0 or more tabs><slot index digit> "
 					<< "<part type character OR CamelCase string> "
-							"<part id string> <orientation digit> <evt. parameters>"
+							"<part id string> <orientation digit> <colo string> <evt. parameters>"
 					<< std::endl;
 			throw std::runtime_error(""); //sorry Andrea
 		}
@@ -344,7 +345,7 @@ bool RobotRepresentation::init() {
 	// Generate a core component
 	boost::shared_ptr<PartRepresentation> corePart = PartRepresentation::create(
 			INVERSE_PART_TYPE_MAP.at(PART_TYPE_CORE_COMPONENT),
-			PART_TYPE_CORE_COMPONENT, 0, std::vector<double>());
+			PART_TYPE_CORE_COMPONENT, 0, "BLACK", std::vector<double>());
 	if (!corePart) {
 		std::cout << "Failed to create root node" << std::endl;
 		return false;
@@ -396,11 +397,12 @@ bool RobotRepresentation::init(std::string robotTextFile, std::string idPref) {
 	unsigned int slot, orientation, indent;
 	char type;
 	std::string line, id;
+    std::string color;
 	std::vector<double> params;
 
 	// process root node
 	try {
-		if (!robotTextFileReadPartLine(file, indent, slot, type, id, orientation,
+		if (!robotTextFileReadPartLine(file, indent, slot, type, id, orientation, color,
 				params, idPref) || indent) {
 			std::cout << "Robot text file contains no or"
 					" poorly formatted root node" << std::endl;
@@ -410,7 +412,7 @@ bool RobotRepresentation::init(std::string robotTextFile, std::string idPref) {
 		std::cout << "Error parsing robot body\n";
 		return false;
 	}
-	current = PartRepresentation::create(type, id, orientation, params);
+	current = PartRepresentation::create(type, id, orientation, color, params);
 	if (!current) {
 		std::cout << "Failed to create root node" << std::endl;
 		return false;
@@ -421,7 +423,7 @@ bool RobotRepresentation::init(std::string robotTextFile, std::string idPref) {
 	// process other body parts
 	try {
 		while (robotTextFileReadPartLine(file, indent, slot, type, id,
-				orientation, params, idPref)) {
+				orientation, color, params, idPref)) {
 			if (!indent) {
 				std::cout << "Attempt to create multiple root nodes!"
 						<< std::endl;
@@ -435,7 +437,7 @@ bool RobotRepresentation::init(std::string robotTextFile, std::string idPref) {
 			for (; indent < (parentStack.size());) {
 				parentStack.pop();
 			}
-			current = PartRepresentation::create(type, id, orientation, params);
+			current = PartRepresentation::create(type, id, orientation, color, params);
 			if (!current) {
 				std::cout << "Failed to create node." << std::endl;
 				return false;

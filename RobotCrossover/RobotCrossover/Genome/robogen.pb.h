@@ -231,6 +231,18 @@ class BodyPart : public ::google::protobuf::Message {
   inline ::google::protobuf::int32 orientation() const;
   inline void set_orientation(::google::protobuf::int32 value);
 
+  // required string color = 6;
+  inline bool has_color() const;
+  inline void clear_color();
+  static const int kColorFieldNumber = 6;
+  inline const ::std::string& color() const;
+  inline void set_color(const ::std::string& value);
+  inline void set_color(const char* value);
+  inline void set_color(const char* value, size_t size);
+  inline ::std::string* mutable_color();
+  inline ::std::string* release_color();
+  inline void set_allocated_color(::std::string* color);
+
   // @@protoc_insertion_point(class_scope:robogenMessage.BodyPart)
  private:
   inline void set_has_id();
@@ -241,6 +253,8 @@ class BodyPart : public ::google::protobuf::Message {
   inline void clear_has_root();
   inline void set_has_orientation();
   inline void clear_has_orientation();
+  inline void set_has_color();
+  inline void clear_has_color();
 
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
 
@@ -251,6 +265,7 @@ class BodyPart : public ::google::protobuf::Message {
   ::google::protobuf::RepeatedPtrField< ::robogenMessage::EvolvableParameter > evolvableparam_;
   bool root_;
   ::google::protobuf::int32 orientation_;
+  ::std::string* color_;
   friend void  protobuf_AddDesc_robogen_2eproto();
   friend void protobuf_AssignDesc_robogen_2eproto();
   friend void protobuf_ShutdownFile_robogen_2eproto();
@@ -1400,6 +1415,34 @@ class SimulatorConf : public ::google::protobuf::Message {
   inline float motornoiselevel() const;
   inline void set_motornoiselevel(float value);
 
+  // required bool capAcceleration = 13;
+  inline bool has_capacceleration() const;
+  inline void clear_capacceleration();
+  static const int kCapAccelerationFieldNumber = 13;
+  inline bool capacceleration() const;
+  inline void set_capacceleration(bool value);
+
+  // required float maxLinearAcceleration = 14;
+  inline bool has_maxlinearacceleration() const;
+  inline void clear_maxlinearacceleration();
+  static const int kMaxLinearAccelerationFieldNumber = 14;
+  inline float maxlinearacceleration() const;
+  inline void set_maxlinearacceleration(float value);
+
+  // required float maxAngularAcceleration = 15;
+  inline bool has_maxangularacceleration() const;
+  inline void clear_maxangularacceleration();
+  static const int kMaxAngularAccelerationFieldNumber = 15;
+  inline float maxangularacceleration() const;
+  inline void set_maxangularacceleration(float value);
+
+  // required int32 maxDirectionShiftsPerSecond = 16;
+  inline bool has_maxdirectionshiftspersecond() const;
+  inline void clear_maxdirectionshiftspersecond();
+  static const int kMaxDirectionShiftsPerSecondFieldNumber = 16;
+  inline ::google::protobuf::int32 maxdirectionshiftspersecond() const;
+  inline void set_maxdirectionshiftspersecond(::google::protobuf::int32 value);
+
   // @@protoc_insertion_point(class_scope:robogenMessage.SimulatorConf)
  private:
   inline void set_has_terrainwidth();
@@ -1422,6 +1465,14 @@ class SimulatorConf : public ::google::protobuf::Message {
   inline void clear_has_sensornoiselevel();
   inline void set_has_motornoiselevel();
   inline void clear_has_motornoiselevel();
+  inline void set_has_capacceleration();
+  inline void clear_has_capacceleration();
+  inline void set_has_maxlinearacceleration();
+  inline void clear_has_maxlinearacceleration();
+  inline void set_has_maxangularacceleration();
+  inline void clear_has_maxangularacceleration();
+  inline void set_has_maxdirectionshiftspersecond();
+  inline void clear_has_maxdirectionshiftspersecond();
 
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
 
@@ -1439,6 +1490,10 @@ class SimulatorConf : public ::google::protobuf::Message {
   float terrainfriction_;
   float sensornoiselevel_;
   float motornoiselevel_;
+  bool capacceleration_;
+  float maxlinearacceleration_;
+  float maxangularacceleration_;
+  ::google::protobuf::int32 maxdirectionshiftspersecond_;
   friend void  protobuf_AddDesc_robogen_2eproto();
   friend void protobuf_AssignDesc_robogen_2eproto();
   friend void protobuf_ShutdownFile_robogen_2eproto();
@@ -1904,6 +1959,82 @@ inline void BodyPart::set_orientation(::google::protobuf::int32 value) {
   set_has_orientation();
   orientation_ = value;
   // @@protoc_insertion_point(field_set:robogenMessage.BodyPart.orientation)
+}
+
+// required string color = 6;
+inline bool BodyPart::has_color() const {
+  return (_has_bits_[0] & 0x00000020u) != 0;
+}
+inline void BodyPart::set_has_color() {
+  _has_bits_[0] |= 0x00000020u;
+}
+inline void BodyPart::clear_has_color() {
+  _has_bits_[0] &= ~0x00000020u;
+}
+inline void BodyPart::clear_color() {
+  if (color_ != &::google::protobuf::internal::GetEmptyStringAlreadyInited()) {
+    color_->clear();
+  }
+  clear_has_color();
+}
+inline const ::std::string& BodyPart::color() const {
+  // @@protoc_insertion_point(field_get:robogenMessage.BodyPart.color)
+  return *color_;
+}
+inline void BodyPart::set_color(const ::std::string& value) {
+  set_has_color();
+  if (color_ == &::google::protobuf::internal::GetEmptyStringAlreadyInited()) {
+    color_ = new ::std::string;
+  }
+  color_->assign(value);
+  // @@protoc_insertion_point(field_set:robogenMessage.BodyPart.color)
+}
+inline void BodyPart::set_color(const char* value) {
+  set_has_color();
+  if (color_ == &::google::protobuf::internal::GetEmptyStringAlreadyInited()) {
+    color_ = new ::std::string;
+  }
+  color_->assign(value);
+  // @@protoc_insertion_point(field_set_char:robogenMessage.BodyPart.color)
+}
+inline void BodyPart::set_color(const char* value, size_t size) {
+  set_has_color();
+  if (color_ == &::google::protobuf::internal::GetEmptyStringAlreadyInited()) {
+    color_ = new ::std::string;
+  }
+  color_->assign(reinterpret_cast<const char*>(value), size);
+  // @@protoc_insertion_point(field_set_pointer:robogenMessage.BodyPart.color)
+}
+inline ::std::string* BodyPart::mutable_color() {
+  set_has_color();
+  if (color_ == &::google::protobuf::internal::GetEmptyStringAlreadyInited()) {
+    color_ = new ::std::string;
+  }
+  // @@protoc_insertion_point(field_mutable:robogenMessage.BodyPart.color)
+  return color_;
+}
+inline ::std::string* BodyPart::release_color() {
+  clear_has_color();
+  if (color_ == &::google::protobuf::internal::GetEmptyStringAlreadyInited()) {
+    return NULL;
+  } else {
+    ::std::string* temp = color_;
+    color_ = const_cast< ::std::string*>(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+    return temp;
+  }
+}
+inline void BodyPart::set_allocated_color(::std::string* color) {
+  if (color_ != &::google::protobuf::internal::GetEmptyStringAlreadyInited()) {
+    delete color_;
+  }
+  if (color) {
+    set_has_color();
+    color_ = color;
+  } else {
+    clear_has_color();
+    color_ = const_cast< ::std::string*>(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  }
+  // @@protoc_insertion_point(field_set_allocated:robogenMessage.BodyPart.color)
 }
 
 // -------------------------------------------------------------------
@@ -3678,6 +3809,102 @@ inline void SimulatorConf::set_motornoiselevel(float value) {
   set_has_motornoiselevel();
   motornoiselevel_ = value;
   // @@protoc_insertion_point(field_set:robogenMessage.SimulatorConf.motorNoiseLevel)
+}
+
+// required bool capAcceleration = 13;
+inline bool SimulatorConf::has_capacceleration() const {
+  return (_has_bits_[0] & 0x00001000u) != 0;
+}
+inline void SimulatorConf::set_has_capacceleration() {
+  _has_bits_[0] |= 0x00001000u;
+}
+inline void SimulatorConf::clear_has_capacceleration() {
+  _has_bits_[0] &= ~0x00001000u;
+}
+inline void SimulatorConf::clear_capacceleration() {
+  capacceleration_ = false;
+  clear_has_capacceleration();
+}
+inline bool SimulatorConf::capacceleration() const {
+  // @@protoc_insertion_point(field_get:robogenMessage.SimulatorConf.capAcceleration)
+  return capacceleration_;
+}
+inline void SimulatorConf::set_capacceleration(bool value) {
+  set_has_capacceleration();
+  capacceleration_ = value;
+  // @@protoc_insertion_point(field_set:robogenMessage.SimulatorConf.capAcceleration)
+}
+
+// required float maxLinearAcceleration = 14;
+inline bool SimulatorConf::has_maxlinearacceleration() const {
+  return (_has_bits_[0] & 0x00002000u) != 0;
+}
+inline void SimulatorConf::set_has_maxlinearacceleration() {
+  _has_bits_[0] |= 0x00002000u;
+}
+inline void SimulatorConf::clear_has_maxlinearacceleration() {
+  _has_bits_[0] &= ~0x00002000u;
+}
+inline void SimulatorConf::clear_maxlinearacceleration() {
+  maxlinearacceleration_ = 0;
+  clear_has_maxlinearacceleration();
+}
+inline float SimulatorConf::maxlinearacceleration() const {
+  // @@protoc_insertion_point(field_get:robogenMessage.SimulatorConf.maxLinearAcceleration)
+  return maxlinearacceleration_;
+}
+inline void SimulatorConf::set_maxlinearacceleration(float value) {
+  set_has_maxlinearacceleration();
+  maxlinearacceleration_ = value;
+  // @@protoc_insertion_point(field_set:robogenMessage.SimulatorConf.maxLinearAcceleration)
+}
+
+// required float maxAngularAcceleration = 15;
+inline bool SimulatorConf::has_maxangularacceleration() const {
+  return (_has_bits_[0] & 0x00004000u) != 0;
+}
+inline void SimulatorConf::set_has_maxangularacceleration() {
+  _has_bits_[0] |= 0x00004000u;
+}
+inline void SimulatorConf::clear_has_maxangularacceleration() {
+  _has_bits_[0] &= ~0x00004000u;
+}
+inline void SimulatorConf::clear_maxangularacceleration() {
+  maxangularacceleration_ = 0;
+  clear_has_maxangularacceleration();
+}
+inline float SimulatorConf::maxangularacceleration() const {
+  // @@protoc_insertion_point(field_get:robogenMessage.SimulatorConf.maxAngularAcceleration)
+  return maxangularacceleration_;
+}
+inline void SimulatorConf::set_maxangularacceleration(float value) {
+  set_has_maxangularacceleration();
+  maxangularacceleration_ = value;
+  // @@protoc_insertion_point(field_set:robogenMessage.SimulatorConf.maxAngularAcceleration)
+}
+
+// required int32 maxDirectionShiftsPerSecond = 16;
+inline bool SimulatorConf::has_maxdirectionshiftspersecond() const {
+  return (_has_bits_[0] & 0x00008000u) != 0;
+}
+inline void SimulatorConf::set_has_maxdirectionshiftspersecond() {
+  _has_bits_[0] |= 0x00008000u;
+}
+inline void SimulatorConf::clear_has_maxdirectionshiftspersecond() {
+  _has_bits_[0] &= ~0x00008000u;
+}
+inline void SimulatorConf::clear_maxdirectionshiftspersecond() {
+  maxdirectionshiftspersecond_ = 0;
+  clear_has_maxdirectionshiftspersecond();
+}
+inline ::google::protobuf::int32 SimulatorConf::maxdirectionshiftspersecond() const {
+  // @@protoc_insertion_point(field_get:robogenMessage.SimulatorConf.maxDirectionShiftsPerSecond)
+  return maxdirectionshiftspersecond_;
+}
+inline void SimulatorConf::set_maxdirectionshiftspersecond(::google::protobuf::int32 value) {
+  set_has_maxdirectionshiftspersecond();
+  maxdirectionshiftspersecond_ = value;
+  // @@protoc_insertion_point(field_set:robogenMessage.SimulatorConf.maxDirectionShiftsPerSecond)
 }
 
 // -------------------------------------------------------------------

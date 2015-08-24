@@ -132,7 +132,7 @@ public:
 	 *
 	void evaluate(TcpSocket *socket,
 			boost::shared_ptr<RobogenConfig> robotConf);
-
+     */
 	/**
 	 * @return fitness of individual
 	 */

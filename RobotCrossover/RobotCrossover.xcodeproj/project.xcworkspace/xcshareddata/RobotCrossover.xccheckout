@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>12420E20-9BA2-4477-AFC1-9EBDF274F8D5</string>
+	<key>IDESourceControlProjectName</key>
+	<string>RobotCrossover</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>E3298D8A227A77E41B250CB665EA33402E689B13</key>
+		<string>https://github.com/ci-group/robot-baby</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>RobotCrossover/RobotCrossover.xcodeproj</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>E3298D8A227A77E41B250CB665EA33402E689B13</key>
+		<string>../../..</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>https://github.com/ci-group/robot-baby</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>111</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>E3298D8A227A77E41B250CB665EA33402E689B13</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>E3298D8A227A77E41B250CB665EA33402E689B13</string>
+			<key>IDESourceControlWCCName</key>
+			<string>robot-baby</string>
+		</dict>
+	</array>
+</dict>
+</plist>

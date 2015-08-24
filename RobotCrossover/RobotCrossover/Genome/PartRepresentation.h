@@ -47,7 +47,6 @@ namespace robogen {
 class PartRepresentation {
 
 public:
-
 	static std::map<class PartRepresentation, std::string> PART_REPRESENTATION_TYPE_MAP;
 
 	/**
@@ -58,10 +57,12 @@ public:
 	 * @param orientation orientation of the part when attached to parent part
 	 * @param arity arity of the part
 	 * @param type of the part
+     * @param color of the part
 	 * @param params parameters of the part
 	 */
 	PartRepresentation(std::string id, unsigned int orientation, unsigned int arity,
-			const std::string& type, const std::vector<double>& params,
+            const std::string& type, std::string color,
+            const std::vector<double>& params,
 			const std::vector<std::string>& motors,
 			const std::vector<std::string>& sensors);
 
@@ -128,6 +129,7 @@ public:
 	 */
 	static boost::shared_ptr<PartRepresentation> create(char type,
 			std::string id, unsigned int orientation,
+            std::string color,
 			std::vector<double> params);
 
 	/**
@@ -198,6 +200,16 @@ public:
 	 * @param orientation of part
 	 */
 	void setOrientation(unsigned int orientation);
+    
+    /**
+     *  @return the color of this part
+     */
+    std::string getColor();
+    
+    /**
+     * @param color of the part
+     */
+    void setColor(std::string color);
 
 	/**
 	 * Print recursively the body tree representation
@@ -260,7 +272,11 @@ private:
 	 * Sensors
 	 */
 	std::vector<std::string> sensors_;
-
+    
+    /**
+     * Color
+     */
+    std::string color_;
 };
 
 } /* namespace robogen */

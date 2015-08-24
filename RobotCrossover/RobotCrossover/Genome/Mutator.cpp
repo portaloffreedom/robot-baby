@@ -586,7 +586,7 @@ bool Mutator::insertNode(boost::shared_ptr<RobotRepresentation>& robot) {
 
 	// Create the new part
 	boost::shared_ptr<PartRepresentation> newPart = PartRepresentation::create(
-			type, "", curOrientation, parameters);
+			type, "", curOrientation, parentPart->getColor(), parameters);
 
 	unsigned int newPartSlot = 0;
 

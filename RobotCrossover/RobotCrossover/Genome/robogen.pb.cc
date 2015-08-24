@@ -85,12 +85,13 @@ void protobuf_AssignDesc_robogen_2eproto() {
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(EvolvableParameter));
   BodyPart_descriptor_ = file->message_type(1);
-  static const int BodyPart_offsets_[5] = {
+  static const int BodyPart_offsets_[6] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(BodyPart, id_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(BodyPart, type_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(BodyPart, root_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(BodyPart, evolvableparam_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(BodyPart, orientation_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(BodyPart, color_),
   };
   BodyPart_reflection_ =
     new ::google::protobuf::internal::GeneratedMessageReflection(
@@ -254,7 +255,7 @@ void protobuf_AssignDesc_robogen_2eproto() {
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(StartPosition));
   SimulatorConf_descriptor_ = file->message_type(10);
-  static const int SimulatorConf_offsets_[12] = {
+  static const int SimulatorConf_offsets_[16] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(SimulatorConf, terrainwidth_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(SimulatorConf, terrainlength_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(SimulatorConf, obstacles_),
@@ -267,6 +268,10 @@ void protobuf_AssignDesc_robogen_2eproto() {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(SimulatorConf, terrainfriction_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(SimulatorConf, sensornoiselevel_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(SimulatorConf, motornoiselevel_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(SimulatorConf, capacceleration_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(SimulatorConf, maxlinearacceleration_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(SimulatorConf, maxangularacceleration_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(SimulatorConf, maxdirectionshiftspersecond_),
   };
   SimulatorConf_reflection_ =
     new ::google::protobuf::internal::GeneratedMessageReflection(
@@ -391,45 +396,49 @@ void protobuf_AddDesc_robogen_2eproto() {
 
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
     "\n\rrobogen.proto\022\016robogenMessage\"(\n\022Evolv"
-    "ableParameter\022\022\n\nparamValue\030\001 \002(\002\"\203\001\n\010Bo"
+    "ableParameter\022\022\n\nparamValue\030\001 \002(\002\"\222\001\n\010Bo"
     "dyPart\022\n\n\002id\030\001 \002(\t\022\014\n\004type\030\002 \002(\t\022\014\n\004root"
     "\030\003 \002(\010\022:\n\016evolvableParam\030\004 \003(\0132\".robogen"
     "Message.EvolvableParameter\022\023\n\013orientatio"
-    "n\030\005 \002(\005\"N\n\016BodyConnection\022\013\n\003src\030\001 \002(\t\022\014"
-    "\n\004dest\030\002 \002(\t\022\017\n\007srcSlot\030\003 \002(\005\022\020\n\010destSlo"
-    "t\030\004 \002(\005\"b\n\004Body\022&\n\004part\030\001 \003(\0132\030.robogenM"
-    "essage.BodyPart\0222\n\nconnection\030\002 \003(\0132\036.ro"
-    "bogenMessage.BodyConnection\"=\n\020NeuralCon"
-    "nection\022\013\n\003src\030\001 \002(\t\022\014\n\004dest\030\002 \002(\t\022\016\n\006we"
-    "ight\030\003 \002(\002\"\241\001\n\006Neuron\022\n\n\002id\030\001 \002(\t\022\r\n\005lay"
-    "er\030\002 \002(\t\022\014\n\004type\030\003 \002(\t\022\014\n\004bias\030\004 \001(\002\022\022\n\n"
-    "bodyPartId\030\005 \001(\t\022\014\n\004ioId\030\006 \001(\005\022\013\n\003tau\030\007 "
-    "\001(\002\022\023\n\013phaseOffset\030\010 \001(\002\022\016\n\006period\030\t \001(\002"
-    "\022\014\n\004gain\030\n \001(\002\"e\n\005Brain\022&\n\006neuron\030\001 \003(\0132"
-    "\026.robogenMessage.Neuron\0224\n\nconnection\030\002 "
-    "\003(\0132 .robogenMessage.NeuralConnection\"]\n"
-    "\005Robot\022\n\n\002id\030\001 \002(\005\022\"\n\004body\030\002 \002(\0132\024.robog"
-    "enMessage.Body\022$\n\005brain\030\003 \002(\0132\025.robogenM"
-    "essage.Brain\"\271\001\n\010Obstacle\022\t\n\001x\030\001 \002(\002\022\t\n\001"
-    "y\030\002 \002(\002\022\t\n\001z\030\003 \002(\002\022\r\n\005xSize\030\004 \002(\002\022\r\n\005ySi"
-    "ze\030\005 \002(\002\022\r\n\005zSize\030\006 \002(\002\022\017\n\007density\030\007 \002(\002"
-    "\022\021\n\txRotation\030\010 \002(\002\022\021\n\tyRotation\030\t \002(\002\022\021"
-    "\n\tzRotation\030\n \002(\002\022\025\n\rrotationAngle\030\013 \002(\002"
-    "\"6\n\rStartPosition\022\t\n\001x\030\001 \002(\002\022\t\n\001y\030\002 \002(\002\022"
-    "\017\n\007azimuth\030\003 \002(\002\"\330\002\n\rSimulatorConf\022\024\n\014te"
-    "rrainWidth\030\001 \002(\002\022\025\n\rterrainLength\030\002 \002(\002\022"
-    "+\n\tobstacles\030\003 \003(\0132\030.robogenMessage.Obst"
-    "acle\022\020\n\010scenario\030\004 \002(\t\022\031\n\021lightSourceHei"
-    "ght\030\005 \002(\002\022\020\n\010timeStep\030\006 \002(\002\022\022\n\nnTimeStep"
-    "s\030\007 \002(\005\0225\n\016startPositions\030\010 \003(\0132\035.roboge"
-    "nMessage.StartPosition\022\027\n\017actuationPerio"
-    "d\030\t \002(\005\022\027\n\017terrainFriction\030\n \002(\002\022\030\n\020sens"
-    "orNoiseLevel\030\013 \002(\002\022\027\n\017motorNoiseLevel\030\014 "
-    "\002(\002\"o\n\021EvaluationRequest\022$\n\005robot\030\001 \002(\0132"
-    "\025.robogenMessage.Robot\0224\n\rconfiguration\030"
-    "\002 \002(\0132\035.robogenMessage.SimulatorConf\"C\n\020"
-    "EvaluationResult\022\n\n\002id\030\001 \002(\005\022\017\n\007fitness\030"
-    "\002 \002(\002\022\022\n\nobjectives\030\003 \003(\002", 1585);
+    "n\030\005 \002(\005\022\r\n\005color\030\006 \002(\t\"N\n\016BodyConnection"
+    "\022\013\n\003src\030\001 \002(\t\022\014\n\004dest\030\002 \002(\t\022\017\n\007srcSlot\030\003"
+    " \002(\005\022\020\n\010destSlot\030\004 \002(\005\"b\n\004Body\022&\n\004part\030\001"
+    " \003(\0132\030.robogenMessage.BodyPart\0222\n\nconnec"
+    "tion\030\002 \003(\0132\036.robogenMessage.BodyConnecti"
+    "on\"=\n\020NeuralConnection\022\013\n\003src\030\001 \002(\t\022\014\n\004d"
+    "est\030\002 \002(\t\022\016\n\006weight\030\003 \002(\002\"\241\001\n\006Neuron\022\n\n\002"
+    "id\030\001 \002(\t\022\r\n\005layer\030\002 \002(\t\022\014\n\004type\030\003 \002(\t\022\014\n"
+    "\004bias\030\004 \001(\002\022\022\n\nbodyPartId\030\005 \001(\t\022\014\n\004ioId\030"
+    "\006 \001(\005\022\013\n\003tau\030\007 \001(\002\022\023\n\013phaseOffset\030\010 \001(\002\022"
+    "\016\n\006period\030\t \001(\002\022\014\n\004gain\030\n \001(\002\"e\n\005Brain\022&"
+    "\n\006neuron\030\001 \003(\0132\026.robogenMessage.Neuron\0224"
+    "\n\nconnection\030\002 \003(\0132 .robogenMessage.Neur"
+    "alConnection\"]\n\005Robot\022\n\n\002id\030\001 \002(\005\022\"\n\004bod"
+    "y\030\002 \002(\0132\024.robogenMessage.Body\022$\n\005brain\030\003"
+    " \002(\0132\025.robogenMessage.Brain\"\271\001\n\010Obstacle"
+    "\022\t\n\001x\030\001 \002(\002\022\t\n\001y\030\002 \002(\002\022\t\n\001z\030\003 \002(\002\022\r\n\005xSi"
+    "ze\030\004 \002(\002\022\r\n\005ySize\030\005 \002(\002\022\r\n\005zSize\030\006 \002(\002\022\017"
+    "\n\007density\030\007 \002(\002\022\021\n\txRotation\030\010 \002(\002\022\021\n\tyR"
+    "otation\030\t \002(\002\022\021\n\tzRotation\030\n \002(\002\022\025\n\rrota"
+    "tionAngle\030\013 \002(\002\"6\n\rStartPosition\022\t\n\001x\030\001 "
+    "\002(\002\022\t\n\001y\030\002 \002(\002\022\017\n\007azimuth\030\003 \002(\002\"\325\003\n\rSimu"
+    "latorConf\022\024\n\014terrainWidth\030\001 \002(\002\022\025\n\rterra"
+    "inLength\030\002 \002(\002\022+\n\tobstacles\030\003 \003(\0132\030.robo"
+    "genMessage.Obstacle\022\020\n\010scenario\030\004 \002(\t\022\031\n"
+    "\021lightSourceHeight\030\005 \002(\002\022\020\n\010timeStep\030\006 \002"
+    "(\002\022\022\n\nnTimeSteps\030\007 \002(\005\0225\n\016startPositions"
+    "\030\010 \003(\0132\035.robogenMessage.StartPosition\022\027\n"
+    "\017actuationPeriod\030\t \002(\005\022\027\n\017terrainFrictio"
+    "n\030\n \002(\002\022\030\n\020sensorNoiseLevel\030\013 \002(\002\022\027\n\017mot"
+    "orNoiseLevel\030\014 \002(\002\022\027\n\017capAcceleration\030\r "
+    "\002(\010\022\035\n\025maxLinearAcceleration\030\016 \002(\002\022\036\n\026ma"
+    "xAngularAcceleration\030\017 \002(\002\022#\n\033maxDirecti"
+    "onShiftsPerSecond\030\020 \002(\005\"o\n\021EvaluationReq"
+    "uest\022$\n\005robot\030\001 \002(\0132\025.robogenMessage.Rob"
+    "ot\0224\n\rconfiguration\030\002 \002(\0132\035.robogenMessa"
+    "ge.SimulatorConf\"C\n\020EvaluationResult\022\n\n\002"
+    "id\030\001 \002(\005\022\017\n\007fitness\030\002 \002(\002\022\022\n\nobjectives\030"
+    "\003 \003(\002", 1725);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "robogen.proto", &protobuf_RegisterTypes);
   EvolvableParameter::default_instance_ = new EvolvableParameter();
@@ -697,6 +706,7 @@ const int BodyPart::kTypeFieldNumber;
 const int BodyPart::kRootFieldNumber;
 const int BodyPart::kEvolvableParamFieldNumber;
 const int BodyPart::kOrientationFieldNumber;
+const int BodyPart::kColorFieldNumber;
 #endif  // !_MSC_VER
 
 BodyPart::BodyPart()
@@ -722,6 +732,7 @@ void BodyPart::SharedCtor() {
   type_ = const_cast< ::std::string*>(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   root_ = false;
   orientation_ = 0;
+  color_ = const_cast< ::std::string*>(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
 
@@ -736,6 +747,9 @@ void BodyPart::SharedDtor() {
   }
   if (type_ != &::google::protobuf::internal::GetEmptyStringAlreadyInited()) {
     delete type_;
+  }
+  if (color_ != &::google::protobuf::internal::GetEmptyStringAlreadyInited()) {
+    delete color_;
   }
   if (this != default_instance_) {
   }
@@ -773,7 +787,7 @@ void BodyPart::Clear() {
     ::memset(&first, 0, n);                                \
   } while (0)
 
-  if (_has_bits_[0 / 32] & 23) {
+  if (_has_bits_[0 / 32] & 55) {
     ZR_(root_, orientation_);
     if (has_id()) {
       if (id_ != &::google::protobuf::internal::GetEmptyStringAlreadyInited()) {
@@ -783,6 +797,11 @@ void BodyPart::Clear() {
     if (has_type()) {
       if (type_ != &::google::protobuf::internal::GetEmptyStringAlreadyInited()) {
         type_->clear();
+      }
+    }
+    if (has_color()) {
+      if (color_ != &::google::protobuf::internal::GetEmptyStringAlreadyInited()) {
+        color_->clear();
       }
     }
   }
@@ -878,6 +897,23 @@ bool BodyPart::MergePartialFromCodedStream(
         } else {
           goto handle_unusual;
         }
+        if (input->ExpectTag(50)) goto parse_color;
+        break;
+      }
+
+      // required string color = 6;
+      case 6: {
+        if (tag == 50) {
+         parse_color:
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_color()));
+          ::google::protobuf::internal::WireFormat::VerifyUTF8StringNamedField(
+            this->color().data(), this->color().length(),
+            ::google::protobuf::internal::WireFormat::PARSE,
+            "color");
+        } else {
+          goto handle_unusual;
+        }
         if (input->ExpectAtEnd()) goto success;
         break;
       }
@@ -943,6 +979,16 @@ void BodyPart::SerializeWithCachedSizes(
     ::google::protobuf::internal::WireFormatLite::WriteInt32(5, this->orientation(), output);
   }
 
+  // required string color = 6;
+  if (has_color()) {
+    ::google::protobuf::internal::WireFormat::VerifyUTF8StringNamedField(
+      this->color().data(), this->color().length(),
+      ::google::protobuf::internal::WireFormat::SERIALIZE,
+      "color");
+    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
+      6, this->color(), output);
+  }
+
   if (!unknown_fields().empty()) {
     ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
         unknown_fields(), output);
@@ -992,6 +1038,17 @@ void BodyPart::SerializeWithCachedSizes(
     target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(5, this->orientation(), target);
   }
 
+  // required string color = 6;
+  if (has_color()) {
+    ::google::protobuf::internal::WireFormat::VerifyUTF8StringNamedField(
+      this->color().data(), this->color().length(),
+      ::google::protobuf::internal::WireFormat::SERIALIZE,
+      "color");
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        6, this->color(), target);
+  }
+
   if (!unknown_fields().empty()) {
     target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
         unknown_fields(), target);
@@ -1028,6 +1085,13 @@ int BodyPart::ByteSize() const {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::Int32Size(
           this->orientation());
+    }
+
+    // required string color = 6;
+    if (has_color()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::StringSize(
+          this->color());
     }
 
   }
@@ -1078,6 +1142,9 @@ void BodyPart::MergeFrom(const BodyPart& from) {
     if (from.has_orientation()) {
       set_orientation(from.orientation());
     }
+    if (from.has_color()) {
+      set_color(from.color());
+    }
   }
   mutable_unknown_fields()->MergeFrom(from.unknown_fields());
 }
@@ -1095,7 +1162,7 @@ void BodyPart::CopyFrom(const BodyPart& from) {
 }
 
 bool BodyPart::IsInitialized() const {
-  if ((_has_bits_[0] & 0x00000017) != 0x00000017) return false;
+  if ((_has_bits_[0] & 0x00000037) != 0x00000037) return false;
 
   if (!::google::protobuf::internal::AllAreInitialized(this->evolvableparam())) return false;
   return true;
@@ -1108,6 +1175,7 @@ void BodyPart::Swap(BodyPart* other) {
     std::swap(root_, other->root_);
     evolvableparam_.Swap(&other->evolvableparam_);
     std::swap(orientation_, other->orientation_);
+    std::swap(color_, other->color_);
     std::swap(_has_bits_[0], other->_has_bits_[0]);
     _unknown_fields_.Swap(&other->_unknown_fields_);
     std::swap(_cached_size_, other->_cached_size_);
@@ -4285,6 +4353,10 @@ const int SimulatorConf::kActuationPeriodFieldNumber;
 const int SimulatorConf::kTerrainFrictionFieldNumber;
 const int SimulatorConf::kSensorNoiseLevelFieldNumber;
 const int SimulatorConf::kMotorNoiseLevelFieldNumber;
+const int SimulatorConf::kCapAccelerationFieldNumber;
+const int SimulatorConf::kMaxLinearAccelerationFieldNumber;
+const int SimulatorConf::kMaxAngularAccelerationFieldNumber;
+const int SimulatorConf::kMaxDirectionShiftsPerSecondFieldNumber;
 #endif  // !_MSC_VER
 
 SimulatorConf::SimulatorConf()
@@ -4316,6 +4388,10 @@ void SimulatorConf::SharedCtor() {
   terrainfriction_ = 0;
   sensornoiselevel_ = 0;
   motornoiselevel_ = 0;
+  capacceleration_ = false;
+  maxlinearacceleration_ = 0;
+  maxangularacceleration_ = 0;
+  maxdirectionshiftspersecond_ = 0;
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
 
@@ -4374,7 +4450,9 @@ void SimulatorConf::Clear() {
     }
     ntimesteps_ = 0;
   }
-  ZR_(actuationperiod_, motornoiselevel_);
+  if (_has_bits_[8 / 32] & 65280) {
+    ZR_(actuationperiod_, maxdirectionshiftspersecond_);
+  }
 
 #undef OFFSET_OF_FIELD_
 #undef ZR_
@@ -4391,7 +4469,7 @@ bool SimulatorConf::MergePartialFromCodedStream(
   ::google::protobuf::uint32 tag;
   // @@protoc_insertion_point(parse_start:robogenMessage.SimulatorConf)
   for (;;) {
-    ::std::pair< ::google::protobuf::uint32, bool> p = input->ReadTagWithCutoff(127);
+    ::std::pair< ::google::protobuf::uint32, bool> p = input->ReadTagWithCutoff(16383);
     tag = p.first;
     if (!p.second) goto handle_unusual;
     switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
@@ -4570,6 +4648,66 @@ bool SimulatorConf::MergePartialFromCodedStream(
         } else {
           goto handle_unusual;
         }
+        if (input->ExpectTag(104)) goto parse_capAcceleration;
+        break;
+      }
+
+      // required bool capAcceleration = 13;
+      case 13: {
+        if (tag == 104) {
+         parse_capAcceleration:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   bool, ::google::protobuf::internal::WireFormatLite::TYPE_BOOL>(
+                 input, &capacceleration_)));
+          set_has_capacceleration();
+        } else {
+          goto handle_unusual;
+        }
+        if (input->ExpectTag(117)) goto parse_maxLinearAcceleration;
+        break;
+      }
+
+      // required float maxLinearAcceleration = 14;
+      case 14: {
+        if (tag == 117) {
+         parse_maxLinearAcceleration:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   float, ::google::protobuf::internal::WireFormatLite::TYPE_FLOAT>(
+                 input, &maxlinearacceleration_)));
+          set_has_maxlinearacceleration();
+        } else {
+          goto handle_unusual;
+        }
+        if (input->ExpectTag(125)) goto parse_maxAngularAcceleration;
+        break;
+      }
+
+      // required float maxAngularAcceleration = 15;
+      case 15: {
+        if (tag == 125) {
+         parse_maxAngularAcceleration:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   float, ::google::protobuf::internal::WireFormatLite::TYPE_FLOAT>(
+                 input, &maxangularacceleration_)));
+          set_has_maxangularacceleration();
+        } else {
+          goto handle_unusual;
+        }
+        if (input->ExpectTag(128)) goto parse_maxDirectionShiftsPerSecond;
+        break;
+      }
+
+      // required int32 maxDirectionShiftsPerSecond = 16;
+      case 16: {
+        if (tag == 128) {
+         parse_maxDirectionShiftsPerSecond:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
+                 input, &maxdirectionshiftspersecond_)));
+          set_has_maxdirectionshiftspersecond();
+        } else {
+          goto handle_unusual;
+        }
         if (input->ExpectAtEnd()) goto success;
         break;
       }
@@ -4666,6 +4804,26 @@ void SimulatorConf::SerializeWithCachedSizes(
     ::google::protobuf::internal::WireFormatLite::WriteFloat(12, this->motornoiselevel(), output);
   }
 
+  // required bool capAcceleration = 13;
+  if (has_capacceleration()) {
+    ::google::protobuf::internal::WireFormatLite::WriteBool(13, this->capacceleration(), output);
+  }
+
+  // required float maxLinearAcceleration = 14;
+  if (has_maxlinearacceleration()) {
+    ::google::protobuf::internal::WireFormatLite::WriteFloat(14, this->maxlinearacceleration(), output);
+  }
+
+  // required float maxAngularAcceleration = 15;
+  if (has_maxangularacceleration()) {
+    ::google::protobuf::internal::WireFormatLite::WriteFloat(15, this->maxangularacceleration(), output);
+  }
+
+  // required int32 maxDirectionShiftsPerSecond = 16;
+  if (has_maxdirectionshiftspersecond()) {
+    ::google::protobuf::internal::WireFormatLite::WriteInt32(16, this->maxdirectionshiftspersecond(), output);
+  }
+
   if (!unknown_fields().empty()) {
     ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
         unknown_fields(), output);
@@ -4746,6 +4904,26 @@ void SimulatorConf::SerializeWithCachedSizes(
     target = ::google::protobuf::internal::WireFormatLite::WriteFloatToArray(12, this->motornoiselevel(), target);
   }
 
+  // required bool capAcceleration = 13;
+  if (has_capacceleration()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteBoolToArray(13, this->capacceleration(), target);
+  }
+
+  // required float maxLinearAcceleration = 14;
+  if (has_maxlinearacceleration()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteFloatToArray(14, this->maxlinearacceleration(), target);
+  }
+
+  // required float maxAngularAcceleration = 15;
+  if (has_maxangularacceleration()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteFloatToArray(15, this->maxangularacceleration(), target);
+  }
+
+  // required int32 maxDirectionShiftsPerSecond = 16;
+  if (has_maxdirectionshiftspersecond()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(16, this->maxdirectionshiftspersecond(), target);
+  }
+
   if (!unknown_fields().empty()) {
     target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
         unknown_fields(), target);
@@ -4814,6 +4992,28 @@ int SimulatorConf::ByteSize() const {
     // required float motorNoiseLevel = 12;
     if (has_motornoiselevel()) {
       total_size += 1 + 4;
+    }
+
+    // required bool capAcceleration = 13;
+    if (has_capacceleration()) {
+      total_size += 1 + 1;
+    }
+
+    // required float maxLinearAcceleration = 14;
+    if (has_maxlinearacceleration()) {
+      total_size += 1 + 4;
+    }
+
+    // required float maxAngularAcceleration = 15;
+    if (has_maxangularacceleration()) {
+      total_size += 1 + 4;
+    }
+
+    // required int32 maxDirectionShiftsPerSecond = 16;
+    if (has_maxdirectionshiftspersecond()) {
+      total_size += 2 +
+        ::google::protobuf::internal::WireFormatLite::Int32Size(
+          this->maxdirectionshiftspersecond());
     }
 
   }
@@ -4893,6 +5093,18 @@ void SimulatorConf::MergeFrom(const SimulatorConf& from) {
     if (from.has_motornoiselevel()) {
       set_motornoiselevel(from.motornoiselevel());
     }
+    if (from.has_capacceleration()) {
+      set_capacceleration(from.capacceleration());
+    }
+    if (from.has_maxlinearacceleration()) {
+      set_maxlinearacceleration(from.maxlinearacceleration());
+    }
+    if (from.has_maxangularacceleration()) {
+      set_maxangularacceleration(from.maxangularacceleration());
+    }
+    if (from.has_maxdirectionshiftspersecond()) {
+      set_maxdirectionshiftspersecond(from.maxdirectionshiftspersecond());
+    }
   }
   mutable_unknown_fields()->MergeFrom(from.unknown_fields());
 }
@@ -4910,7 +5122,7 @@ void SimulatorConf::CopyFrom(const SimulatorConf& from) {
 }
 
 bool SimulatorConf::IsInitialized() const {
-  if ((_has_bits_[0] & 0x00000f7b) != 0x00000f7b) return false;
+  if ((_has_bits_[0] & 0x0000ff7b) != 0x0000ff7b) return false;
 
   if (!::google::protobuf::internal::AllAreInitialized(this->obstacles())) return false;
   if (!::google::protobuf::internal::AllAreInitialized(this->startpositions())) return false;
@@ -4931,6 +5143,10 @@ void SimulatorConf::Swap(SimulatorConf* other) {
     std::swap(terrainfriction_, other->terrainfriction_);
     std::swap(sensornoiselevel_, other->sensornoiselevel_);
     std::swap(motornoiselevel_, other->motornoiselevel_);
+    std::swap(capacceleration_, other->capacceleration_);
+    std::swap(maxlinearacceleration_, other->maxlinearacceleration_);
+    std::swap(maxangularacceleration_, other->maxangularacceleration_);
+    std::swap(maxdirectionshiftspersecond_, other->maxdirectionshiftspersecond_);
     std::swap(_has_bits_[0], other->_has_bits_[0]);
     _unknown_fields_.Swap(&other->_unknown_fields_);
     std::swap(_cached_size_, other->_cached_size_);

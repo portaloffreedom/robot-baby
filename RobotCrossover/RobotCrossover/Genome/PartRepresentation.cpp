@@ -15,11 +15,11 @@
 namespace robogen {
 
 PartRepresentation::PartRepresentation(std::string id, unsigned int orientation,
-		unsigned int arity, const std::string& type,
+       unsigned int arity, const std::string& type, std::string color,
 		const std::vector<double>& params,
 		const std::vector<std::string>& motors,
 		const std::vector<std::string>& sensors) :
-		id_(id), orientation_(orientation), arity_(arity), type_(type),
+		id_(id), orientation_(orientation), arity_(arity), type_(type), color_(color),
 		parent_(NULL), params_(params), motors_(motors), sensors_(sensors) {
 
 	children_.resize(arity_, boost::shared_ptr<PartRepresentation>());
@@ -43,6 +43,14 @@ unsigned int PartRepresentation::getOrientation() {
 
 void PartRepresentation::setOrientation(unsigned int orientation) {
 	orientation_ = orientation;
+}
+
+std::string PartRepresentation::getColor() {
+    return color_;
+}
+
+void PartRepresentation::setColor(std::string color) {
+    color_ = color;
 }
 
 unsigned int PartRepresentation::getArity() {
@@ -118,7 +126,7 @@ bool PartRepresentation::setChild(unsigned int n,
 }
 
 boost::shared_ptr<PartRepresentation> PartRepresentation::create(char type,
-		std::string id, unsigned int orientation, std::vector<double> params) {
+ std::string id, unsigned int orientation, std::string color, std::vector<double> params) {
 
 	if (PART_TYPE_MAP.count(type) == 0) {
 		std::cout << "Unknown part type '" << type << "'" << std::endl;
@@ -136,7 +144,7 @@ boost::shared_ptr<PartRepresentation> PartRepresentation::create(char type,
 
 	return boost::shared_ptr<PartRepresentation>(
 			new PartRepresentation(id, orientation,
-					PART_TYPE_ARITY_MAP.at(partType), partType, params,
+					PART_TYPE_ARITY_MAP.at(partType), partType, color, params,
 					PART_TYPE_MOTORS_MAP.at(partType),
 					PART_TYPE_SENSORS_MAP.at(partType)));
 
@@ -172,6 +180,8 @@ void PartRepresentation::addSubtreeToBodyMessage(
 
 	// required int32 orientation = 5;
 	serialization->set_orientation(orientation_);
+    
+    serialization->set_color(color_);
 
 	// treat children, including connection
 	for (unsigned int i = 0; i < arity_; i++) {
@@ -228,7 +238,7 @@ boost::shared_ptr<PartRepresentation> PartRepresentation::cloneSubtree() {
 
 	boost::shared_ptr<PartRepresentation> theClone(
 			new PartRepresentation(this->getId(), this->getOrientation(),
-					this->getArity(), this->getType(), this->getParams(),
+					this->getArity(), this->getType(), this->getColor(), this->getParams(),
 					this->getMotors(), this->getSensors()));
 	// deep copy all children
 	for (unsigned int i = 0; i < this->getArity(); i++) {
@@ -298,7 +308,7 @@ void PartRepresentation::toTextFile(std::ofstream& file, unsigned int depth) {
                 file << "\t";
             }
             
-            file << i << " " << this->getChild(i)->getType() << " " << this->getChild(i)->getId() << " " << this->getOrientation();
+            file << i << " " << this->getChild(i)->getType() << " " << this->getChild(i)->getId() << " " << this->getOrientation() << " " << this->getColor();
             
             std::vector<double> params;
             
