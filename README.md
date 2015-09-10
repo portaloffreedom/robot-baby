@@ -27,8 +27,10 @@ git push origin new_feature
 
 When we are absolutely sure that no changes will break the master branch, we publish.
 
-> Related documentation: \
-> https://www.atlassian.com/git/tutorials/comparing-workflows/gitflow-workflow \
+> Related documentation:
+
+> https://www.atlassian.com/git/tutorials/comparing-workflows/gitflow-workflow
+
 > http://nvie.com/posts/a-successful-git-branching-model/
 
 ### Modules
