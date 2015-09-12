@@ -7,11 +7,11 @@
 		0 F F2 0
 			0 I I3 1
 				0 F F3 0
-	4 I I4 0
+	2 I I4 0
 		0 F F4 0
 			0 I I5 1
 				0 F F5 0
-	5 I I6 0
+	3 I I6 0
 		0 F F6 0
 			0 I I7 1
 				0 F F7 0

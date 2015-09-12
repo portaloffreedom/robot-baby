@@ -29,3 +29,7 @@
 
 # Compiled python files
 *.pyc
+
+RobotCrossover/DerivedData
+RobotCrossover/dist
+DerivedData

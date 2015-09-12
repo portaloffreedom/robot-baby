@@ -157,10 +157,10 @@ public:
 	 * @warning this code depends on the layer architecture of the ANN
 	 * @todo this property is currently not used. Remove?
 	 */
-	/*bool getLinearRepresentation(std::vector<ioPair> &inputs,
-			std::vector<ioPair> &outputs, std::vector<double> &weights,
-			std::vector<double> &biases);
-	 */
+//	bool getLinearRepresentation(std::vector<ioPair> &inputs,
+//			std::vector<ioPair> &outputs, std::vector<double> &weights,
+//			std::vector<double> &biases);
+	 
 	/**
 	 * Serialize brain into message that can be appended to the robot message
 	 * @return protobuf message of brain
