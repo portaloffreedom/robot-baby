@@ -1,0 +1,22 @@
+import json
+from message import Message
+from network import UDP_IP, UDP_PORT
+from socket import socket, AF_INET, SOCK_DGRAM
+from threading import Thread
+
+
+class Server(Thread):
+
+    def __init__(self, service=None):
+        Thread.__init__(self)
+        self.s = socket(AF_INET, SOCK_DGRAM)
+        self.srv = service or default_service
+
+    def run(self, cond='True'):
+        while eval(cond):
+            data = self.srv()
+            self.s.sendto(json.dumps(data.__dict__), (UDP_IP, UDP_PORT))
+
+
+def default_service(socket):
+    return Message()
