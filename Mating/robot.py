@@ -17,13 +17,10 @@ class Robot():
         self.client.start()
 
     def server_data(self):
-        sleep(1)
-        print '{}: Hello!'.format(self.name)
-        return Message(hash(self), 'Hello!')
+        return Message(hash(self), '')
 
     def client_criterion(self, data):
         return data['hash_code'] != hash(self)
 
     def client_data(self):
-        print '{}: Hello to you as well, sir!'.format(self.name)
-        return Message(hash(self), 'Hello to you as well, sir!')
+        return Message(hash(self), '')
