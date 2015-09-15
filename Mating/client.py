@@ -15,8 +15,8 @@ class Client(Thread):
         self.crt = criterion or should_respond
         self.rsp = response or default_response
 
-    def run(self, cond='True'):
-        while eval(cond):
+    def run(self):
+        while True:
             packet, addr = self.s.recvfrom(1024)
             if self.crt(json.loads(packet)):
                 data = self.rsp()

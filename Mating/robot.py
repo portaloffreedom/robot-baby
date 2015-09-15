@@ -11,6 +11,8 @@ class Robot():
         self.client = Client(criterion=self.client_criterion,
                              response=self.client_data)
         self.name = name
+        self.server.daemon = True
+        self.client.daemon = True
         self.server.start()
         self.client.start()
 

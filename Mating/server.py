@@ -12,8 +12,8 @@ class Server(Thread):
         self.s = socket(AF_INET, SOCK_DGRAM)
         self.srv = service or default_service
 
-    def run(self, cond='True'):
-        while eval(cond):
+    def run(self):
+        while True:
             data = self.srv()
             self.s.sendto(json.dumps(data.__dict__), (UDP_IP, UDP_PORT))
 
