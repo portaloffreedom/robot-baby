@@ -63,10 +63,6 @@ set(RobotCrossover_SRCS main.cpp
     Genome/ODE_Check/models/ServoMotor.cpp
     Genome/ODE_Check/models/TouchSensor.cpp
     Genome/ODE_Check/models/TouchSensorModel.cpp
-    #Transceivers/UDPTransceiver.cpp
-    #Genome/Evlocpp
-    #Genome/ODE_Check/*cpp
-    #Genome/ODE_Check/models/*cpp
 )
 
 include_directories("Transceivers" "Genome" "Genome/ODE_Check")
