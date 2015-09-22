@@ -805,10 +805,10 @@ void addAllNeurons(boost::shared_ptr<PartRepresentation> root,
                    boost::shared_ptr<NeuralNetworkRepresentation> neuralNet2) {
     for (unsigned int i = 0; i < root->getArity(); ++i) {
         if (root->getChild(i)) {
-            std::vector<boost::weak_ptr<NeuronRepresentation>> neuroVec =
+            std::vector<boost::weak_ptr<NeuronRepresentation> > neuroVec =
                 neuralNet2->getBodyPartNeurons(root->getChild(i)->getId());
             
-            for (std::vector<boost::weak_ptr<NeuronRepresentation>>::iterator it = neuroVec.begin();
+            for (std::vector<boost::weak_ptr<NeuronRepresentation> >::iterator it = neuroVec.begin();
                  it != neuroVec.end();
                  ++it) {
                 boost::shared_ptr<NeuronRepresentation> neuron = (*it).lock();
@@ -872,10 +872,10 @@ bool RobotRepresentation::crossoverSubTrees(boost::shared_ptr<RobotRepresentatio
     parentRoot1->setChild(slotParentRoot1, root2);
     
     // do brain crossover
-    std::vector<boost::weak_ptr<NeuronRepresentation>> rootNeuroVec =
+    std::vector<boost::weak_ptr<NeuronRepresentation> > rootNeuroVec =
         robot2->getBrain()->getBodyPartNeurons(root2->getId());
     
-    for (std::vector<boost::weak_ptr<NeuronRepresentation>>::iterator it = rootNeuroVec.begin();
+    for (std::vector<boost::weak_ptr<NeuronRepresentation> >::iterator it = rootNeuroVec.begin();
          it != rootNeuroVec.end();
          ++it) {
         boost::shared_ptr<NeuronRepresentation> neuron = (*it).lock();
@@ -1115,7 +1115,7 @@ void RobotRepresentation::toTextFile(std::string name) {
     
 void RobotRepresentation::toJson(std::string name) {
     std::ofstream file;
-    file.open(name);
+    file.open(name.c_str());
     
     file << pb2json(this->serialize());
     file.close();
