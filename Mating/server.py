@@ -18,5 +18,5 @@ class Server(Thread):
             self.s.sendto(json.dumps(data.__dict__), (UDP_IP, UDP_PORT))
 
 
-def default_service(socket):
+def default_service():
     return Message()
