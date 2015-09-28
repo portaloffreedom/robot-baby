@@ -1,19 +1,5 @@
-# import pigpio
+import pigpio
 import time
-
-
-class _FakePi:
-    def __init__(self):
-        pass
-
-    def set_PWM_frequency(self, port, freq):
-        pass
-
-    def set_PWM_range(self, port, range):
-        pass
-
-    def set_PWM_dutycycle(self, cicle):
-        pass
 
 
 class Servo:
@@ -33,7 +19,7 @@ class Servo:
     def __init__(self, pin, freq=50, ran=1000, inverse=False):
         """Create a Servo at GPIO nr *pin* with frequency *freq*."""
         self._port = pin
-        self._pi = _FakePi()  # pigpio.pi()
+        self._pi = pigpio.pi()
         self._pi.set_PWM_frequency(self._port, freq)
         self._pi.set_PWM_range(self._port, ran)
         if inverse:
