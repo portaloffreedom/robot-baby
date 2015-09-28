@@ -1,7 +1,22 @@
-import pigpio
+# import pigpio
 import time
 
-class Servo():
+
+class _FakePi:
+    def __init__(self):
+        pass
+
+    def set_PWM_frequency(self, port, freq):
+        pass
+
+    def set_PWM_range(self, port, range):
+        pass
+
+    def set_PWM_dutycycle(self, cicle):
+        pass
+
+
+class Servo:
     """Class for controlling servos using PWM signals sent to GPIO pins
 
      Attributes:
@@ -18,14 +33,13 @@ class Servo():
     def __init__(self, pin, freq=50, ran=1000, inverse=False):
         """Create a Servo at GPIO nr *pin* with frequency *freq*."""
         self._port = pin
-        self._pi = pigpio.pi()
+        self._pi = _FakePi()  # pigpio.pi()
         self._pi.set_PWM_frequency(self._port, freq)
         self._pi.set_PWM_range(self._port, ran)
         if inverse:
             self._maxPWM, self._minPWM = self.POSITION_BEGIN, self.POSITION_END
         else:
             self._maxPWM, self._minPWM = self.POSITION_END, self.POSITION_BEGIN
-
 
     def move_to_position(self, position):
         """Sends signal to the engine to move to a specified position.
@@ -39,12 +53,10 @@ class Servo():
 
         self._pi.set_PWM_dutycycle(self._port, position)
 
-
     def center(self):
-	"""Set servo position to center"""
+        """Set servo position to center"""
         self.move_to_position(0)
 
-
     def off(self):
-	"""Turn PWM signalling off"""
-        self._pi.set_PWM_dutycycle(self._port, 0);
+        """Turn PWM signalling off"""
+        self._pi.set_PWM_dutycycle(self._port, 0)
