@@ -6,7 +6,7 @@ import logging
 __author__ = 'matteo'
 
 
-class RobotController:
+class RobotBrain:
     """Class for controlling the whole life of the robot.
     Here you can find the main loop function, called live
     """
@@ -18,7 +18,7 @@ class RobotController:
         self.controller = FakeController()
         self.algorithm = RLPowerAlgorithm()
 
-        self._next_check = time.time() + RobotController.TIME_CHECK_TIMEOUT
+        self._next_check = time.time() + RobotBrain.TIME_CHECK_TIMEOUT
 
     def live(self):
         """
@@ -45,7 +45,7 @@ class RobotController:
         if force or current_check > self._next_check:
             logging.info("next movement values current {}, next {}".format(current_check, self._next_check))
             self.algorithm.next_evaluation(self)
-            self._next_check = current_check + RobotController.TIME_CHECK_TIMEOUT
+            self._next_check = current_check + RobotBrain.TIME_CHECK_TIMEOUT
 
     def stop_current_evaluation(self):
         """
