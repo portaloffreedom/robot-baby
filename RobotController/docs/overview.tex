@@ -1,0 +1,40 @@
+\documentclass[a4paper,10pt]{article}
+\usepackage[utf8]{inputenc}
+
+% Title Page
+\title{Overview of the Brain for the robot}
+\author{}
+
+
+\begin{document}
+\maketitle
+
+\tableofcontents
+
+\section{Robot Brain}
+The robot brain is the main class managing all the components of the robot.
+The main cycle of the robot is inside this class.
+
+\section{Learning Algorithms}
+There is a general interface that is for every learning algorithm. It consists 
+of
+\begin{itemize}
+ \item \verb|next_evaluation()|
+\end{itemize}
+
+\subsection{RLPowerAlgorithm}
+The \emph{RLPowerAlgorithm} is an implmenetation of the Learning Algorithm. It
+stands for \emph{Reinfoced Learning Power Algorithm}.
+
+%TODO explaining how this algorithm works
+
+Here is an example on how it works: %TODO
+
+\section{Controllers}
+This is interpreting the output of the learning algorithm and sending the 
+signals to the servos.
+
+\section{Servos}
+This is taking the control input for the servo and sending it to the hardware.
+
+\end{document}
