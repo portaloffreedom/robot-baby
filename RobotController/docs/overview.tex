@@ -1,5 +1,6 @@
 \documentclass[a4paper,10pt]{article}
 \usepackage[utf8]{inputenc}
+\usepackage{amsmath}
 
 % Title Page
 \title{Overview of the Brain for the robot}
@@ -17,24 +18,74 @@ The main cycle of the robot is inside this class.
 
 \section{Learning Algorithms}
 There is a general interface that is for every learning algorithm. It consists 
-of
-\begin{itemize}
- \item \verb|next_evaluation()|
-\end{itemize}
+of \verb|next_evaluation()| function and is returning a new controller that 
+needs to be swaped into \emph{HAL}
 
 \subsection{RLPowerAlgorithm}
 The \emph{RLPowerAlgorithm} is an implmenetation of the Learning Algorithm. It
-stands for \emph{Reinfoced Learning Power Algorithm}.
+stands for \emph{\textbf{R}einfoced \textbf{L}earning algorithm, 
+\textbf{Po}licy learning by \textbf{W}eighting \textbf{E}xploration with the 
+\textbf{R}eturn Algorithm}.
 
 %TODO explaining how this algorithm works
 
-Here is an example on how it works: %TODO
+\subsubsection{Example}
+In the example we have a ranking list composed by:
+
+\begin{center}
+\begin{tabular}[c]{r *{5}{c}}
+ Parameters & $P_1$ & $P_2$ & $P_3$ & $P_4$ & $P_5$ \\
+ Fitness    & $10$  & $7$   & $6$   & $5$   & $2$   \\
+ \\
+ \multicolumn{3}{r}{Total} & \multicolumn{3}{l}{$30$} \\
+%  \hline
+\end{tabular}
+\end{center}
+
+If for $P_c$ we intend the current parameters and for $P_{c+1}$ we intend the
+next evaluation. To find the next evaluation, this is the formula:
+
+\begin{multline}
+ P_{c+1} = P_c + \mathcal{N}\left(0, \sqrt[]{variance}\right) 
+   + \frac{(P_1 - P_c) \cdot 10}{30} +\\
+   + \frac{(P_2 - P_c) \cdot 7 }{30}
+   + \frac{(P_3 - P_c) \cdot 6 }{30}
+   + \frac{(P_4 - P_c) \cdot 5 }{30}
+   + \frac{(P_5 - P_c) \cdot 2 }{30}
+\end{multline}
+
+\subsubsection{Ideas}
+Here are some of the ideas for future improvements:
+\begin{itemize}
+ \item It would be nice to have a decade rate for the elements in the rankings,
+ so that the old good walking patterns at some point they get replaced by new 
+ ones. This is good in the event of an environment change (e.g. hitting the 
+ wall) in which case all the previous walking patterns are probably going to be
+ useless.
+ \item A good idea is to have an automatic way of suddenly increase the mutation
+ rate in case of sudden environment change (e.g. hitting the wall). This should
+ help escape bad situations.
+\end{itemize}
+
 
 \section{Controllers}
-This is interpreting the output of the learning algorithm and sending the 
-signals to the servos.
+A controller object is interpreting some inputs and is giving some outputs. The
+object should be generated from the learning algorithm.
 
-\section{Servos}
+\subsection{RLPowerController}
+TODO
+
+\section{HAL}
+\emph{HAL} stands for Hardware Abstraction Layer. Is the module responsible for
+giving easy access to both inputs and outputs.
+
+\subsection{Outputs}
+\subsubsection{Servos}
 This is taking the control input for the servo and sending it to the hardware.
+
+\subsection{Inputs}
+\subsubsection{PositionAsker}
+\emph{PositionAsker} is a class that asks for the position from a remote server
+which could be implemented with QRCode tracking or a more sophisticated system.
 
 \end{document}
