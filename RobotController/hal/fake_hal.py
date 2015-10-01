@@ -1,7 +1,7 @@
 __author__ = 'matteo'
 
 
-class FakeController:
+class FakeHal:
     def step(self):
         pass
 

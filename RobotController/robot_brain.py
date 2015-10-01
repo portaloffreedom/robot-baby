@@ -1,5 +1,5 @@
-from locomotion.fake_controller import FakeController
-from movement.rlpower_algorithm import RLPowerAlgorithm
+from hal.fake_hal import FakeHal
+from learning.rlpower_algorithm import RLPowerAlgorithm
 import time
 import logging
 
@@ -15,7 +15,7 @@ class RobotBrain:
 
     def __init__(self, controllers_file_path):
         # TODO load controllers from file
-        self.controller = FakeController()
+        self.controller = FakeHal()
         self.algorithm = RLPowerAlgorithm()
 
         self._next_check = time.time() + RobotBrain.TIME_CHECK_TIMEOUT

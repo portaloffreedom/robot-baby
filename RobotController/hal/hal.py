@@ -1,9 +1,9 @@
-from locomotion.servo import Servo
+from hal.outputs.servo import Servo
 
 __author__ = 'matteo'
 
 
-class ServoController:
+class Hal:
     def __init__(self, controller_config):
         # TODO load it from file "controller_config"
         self._servos = []

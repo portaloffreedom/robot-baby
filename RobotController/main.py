@@ -5,10 +5,10 @@ import sys
 
 from robot_brain import RobotBrain
 
+__author__ = 'matteo'
+
 LOG_FORMAT = "%(asctime)-15s:%(levelname)-8s:%(threadName)s:%(filename)s:%(funcName)s: %(message)s"
 LOG_LEVEL = logging.DEBUG
-
-__author__ = 'matteo'
 
 if __name__ == "__main__":
     logging.basicConfig(level=LOG_LEVEL, format=LOG_FORMAT, stream=sys.stdout)
