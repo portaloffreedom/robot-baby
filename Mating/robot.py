@@ -5,11 +5,11 @@ from server import Server
 
 
 class Robot():
-
+    """ Abstract class that implements a basic robot. Should be overriden. """
     def __init__(self, name=None):
-        self.server = Server()
-        self.client = Client()
-        self.initialize_parameters()
+        self.server = Server()  # Initialize a server
+        self.client = Client()  # Initialize a client
+        self.initialize_parameters()  # Custom function definitions go here
         self.name = name
         self.server.daemon = True
         self.client.daemon = True
@@ -33,6 +33,7 @@ class Robot():
 
 class EvolutionaryRobot(Robot):
 
+    # mate_probability defaults to 1, we may change this in the future
     def __init__(self, name, mate_probability=1):
         Robot.__init__(self, name)
         self.mate_probability = mate_probability
@@ -54,4 +55,7 @@ class EvolutionaryRobot(Robot):
         return Message(hash(self), 'Sure!')
 
     def agree_to_mate(self):
-        pass  # TODO
+        """ Once the robots agree to mate, send their genomes to the mating
+            server.
+        """
+        pass  # TODO: Implement

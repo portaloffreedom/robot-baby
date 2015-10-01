@@ -8,14 +8,18 @@ class Message:
 
 
 class PersonalMessage(Message):
-
+    """ PersonalMessage sends a hash_code along with the message itself, in
+        order to be able to identify individuals (or one's self).
+    """
     def __init__(self, hash_code, message):
         Message.__init__(self, message)
         self.hash_code = hash_code
 
 
 class GenomeMessage(PersonalMessage):
-
+    """ Class that reads a genome from a .genome file and uses it as a message
+        string.
+    """
     def __init__(self, hash_code, filename):
         with open(filename, 'r') as genome_file:
             genome = genome_file.read()
@@ -26,4 +30,7 @@ class GenomeMessage(PersonalMessage):
         PersonalMessage.__init__(self, hash_code, self.message)
 
     def validate_genome(genome):
-        return True  # TODO: Change
+        """ Checks if the genome is in the correct format (i.e syntax errors
+            in the .genome file). Returns true if it is, false otherwise.
+        """
+        return True  # TODO: Implement
