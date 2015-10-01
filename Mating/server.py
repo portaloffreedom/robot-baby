@@ -6,7 +6,8 @@ from threading import Thread
 
 
 class Server(Thread):
-
+    """ Broadcasts data to the Wi-Fi, by convention encoded as JSON strings.
+    """
     def __init__(self, service=None):
         Thread.__init__(self)
         self.s = socket(AF_INET, SOCK_DGRAM)
@@ -19,4 +20,5 @@ class Server(Thread):
 
 
 def default_service():
+    """ Returns an empty message. """
     return Message()
