@@ -1,7 +1,7 @@
 import json
 from message import Message
-from network import UDP_IP, UDP_PORT
-from socket import socket, AF_INET, SOCK_DGRAM, SOL_SOCKET
+from network import UDP_PORT
+from socket import socket, AF_INET, SOCK_DGRAM
 from threading import Thread
 
 
