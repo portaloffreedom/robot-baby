@@ -1,5 +1,5 @@
 from client import Client
-from message import Message
+from message import PersonalMessage
 from random import uniform
 from server import Server
 
@@ -17,18 +17,18 @@ class Robot():
         self.client.start()
 
     def initialize_parameters(self):
-        self.server.service = self.server_data
-        self.client.criterion = self.client_criterion
-        self.client.response = self.client_data
+        self.server.criterion = self.server_criterion
+        self.server.response = self.server_response
+        self.client.message = self.client_message
 
-    def server_data(self):
-        return Message(hash(self), '')
-
-    def client_criterion(self, data):
+    def server_criterion(self, data):
         return data['hash_code'] != hash(self)
 
-    def client_data(self):
-        return Message(hash(self), '')
+    def server_response(self):
+        return PersonalMessage(hash(self), '')
+
+    def client_message(self):
+        return PersonalMessage(hash(self), '')
 
 
 class EvolutionaryRobot(Robot):
@@ -39,23 +39,23 @@ class EvolutionaryRobot(Robot):
         self.mate_probability = mate_probability
 
     def initialize_parameters(self):
-        self.server.service = self.server_data
-        self.client.criterion = self.client_criterion
-        self.client.response = self.client_data
+        self.server.criterion = self.server_criterion
+        self.server.response = self.server_response
+        self.client.message = self.client_message
 
-    def server_data(self):
-        return Message(hash(self), 'Mate?')
-
-    def client_criterion(self, data):
+    def server_criterion(self, data):
         return data['hash_code'] != hash(self)\
             and data['message'] == 'Mate?'\
             and uniform(0, 1) < self.mate_probability
 
-    def client_data(self):
-        return Message(hash(self), 'Sure!')
+    def server_response(self):
+        return PersonalMessage(hash(self), 'Sure!')
+
+    def client_message(self):
+        return PersonalMessage(hash(self), 'Mate?')
 
     def agree_to_mate(self):
         """ Once the robots agree to mate, send their genomes to the mating
             server.
         """
-        pass
+        pass  # TODO: Implement
