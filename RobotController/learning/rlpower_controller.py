@@ -56,6 +56,7 @@ class RLPowerController:
 
         result = []
         for index, e in x:
+            e = self._seek_value(e)
             result.append(np.interp(e, self._x2, self._interpolate_cache[index]))
 
         return np.array(result)
