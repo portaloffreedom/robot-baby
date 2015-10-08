@@ -57,7 +57,15 @@ class RLPowerAlgorithm:
 
     def save_in_ranking(self, current_fitness, current_spline):
         if len(self.ranking) < self.RANKING_SIZE:
-            bisect.insort(self.ranking, (current_fitness, current_spline))
+            bisect.insort(self.ranking, _RankingEntry((current_fitness, current_spline)))
         elif current_fitness > self.ranking[0][0]:
-            bisect.insort(self.ranking, (current_fitness, current_spline))
+            bisect.insort(self.ranking, _RankingEntry((current_fitness, current_spline)))
             self.ranking.pop(0)
+
+
+class _RankingEntry(tuple):
+    def __lt__(self, other):
+        return other[0] > self[0]
+
+    def __gt__(self, other):
+        return not self.__lt__(other)
