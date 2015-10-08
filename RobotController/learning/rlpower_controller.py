@@ -64,6 +64,12 @@ class RLPowerController:
         result = []
         for index, e in x:
             e = self._seek_value(e)
-            result.append(np.interp(e, self._x2, self._interpolate_cache[index]))
+            r = np.interp(e, self._x2, self._interpolate_cache[index])
+
+            # transform from domain [0,1] to domain [-1,1]
+            r = (r * 2) - 1
+
+            result.append(r)
+
 
         return np.array(result)
