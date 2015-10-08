@@ -1,7 +1,9 @@
-from hal.fake_hal import FakeHal
+#from hal.fake_hal import FakeHal
+from hal.hal import Hal
 from learning.rlpower_algorithm import RLPowerAlgorithm
 import time
 import logging
+from hal.outputs.servo import Servo
 
 __author__ = 'matteo'
 
@@ -15,8 +17,9 @@ class RobotBrain:
 
     def __init__(self, config_file_path):
         # TODO load config from file
+        self.servos = [Servo(x) for x in [6, 13, 19, 26, 16, 12, 20, 21]]
         config_options = []
-        self.HAL = FakeHal()
+        self.HAL = Hal(config_file_path)
         self.algorithm = RLPowerAlgorithm(config_options)
 
         self._next_check = time.time() + RobotBrain.TIME_CHECK_TIMEOUT
@@ -33,6 +36,11 @@ class RobotBrain:
         A life step, composed of several operations
         """
         self.HAL.step()
+        _input = time.time() / 10
+        _outputs = self.algorithm.controller.get_value(_input)
+
+        for index, servo in self.servos:
+            servo.move_to_position(_outputs[index])
 
         # if 30 seconds passed from last check:
         self._check_next_evaluation()
