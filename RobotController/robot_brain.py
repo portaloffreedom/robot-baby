@@ -41,7 +41,7 @@ class RobotBrain:
         A life step, composed of several operations
         """
         self.HAL.step()
-        _input = (time.time() - self._start_time) / 10
+        _input = (time.time() - self._start_time) / 4
         _outputs = self.algorithm.controller.get_value(_input)
         logging.info("output: {}".format(_outputs))
 
