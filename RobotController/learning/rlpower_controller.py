@@ -53,7 +53,7 @@ class RLPowerController:
         :return: interpolated values in a numpy.array object
         """
         if (type(x) is float) or (type(x) is int):
-            x = [_x for _x in range(len(self._interpolate_cache))]
+            x = [x for _x in range(len(self._interpolate_cache))]
         elif (type(x) is list) or (type(x) is np.ndarray):
             pass
         else:
