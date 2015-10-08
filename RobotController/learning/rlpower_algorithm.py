@@ -37,7 +37,7 @@ class RLPowerAlgorithm:
         for (fitness, spline) in self.ranking:
             total += fitness
             modifier += (spline - self._current_spline) * fitness
-        self._current_spline = self._current_spline + uniform + modifier / total
+        self._current_spline = self._current_spline + uniform + modigitfier / total
         self.controller.set_spline(self._current_spline)
 
     def get_current_fitness(self):
