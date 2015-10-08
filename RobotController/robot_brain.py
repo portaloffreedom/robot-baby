@@ -27,6 +27,7 @@ class RobotBrain:
         self.algorithm = RLPowerAlgorithm(config_options)
 
         self._next_check = time.time() + RobotBrain.TIME_CHECK_TIMEOUT
+        self._start_time = time.time()
 
     def live(self):
         """
@@ -40,7 +41,7 @@ class RobotBrain:
         A life step, composed of several operations
         """
         self.HAL.step()
-        _input = time.time() / 10
+        _input = (time.time() - self._start_time) / 10
         _outputs = self.algorithm.controller.get_value(_input)
         logging.info("output: {}".format(_outputs))
 
