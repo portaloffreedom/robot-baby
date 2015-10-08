@@ -52,6 +52,13 @@ class RLPowerController:
         :param x: an iterable object with a value for every row in the spline
         :return: interpolated values in a numpy.array object
         """
+        if (type(x) is float) or (type(x) is int):
+            x = [_x for _x in range(len(self._interpolate_cache))]
+        elif (type(x) is list) or (type(x) is np.ndarray):
+            pass
+        else:
+            raise ValueError("input is not a number nor an interable object")
+
         assert len(x) == len(self._interpolate_cache)
 
         result = []
