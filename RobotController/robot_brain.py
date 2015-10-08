@@ -17,7 +17,11 @@ class RobotBrain:
 
     def __init__(self, config_file_path):
         # TODO load config from file
-        self.servos = [Servo(x) for x in [6, 13, 19, 26, 16, 12, 20, 21]]
+        self.servos = []
+        for x in [6, 13, 19, 26, 16, 12, 20, 21]:
+            logging.info("creating servo {}".format(x))
+            self.servos.append(Servo(x))
+
         config_options = []
         self.HAL = Hal(config_file_path)
         self.algorithm = RLPowerAlgorithm(config_options)
@@ -38,8 +42,9 @@ class RobotBrain:
         self.HAL.step()
         _input = time.time() / 10
         _outputs = self.algorithm.controller.get_value(_input)
+        logging.info("output: {}".format(_outputs))
 
-        for index, servo in self.servos:
+        for index, servo in enumerate(self.servos):
             servo.move_to_position(_outputs[index])
 
         # if 30 seconds passed from last check:

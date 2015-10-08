@@ -8,6 +8,8 @@ __author__ = 'matteo'
 
 
 class RLPowerAlgorithm:
+    epsilon = 10 ** -10
+
     def __init__(self, config_parameters):
         # TODO: get the following parameters from config file
         self.RANKING_SIZE = 10
@@ -19,8 +21,8 @@ class RLPowerAlgorithm:
         self.ranking = []
         # Spline initialisation
         self._current_spline = np.array(
-            [[0.5 + random.normalvariate(0, self.SIGMA) for x in range(self._spline_size)] for y in
-             range(self.NUM_SERVOS)])
+            [[0.5 + random.normalvariate(0, self.SIGMA) for x in range(self._spline_size)]
+             for y in range(self.NUM_SERVOS)])
         self.controller = RLPowerController(self._current_spline)
 
     def next_evaluation(self, controller):
@@ -30,7 +32,7 @@ class RLPowerAlgorithm:
         uniform = np.array(
             [[random.normalvariate(0, self.SIGMA) for x in range(self._spline_size)] for y in range(self.NUM_SERVOS)])
         # Add a weighted average of the best splines seen so far
-        total = 0
+        total = self.epsilon  # something similar to 0, but not 0 ( division by 0 is evil )
         modifier = np.zeros(self._current_spline.shape)
         for (fitness, spline) in self.ranking:
             total += fitness
