@@ -15,7 +15,7 @@ class RLPowerAlgorithm:
         self.RANKING_SIZE = 10
         self.NUM_SERVOS = 8
         self.SIGMA = 0.2
-        self._spline_size = 2
+        self._spline_size = 3
         self._fitness_evaluation = 'manual'
 
         self.ranking = []
