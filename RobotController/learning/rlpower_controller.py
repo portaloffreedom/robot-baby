@@ -53,16 +53,16 @@ class RLPowerController:
         :return: interpolated values in a numpy.array object
         """
         if (type(x) is float) or (type(x) is int):
-            x = [_x for _x in range(len(self._interpolate_cache))]
+            x = [x for _x in range(len(self._interpolate_cache))]
         elif (type(x) is list) or (type(x) is np.ndarray):
             pass
         else:
-            raise ValueError("input is not a number nor an interable object")
+            raise ValueError("input is not a number nor an iterable object")
 
         assert len(x) == len(self._interpolate_cache)
 
         result = []
-        for index, e in x:
+        for index, e in enumerate(x):
             e = self._seek_value(e)
             r = np.interp(e, self._x2, self._interpolate_cache[index])
 
@@ -70,6 +70,5 @@ class RLPowerController:
             r = (r * 2) - 1
 
             result.append(r)
-
 
         return np.array(result)
