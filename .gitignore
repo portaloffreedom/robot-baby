@@ -36,3 +36,6 @@
 RobotCrossover/DerivedData
 RobotCrossover/dist
 DerivedData
+
+# Why do I have to do this?
+.DS_Store

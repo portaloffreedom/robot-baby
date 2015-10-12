@@ -9,7 +9,8 @@ class Hal:
         self._servos = []
         self._n_servo = 8
         for i in range(self._n_servo):
-            self._servos.append(Servo(i))
+            #self._servos.append(Servo(i))
+            pass
 
     def step(self):
         # TODO

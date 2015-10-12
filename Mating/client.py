@@ -1,31 +1,26 @@
 import json
 from message import Message
-from network import UDP_IP, UDP_PORT
-from socket import socket, AF_INET, SOCK_DGRAM, SOL_SOCKET, SO_REUSEADDR
+from network import UDP_PORT
+from socket import socket, AF_INET, SOCK_DGRAM
 from threading import Thread
 
 
 class Client(Thread):
-
-    def __init__(self, criterion=None, response=None):
+    """ Broadcasts data to the Wi-Fi, by convention encoded as JSON strings.
+    """
+    def __init__(self, message=None):
+        """ Should override message function in offsping. """
         Thread.__init__(self)
         self.s = socket(AF_INET, SOCK_DGRAM)
-        self.s.setsockopt(SOL_SOCKET, SO_REUSEADDR, 1)
-        self.s.bind((UDP_IP, UDP_PORT))
-        self.crt = criterion or should_respond
-        self.rsp = response or default_response
+        self.address = ('localhost', UDP_PORT)
+        self.message = message or default_message
 
     def run(self):
         while True:
-            packet, addr = self.s.recvfrom(1024)
-            if self.crt(json.loads(packet)):
-                data = self.rsp()
-                self.s.sendto(json.dumps(data.__dict__), (UDP_IP, UDP_PORT))
+            data = self.message()
+            self.s.sendto(json.dumps(data.__dict__), self.address)
 
 
-def default_response():
+def default_message():
+    """ Returns an empty message. """
     return Message()
-
-
-def should_respond(data):
-    return True
