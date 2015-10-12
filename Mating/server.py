@@ -5,6 +5,8 @@ from socket import (socket, AF_INET, SOCK_DGRAM, SOL_SOCKET, SO_REUSEADDR,
                     SO_REUSEPORT)
 from threading import Thread
 
+DEFAULT_PACKET_SIZE = 1024
+
 
 class Server(Thread):
     """ Receives data from the Wi-Fi, by convention encoded as JSON strings,
@@ -26,7 +28,7 @@ class Server(Thread):
     def run(self):
         # Listen to the network
         while True:
-            packet, addr = self.s.recvfrom(1024)
+            packet, addr = self.s.recvfrom(DEFAULT_PACKET_SIZE)
             # If packet received satisfies criteria
             if self.criterion(json.loads(packet)):
                 data = self.response()
