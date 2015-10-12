@@ -1,7 +1,8 @@
 import pigpio
 import time
 
-class Servo():
+
+class Servo:
     """Class for controlling servos using PWM signals sent to GPIO pins
 
      Attributes:
@@ -26,7 +27,6 @@ class Servo():
         else:
             self._maxPWM, self._minPWM = self.POSITION_END, self.POSITION_BEGIN
 
-
     def move_to_position(self, position):
         """Sends signal to the engine to move to a specified position.
         Position should be in range [-1, 1] with 0 being the middle."""
@@ -39,12 +39,10 @@ class Servo():
 
         self._pi.set_PWM_dutycycle(self._port, position)
 
-
     def center(self):
-	"""Set servo position to center"""
+        """Set servo position to center"""
         self.move_to_position(0)
 
-
     def off(self):
-	"""Turn PWM signalling off"""
-        self._pi.set_PWM_dutycycle(self._port, 0);
+        """Turn PWM signalling off"""
+        self._pi.set_PWM_dutycycle(self._port, 0)
