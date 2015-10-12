@@ -1,8 +1,9 @@
-from robot import Robot
+from robot import EvolutionaryRobot
 
-r = Robot('r-baby')
+r1 = EvolutionaryRobot('r1-baby')
+r2 = EvolutionaryRobot('r2-baby')
 
-command = raw_input()
 while True:
+    command = raw_input()
     if command == 'exit':
         break
