@@ -30,6 +30,9 @@
 # Compiled python files
 *.pyc
 
+# for MacOS
+.DS_Store
+
 RobotCrossover/DerivedData
 RobotCrossover/dist
 DerivedData
