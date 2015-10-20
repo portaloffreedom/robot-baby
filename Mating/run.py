@@ -1,7 +1,7 @@
 from robot import EvolutionaryRobot
 
-r1 = EvolutionaryRobot('r1-baby')
-r2 = EvolutionaryRobot('r2-baby')
+r1 = EvolutionaryRobot('gecko')
+r2 = EvolutionaryRobot('spider')
 
 while True:
     command = raw_input()
