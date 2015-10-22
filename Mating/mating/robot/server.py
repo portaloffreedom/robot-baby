@@ -1,14 +1,13 @@
 import json
 from message import Message
-from network import UDP_PORT
 from socket import (socket, AF_INET, SOCK_DGRAM, SOL_SOCKET, SO_REUSEADDR,
                     SO_REUSEPORT)
 from threading import Thread
 
-DEFAULT_PACKET_SIZE = 1024
+from mating.network import DEFAULT_PACKET_SIZE, UDP_PORT
 
 
-class Server(Thread):
+class UDPServerThread(Thread):
     """ Receives data from the Wi-Fi, by convention encoded as JSON strings,
         and decides whether or not to respond.
     """
@@ -30,17 +29,18 @@ class Server(Thread):
         while True:
             packet, addr = self.s.recvfrom(DEFAULT_PACKET_SIZE)
             # If packet received satisfies criteria
-            if self.criterion(json.loads(packet)):
-                data = self.response()
+            rcv_data = json.loads(packet)
+            if self.criterion(data=rcv_data):
+                rsp_data = self.response(data=rcv_data)
                 # Respond
-                self.s.sendto(json.dumps(data.__dict__), self.address)
+                self.s.sendto(json.dumps(rsp_data.__dict__), self.address)
 
 
-def default_response():
+def default_response(**kwargs):
     """ Returns an empty message. """
     return Message()
 
 
-def default_criterion(data):
+def default_criterion(**kwargs):
     """ Always returns true. """
     return True
