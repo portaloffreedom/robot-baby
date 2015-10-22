@@ -1,9 +1,10 @@
 import json
 from message import Message
-from network import DEFAULT_PACKET_SIZE, UDP_PORT
 from socket import (socket, AF_INET, SOCK_DGRAM, SOL_SOCKET, SO_REUSEADDR,
                     SO_REUSEPORT)
 from threading import Thread
+
+from mating.network import DEFAULT_PACKET_SIZE, UDP_PORT
 
 
 class UDPServerThread(Thread):

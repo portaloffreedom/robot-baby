@@ -1,8 +1,9 @@
 import json
 from message import Message
-from network import UDP_IP, UDP_PORT, TCP_IP, TCP_PORT
 from socket import socket, AF_INET, SOCK_DGRAM, SOCK_STREAM
 from threading import Thread
+
+from mating.network import UDP_IP, UDP_PORT, TCP_IP, TCP_PORT
 
 
 class UDPClientThread(Thread):

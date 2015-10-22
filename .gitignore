@@ -30,12 +30,13 @@
 # Compiled python files
 *.pyc
 
-# for MacOS
+# For MacOS
 .DS_Store
+
+# Implementation specific files
+Mating/build
 
 RobotCrossover/DerivedData
 RobotCrossover/dist
-DerivedData
 
-# Why do I have to do this?
-.DS_Store
+DerivedData
