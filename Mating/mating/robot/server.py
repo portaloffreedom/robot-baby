@@ -1,9 +1,9 @@
 import json
-from message import Message
 from socket import (socket, AF_INET, SOCK_DGRAM, SOL_SOCKET, SO_REUSEADDR,
                     SO_REUSEPORT)
 from threading import Thread
 
+from mating.message import Message
 from mating.network import DEFAULT_PACKET_SIZE, UDP_PORT
 
 

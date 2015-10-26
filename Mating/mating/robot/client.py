@@ -1,8 +1,8 @@
 import json
-from message import Message
 from socket import socket, AF_INET, SOCK_DGRAM, SOCK_STREAM
 from threading import Thread
 
+from mating.message import Message
 from mating.network import UDP_IP, UDP_PORT, TCP_IP, TCP_PORT
 
 

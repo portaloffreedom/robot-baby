@@ -1,3 +1,6 @@
+MESSAGE_INTERVAL_SEC = 2
+
+
 class Message:
 
     def __init__(self, message=None):

@@ -26,7 +26,7 @@ def run_mating_server():
         for pair_id in mates:
             # If both robots have agreed to mate
             if len(mates[pair_id]) == 2:
-                print(mates[pair_id])
+                print mates[pair_id]
                 pass  # TODO: Call the Cpp module that does the crossover
 
     conn.close()
