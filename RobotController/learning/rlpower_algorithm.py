@@ -35,15 +35,16 @@ class RLPowerAlgorithm:
         self.controller = RLPowerController(self._current_spline)
 
     def next_evaluation(self, controller):
+        logging.info("current spline size: {}".format(self._current_spline_size))
         current_fitness = self.get_current_fitness()
         self.save_in_ranking(current_fitness, self._current_spline)
         self._current_evaluation += 1
         if math.floor((self._end_spline_size - self._initial_spline_size)/self._number_of_fitness_evaluations *
-                              self._current_evaluation) + 3 > self._current_evaluation:
+                              self._current_evaluation) + 3 > self._current_spline_size:
             self._current_spline_size += 1
             self._current_spline = self.recalculate_spline(self._current_spline, self._current_spline_size)
             for number, (fitness, rspline) in enumerate(self.ranking):
-                self.ranking[number] = _RankingEntry(fitness, self.recalculate_spline(rspline, self._current_spline_size))
+                self.ranking[number] = _RankingEntry((fitness, self.recalculate_spline(rspline, self._current_spline_size)))
         # Add random noise to the spline
         uniform = np.array(
             [[random.normalvariate(0, self._sigma) for x in range(self._current_spline_size)]
