@@ -20,7 +20,7 @@ class RobotBrain:
         try:
             with open(config_file_path) as config_file:
                 config_options = json.load(config_file)
-        except FileNotFoundError:
+        except IOError:
             logging.error("Configuration file could not be read: {}".format(config_file_path))
             raise SystemExit
 
