@@ -43,7 +43,7 @@ class RobotBrain:
         self.HAL.step()
         _input = (time.time() - self._start_time) / 4
         _outputs = self.algorithm.controller.get_value(_input)
-        logging.info("output: {}".format(_outputs))
+#        logging.info("output: {}".format(_outputs))
 
         for index, servo in enumerate(self.servos):
             servo.move_to_position(_outputs[index])
