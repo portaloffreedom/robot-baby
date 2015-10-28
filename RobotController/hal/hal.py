@@ -4,10 +4,9 @@ __author__ = 'matteo'
 
 
 class Hal:
-    def __init__(self, controller_config):
-        # TODO load it from file "controller_config"
+    def __init__(self, config_options):
         self._servos = []
-        self._n_servo = 8
+        self._n_servo = len(config_options['servo_pins'])
         for i in range(self._n_servo):
             #self._servos.append(Servo(i))
             pass

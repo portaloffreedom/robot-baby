@@ -13,19 +13,18 @@ class RLPowerAlgorithm:
     epsilon = 10 ** -10
 
     def __init__(self, config_parameters):
-        # TODO: get the following parameters from config file
-        self.RANKING_SIZE = 10
-        self.NUM_SERVOS = 8
+        self.RANKING_SIZE = config_parameters['ranking_size']
+        self.NUM_SERVOS = len(config_parameters['servo_pins'])
         # In the original algorithm they used variance and square-rooted it every time. We're using standard deviation
         # and decay parameter is also a square root of the parameter from original algorithm
-        self._sigma = math.sqrt(0.008)
-        self._sigma_decay = math.sqrt(0.98)
-        self._initial_spline_size = 3
+        self._sigma = math.sqrt(config_parameters['variance'])
+        self._sigma_decay = math.sqrt(config_parameters['sigma_decay_squared'])
+        self._initial_spline_size = config_parameters['initial_spline_size']
         self._current_spline_size = self._initial_spline_size
-        self._end_spline_size = 100
-        self._number_of_fitness_evaluations = 500
+        self._end_spline_size = config_parameters['end_spline_size']
+        self._number_of_fitness_evaluations = config_parameters['number_of_fitness_evaluations']
         self._current_evaluation = 0
-        self._fitness_evaluation = 'manual'
+        self._fitness_evaluation = config_parameters['fitness_evaluation_method']
 
         self.ranking = []
         # Spline initialisation
