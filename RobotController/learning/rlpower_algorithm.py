@@ -1,4 +1,5 @@
 import bisect
+import json
 import logging
 import math
 import numpy as np
@@ -20,17 +21,25 @@ class RLPowerAlgorithm:
         self._sigma = math.sqrt(config_parameters['variance'])
         self._sigma_decay = math.sqrt(config_parameters['sigma_decay_squared'])
         self._initial_spline_size = config_parameters['initial_spline_size']
-        self._current_spline_size = self._initial_spline_size
         self._end_spline_size = config_parameters['end_spline_size']
         self._number_of_fitness_evaluations = config_parameters['number_of_fitness_evaluations']
-        self._current_evaluation = 0
         self._fitness_evaluation = config_parameters['fitness_evaluation_method']
+        self._runtime_data_file = config_parameters['runtime_data_file']
+        self._current_spline_size = self._initial_spline_size
+        self._current_evaluation = 0
 
-        self.ranking = []
-        # Spline initialisation
-        self._current_spline = np.array(
-            [[0.5 + random.normalvariate(0, self._sigma) for x in range(self._initial_spline_size)]
-             for y in range(self.NUM_SERVOS)])
+        self._runtime_data = self._load_runtime_data_from_file(self._runtime_data_file)
+        if 'last_spline' in self._runtime_data:
+            self.ranking = self._runtime_data['ranking']
+            self._current_spline = self._runtime_data['last_spline']
+            self._sigma = self._runtime_data['sigma']
+            self._current_spline_size = len(self._current_spline)
+        else:
+            self.ranking = []
+            # Spline initialisation
+            self._current_spline = np.array(
+                [[0.5 + random.normalvariate(0, self._sigma) for x in range(self._initial_spline_size)]
+                    for y in range(self.NUM_SERVOS)])
         self.controller = RLPowerController(self._current_spline)
 
     def next_evaluation(self, controller):
@@ -57,6 +66,7 @@ class RLPowerAlgorithm:
         self._current_spline = self._current_spline + uniform + modifier / total
         self.controller.set_spline(self._current_spline)
         self._sigma *= self._sigma_decay
+        self._save_runtime_data_to_file(self._runtime_data_file)
 
     def recalculate_spline(self, spline, spline_size):
         return np.apply_along_axis(self._interpolate, 1, spline, spline_size + 1)
@@ -89,7 +99,23 @@ class RLPowerAlgorithm:
         elif current_fitness > self.ranking[0][0]:
             bisect.insort(self.ranking, _RankingEntry((current_fitness, current_spline)))
             self.ranking.pop(0)
+        self._save_runtime_data_to_file(self._runtime_data_file)
 
+    def _load_runtime_data_from_file(self, filename):
+        try:
+            with open(filename) as json_data:
+                d = json.load(json_data)
+                return d
+        except IOError:
+            return {}
+
+    def _save_runtime_data_to_file(self, filename):
+        data = {'ranking': self.ranking,
+                'last_spline': self._current_spline,
+                'sigma': self._sigma
+                }
+        with open(filename, 'w') as outfile:
+            json.dump(data, outfile)
 
 class _RankingEntry(tuple):
     def __lt__(self, other):
