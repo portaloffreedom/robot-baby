@@ -108,14 +108,15 @@ class RLPowerAlgorithm:
                 ranking_serialized = d['ranking']
                 ranking = [_RankingEntry((elem['fitness'], elem['spline'])) for elem in ranking_serialized]
                 d['ranking'] = ranking
+                d['last_spline'] = np.array[d['last_spline']]
                 return d
         except IOError:
             return {}
 
     def _save_runtime_data_to_file(self, filename):
-        ranking_serialized = [{'fitness': f, 'spline': s.to_list()} for (f, s) in self.ranking]
+        ranking_serialized = [{'fitness': f, 'spline': s.tolist()} for (f, s) in self.ranking]
         data = {'ranking': ranking_serialized,
-                'last_spline': self._current_spline,
+                'last_spline': self._current_spline.tolist(),
                 'sigma': self._sigma
                 }
         with open(filename, 'w') as outfile:
