@@ -33,7 +33,7 @@ class RLPowerAlgorithm:
             self.ranking = self._runtime_data['ranking']
             self._current_spline = self._runtime_data['last_spline']
             self._sigma = self._runtime_data['sigma']
-            self._current_spline_size = len(self._current_spline)
+            self._current_spline_size = len(self._current_spline[0])
             self._current_evaluation = self._runtime_data['evaluation']
         else:
             self.ranking = []
