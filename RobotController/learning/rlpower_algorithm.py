@@ -108,7 +108,7 @@ class RLPowerAlgorithm:
                 ranking_serialized = d['ranking']
                 ranking = [_RankingEntry((elem['fitness'], elem['spline'])) for elem in ranking_serialized]
                 d['ranking'] = ranking
-                d['last_spline'] = np.array[d['last_spline']]
+                d['last_spline'] = np.array(d['last_spline'])
                 return d
         except IOError:
             return {}
