@@ -105,12 +105,16 @@ class RLPowerAlgorithm:
         try:
             with open(filename) as json_data:
                 d = json.load(json_data)
+                ranking_serialized = d['ranking']
+                ranking = [_RankingEntry((elem['fitness'], elem['spline'])) for elem in ranking_serialized]
+                d['ranking'] = ranking
                 return d
         except IOError:
             return {}
 
     def _save_runtime_data_to_file(self, filename):
-        data = {'ranking': self.ranking,
+        ranking_serialized = [{'fitness': f, 'spline': s.to_list()} for (f, s) in self.ranking]
+        data = {'ranking': ranking_serialized,
                 'last_spline': self._current_spline,
                 'sigma': self._sigma
                 }
