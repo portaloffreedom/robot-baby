@@ -34,6 +34,7 @@ class RLPowerAlgorithm:
             self._current_spline = self._runtime_data['last_spline']
             self._sigma = self._runtime_data['sigma']
             self._current_spline_size = len(self._current_spline)
+            self._current_evaluation = self._runtime_data['evaluation']
         else:
             self.ranking = []
             # Spline initialisation
@@ -106,7 +107,7 @@ class RLPowerAlgorithm:
             with open(filename) as json_data:
                 d = json.load(json_data)
                 ranking_serialized = d['ranking']
-                ranking = [_RankingEntry((elem['fitness'], elem['spline'])) for elem in ranking_serialized]
+                ranking = [_RankingEntry((elem['fitness'], np.array(elem['spline']))) for elem in ranking_serialized]
                 d['ranking'] = ranking
                 d['last_spline'] = np.array(d['last_spline'])
                 return d
@@ -117,7 +118,8 @@ class RLPowerAlgorithm:
         ranking_serialized = [{'fitness': f, 'spline': s.tolist()} for (f, s) in self.ranking]
         data = {'ranking': ranking_serialized,
                 'last_spline': self._current_spline.tolist(),
-                'sigma': self._sigma
+                'sigma': self._sigma,
+                'evaluation': self._current_evaluation
                 }
         with open(filename, 'w') as outfile:
             json.dump(data, outfile)
