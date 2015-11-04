@@ -1,0 +1,6 @@
+*.kdev4
+/build
+*.kate-swp
+/run_folder/*.clb
+/run_folder/SURF_output.jpg
+/run_folder/screenshot*.jpg
