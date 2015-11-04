@@ -2,13 +2,17 @@
 #include <cstdio>
 #include "opencv2/core/core.hpp"
 #include "opencv2/highgui/highgui.hpp"
-#include "opencv2/ocl/ocl.hpp"
-#include "opencv2/nonfree/ocl.hpp"
 #include "opencv2/calib3d/calib3d.hpp"
 #include "opencv2/nonfree/nonfree.hpp"
+#include "opencv2/imgproc/imgproc.hpp"
 
 using namespace cv;
+
+#ifdef USE_GPU
+#include "opencv2/ocl/ocl.hpp"
+#include "opencv2/nonfree/ocl.hpp"
 using namespace cv::ocl;
+#endif
 
 const int LOOP_NUM = 10;
 const int GOOD_PTS_MAX = 50;
@@ -145,17 +149,24 @@ int process(VideoCapture& capture, const Mat& target, bool useGPU) {
     Mat img_matches;
     std::vector<Point2f> cpu_corner;
     
+    #ifdef USE_GPU
     // gpu stuff
     oclMat gpu_frame, gpu_target;
     oclMat keypoints1GPU, keypoints2GPU;
     oclMat descriptors1GPU, descriptors2GPU;
     SURFDetector<SURF_OCL> ocl_surf;
     SURFMatcher<BFMatcher_OCL>  ocl_matcher;
+    #endif
     
+    
+#ifdef USE_GPU
     if (useGPU) {
         gpu_target = target;
         ocl_surf(gpu_target, oclMat(), keypoints1, descriptors1GPU);
     } else {
+#else
+    {
+#endif
         cpp_surf(target, Mat(), keypoints1, descriptors1CPU);
     }
     
@@ -167,11 +178,16 @@ int process(VideoCapture& capture, const Mat& target, bool useGPU) {
         //cvtColor(frame, frame_gray, CV_BGR2GRAY);
         
         // search for QR-code
+
+#ifdef USE_GPU
         if (useGPU) {
             gpu_frame = frame;
             ocl_surf(gpu_frame, oclMat(), keypoints2, descriptors2GPU);
             ocl_matcher.match(descriptors1GPU, descriptors2GPU, matches);
         } else {
+#else
+        {
+#endif
             cpp_surf(frame, Mat(), keypoints2, descriptors2CPU);
             cpp_matcher.match(descriptors1CPU, descriptors2CPU, matches);
         }
@@ -189,7 +205,7 @@ int process(VideoCapture& capture, const Mat& target, bool useGPU) {
         case 27: //escape key
             return EXIT_SUCCESS;
         case ' ': //Save an image
-            sprintf(filename,"screenshot%.3d.jpg",n++);
+            sprintf(filename,"filename%.3d.jpg",n++);
             imwrite(filename,img_matches);
             std::cout << "Saved " << filename << std::endl;
             break;
@@ -223,7 +239,6 @@ int main(int argc, char* argv[])
     }
 
     Mat cpu_img1, cpu_img2, cpu_img1_grey, cpu_img2_grey;
-    oclMat img1, img2;
     bool useCPU = cmd.get<bool>("c");
     bool useGPU = false;
     bool useALL = cmd.get<bool>("a");
@@ -233,11 +248,14 @@ int main(int argc, char* argv[])
     cpu_img1 = imread(cmd.get<std::string>("l"));
     CV_Assert(!cpu_img1.empty());
     cvtColor(cpu_img1, cpu_img1_grey, CV_BGR2GRAY);
-    img1 = cpu_img1_grey;
 
     cpu_img2 = imread(cmd.get<std::string>("r"));
     CV_Assert(!cpu_img2.empty());
     cvtColor(cpu_img2, cpu_img2_grey, CV_BGR2GRAY);
+    
+#ifdef USE_GPU
+    oclMat img1, img2;
+    img1 = cpu_img1_grey;
     img2 = cpu_img2_grey;
 
     if (useALL)
@@ -250,6 +268,14 @@ int main(int argc, char* argv[])
                 << "Device name:"
                 << cv::ocl::Context::getContext()->getDeviceInfo().deviceName
                 << std::endl;
+#else
+    // force cpu because GPU is not supported
+    if (useALL || useGPU) {
+        std::cerr << "GPU not supported, defaulting to CPU" << std::endl;
+    }
+    useCPU = true;
+    useGPU = false;
+#endif
 
     double surf_time = 0.;
 
@@ -263,15 +289,16 @@ int main(int argc, char* argv[])
 
     Mat descriptors1CPU, descriptors2CPU;
 
-    oclMat keypoints1GPU, keypoints2GPU;
-    oclMat descriptors1GPU, descriptors2GPU;
-
     //instantiate detectors/matchers
     SURFDetector<SURF>     cpp_surf;
-    SURFDetector<SURF_OCL> ocl_surf;
-
     SURFMatcher<BFMatcher>      cpp_matcher;
+    
+#ifdef USE_GPU
+    oclMat keypoints1GPU, keypoints2GPU;
+    oclMat descriptors1GPU, descriptors2GPU;
+    SURFDetector<SURF_OCL> ocl_surf;
     SURFMatcher<BFMatcher_OCL>  ocl_matcher;
+#endif
 
     //-- start of timing section
     if (useCPU)
@@ -290,6 +317,7 @@ int main(int argc, char* argv[])
         surf_time = getTime();
         std::cout << "SURF run time: " << surf_time / LOOP_NUM << " ms" << std::endl<<"\n";
     }
+#ifdef USE_GPU
     else if(useGPU)
     {
         for (int i = 0; i <= LOOP_NUM; i++)
@@ -339,6 +367,11 @@ int main(int argc, char* argv[])
         std::cout << "(OCL)SURF run time: " << surf_time / LOOP_NUM << " ms" << std::endl<<"\n";
 
     }
+#else
+    else {
+        CV_Assert(useCPU);
+    }
+#endif
 
     //--------------------------------------------------------------------------
     std::vector<Point2f> cpu_corner;
@@ -404,9 +437,9 @@ int main(int argc, char* argv[])
         std::cerr << "Failed to open the video device, video file or image sequence!\n" << std::endl;
         return 1;
     }
-    capture.set(CV_CAP_PROP_FRAME_WIDTH,1600);
-    capture.set(CV_CAP_PROP_FRAME_HEIGHT,1200);
+    capture.set(CV_CAP_PROP_FRAME_WIDTH,1920);
+    capture.set(CV_CAP_PROP_FRAME_HEIGHT,1080);
     
     
-    return process(capture, cpu_img1, false);
+    return process(capture, cpu_img1, useGPU);
 }
