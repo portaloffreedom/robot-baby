@@ -3,7 +3,6 @@
 #include "opencv2/core/core.hpp"
 #include "opencv2/highgui/highgui.hpp"
 #include "opencv2/calib3d/calib3d.hpp"
-#include "opencv2/nonfree/nonfree.hpp"
 #include "opencv2/imgproc/imgproc.hpp"
 
 using namespace cv;
@@ -11,6 +10,7 @@ using namespace cv;
 #ifdef USE_GPU
 #include "opencv2/ocl/ocl.hpp"
 #include "opencv2/nonfree/ocl.hpp"
+#include "opencv2/nonfree/nonfree.hpp"
 using namespace cv::ocl;
 #endif
 
