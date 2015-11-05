@@ -1,5 +1,6 @@
 #include <iostream>
 #include <cstdio>
+#include <sys/time.h>
 #include "opencv2/core/core.hpp"
 #include "opencv2/highgui/highgui.hpp"
 #include "opencv2/calib3d/calib3d.hpp"
@@ -10,9 +11,10 @@ using namespace cv;
 #ifdef USE_GPU
 #include "opencv2/ocl/ocl.hpp"
 #include "opencv2/nonfree/ocl.hpp"
-#include "opencv2/nonfree/nonfree.hpp"
 using namespace cv::ocl;
 #endif
+
+#include "opencv2/nonfree/nonfree.hpp"
 
 const int LOOP_NUM = 10;
 const int GOOD_PTS_MAX = 50;
@@ -132,6 +134,12 @@ static Mat drawGoodMatches(
     return img_matches;
 }
 
+float time_difference(const timeval &end, const timeval &start) {
+    float fSeconds = (float)(end.tv_sec - start.tv_sec) * 1000.0f;
+    float fFraction = (float)(end.tv_usec - start.tv_usec) * 0.001f;
+    return fSeconds + fFraction;
+}
+
 int process(VideoCapture& capture, const Mat& target, bool useGPU) {
     int n = 0;
     char filename[200];
@@ -139,21 +147,29 @@ int process(VideoCapture& capture, const Mat& target, bool useGPU) {
     std::cout << "press space to save a picture. q or esc to quit" << std::endl;
     namedWindow(window_name, WINDOW_NORMAL); //resizable window;
     Mat frame, frame_gray, target_gray;
-    //cvtColor(target, target_gray, CV_BGR2GRAY);
+    cvtColor(target, target_gray, CV_BGR2GRAY);
     
-    SURFDetector<SURF> cpp_surf;
+    SURFDetector<SURF> cpp_surf(800);
     SURFMatcher<BFMatcher> cpp_matcher;
     vector<KeyPoint> keypoints1, keypoints2;
     Mat descriptors1CPU, descriptors2CPU;
     vector<DMatch> matches;
     Mat img_matches;
     std::vector<Point2f> cpu_corner;
+    Mat mask1, mask2;
+    
+    timeval start, frame_finish, features_finish, match_finish, draw_finish, total_finish;
+    
+    const int fontFace = FONT_HERSHEY_COMPLEX_SMALL;
+    const double fontScale = 1;
+    const int fontThickness = 1;
+    const Size fontSize = getTextSize("features: 40ms", fontFace, fontScale, fontThickness, 0);
     
     #ifdef USE_GPU
     // gpu stuff
     oclMat gpu_frame, gpu_target;
-    oclMat keypoints1GPU, keypoints2GPU;
     oclMat descriptors1GPU, descriptors2GPU;
+    oclMat oclMask1, oclMask2;
     SURFDetector<SURF_OCL> ocl_surf;
     SURFMatcher<BFMatcher_OCL>  ocl_matcher;
     #endif
@@ -162,40 +178,79 @@ int process(VideoCapture& capture, const Mat& target, bool useGPU) {
 #ifdef USE_GPU
     if (useGPU) {
         gpu_target = target;
-        ocl_surf(gpu_target, oclMat(), keypoints1, descriptors1GPU);
+        ocl_surf(gpu_target, oclMask1, keypoints1, descriptors1GPU);
     } else {
 #else
     {
 #endif
-        cpp_surf(target, Mat(), keypoints1, descriptors1CPU);
+        cpp_surf(target_gray, mask1, keypoints1, descriptors1CPU);
     }
     
     while (true) {
+        gettimeofday(&start, 0);
+        
         capture >> frame;
         if (frame.empty())
             break;
         
-        //cvtColor(frame, frame_gray, CV_BGR2GRAY);
+        cvtColor(frame, frame_gray, CV_BGR2GRAY);
+        
+        gettimeofday(&frame_finish, 0);
         
         // search for QR-code
 
 #ifdef USE_GPU
         if (useGPU) {
             gpu_frame = frame;
-            ocl_surf(gpu_frame, oclMat(), keypoints2, descriptors2GPU);
+            ocl_surf(gpu_frame, oclMask2, keypoints2, descriptors2GPU);
+            gettimeofday(&features_finish, 0);
             ocl_matcher.match(descriptors1GPU, descriptors2GPU, matches);
+            gettimeofday(&match_finish, 0);
         } else {
 #else
         {
 #endif
-            cpp_surf(frame, Mat(), keypoints2, descriptors2CPU);
+            cpp_surf(frame_gray, mask2, keypoints2, descriptors2CPU);
+            gettimeofday(&features_finish, 0);
             cpp_matcher.match(descriptors1CPU, descriptors2CPU, matches);
+            gettimeofday(&match_finish, 0);
         }
         
-        img_matches = drawGoodMatches(target, frame, keypoints1, keypoints2, matches, cpu_corner);
+        img_matches = drawGoodMatches(target_gray, frame_gray, keypoints1, keypoints2, matches, cpu_corner);
+        
+        gettimeofday(&draw_finish, 0);
+        total_finish = draw_finish;
         
         // end search
-
+        
+        std::stringstream frame_str, features_str, match_str, draw_str, total_str;
+        frame_str    << time_difference(frame_finish, start)           << "ms - frame";
+        features_str << time_difference(features_finish, frame_finish) << "ms - features";
+        match_str    << time_difference(match_finish, features_finish) << "ms - match";
+        draw_str     << time_difference(draw_finish, match_finish)     << "ms - draw";
+        total_str    << time_difference(total_finish, start)           << "ms - total";
+        
+        CvPoint str_pos = cvPoint(30, 310);
+        putText(img_matches, frame_str.str(), str_pos, 
+                    fontFace, fontScale, cvScalar(200,200,250), fontThickness, CV_AA);
+        
+        str_pos.y += fontSize.height * 1.5;
+        putText(img_matches, features_str.str(), str_pos, 
+                    fontFace, fontScale, cvScalar(200,200,250), fontThickness, CV_AA);
+        
+        str_pos.y += fontSize.height * 1.5;
+        putText(img_matches, match_str.str(), str_pos, 
+                    fontFace, fontScale, cvScalar(200,200,250), fontThickness, CV_AA);
+        
+        str_pos.y += fontSize.height * 1.5;
+        putText(img_matches, draw_str.str(), str_pos, 
+                    fontFace, fontScale, cvScalar(200,200,250), fontThickness, CV_AA);
+        
+        str_pos.y += fontSize.height * 1.5;
+        putText(img_matches, total_str.str(), str_pos, 
+                    fontFace, fontScale, cvScalar(200,200,250), fontThickness, CV_AA);
+        
+        
         imshow(window_name, img_matches);
         char key = (char)waitKey(1); //delay N millis, usually long enough to display and capture input
 
@@ -252,16 +307,21 @@ int main(int argc, char* argv[])
     cpu_img2 = imread(cmd.get<std::string>("r"));
     CV_Assert(!cpu_img2.empty());
     cvtColor(cpu_img2, cpu_img2_grey, CV_BGR2GRAY);
-    
-#ifdef USE_GPU
-    oclMat img1, img2;
-    img1 = cpu_img1_grey;
-    img2 = cpu_img2_grey;
 
+#ifdef USE_GPU
+    
     if (useALL)
         useCPU = useGPU = false;
     else if(!useCPU && !useALL)
         useGPU = true;
+    
+#endif
+    /*
+#ifdef USE_GPU
+
+    oclMat img1, img2;
+    img1 = cpu_img1_grey;
+    img2 = cpu_img2_grey;
 
     if(!useCPU)
         std::cout
@@ -283,9 +343,6 @@ int main(int argc, char* argv[])
     vector<KeyPoint> keypoints1, keypoints2;
     vector<DMatch> matches;
 
-    vector<KeyPoint> gpu_keypoints1;
-    vector<KeyPoint> gpu_keypoints2;
-    vector<DMatch> gpu_matches;
 
     Mat descriptors1CPU, descriptors2CPU;
 
@@ -294,6 +351,10 @@ int main(int argc, char* argv[])
     SURFMatcher<BFMatcher>      cpp_matcher;
     
 #ifdef USE_GPU
+    vector<KeyPoint> gpu_keypoints1;
+    vector<KeyPoint> gpu_keypoints2;
+    vector<DMatch> gpu_matches;
+    
     oclMat keypoints1GPU, keypoints2GPU;
     oclMat descriptors1GPU, descriptors2GPU;
     SURFDetector<SURF_OCL> ocl_surf;
@@ -429,16 +490,17 @@ int main(int argc, char* argv[])
         imshow("ocl surf matches", ocl_img_matches);
     }
     //waitKey(0);
+    */
     
-    VideoCapture capture(0); //try to open string, this will attempt to open it as a video file or image sequence
+    VideoCapture capture( CV_CAP_ANY ); //try to open string, this will attempt to open it as a video file or image sequence
     if (!capture.isOpened()) //if this fails, try to open as a video camera, through the use of an integer param
         capture.open(0);
     if (!capture.isOpened()) {
         std::cerr << "Failed to open the video device, video file or image sequence!\n" << std::endl;
         return 1;
     }
-    capture.set(CV_CAP_PROP_FRAME_WIDTH,1920);
-    capture.set(CV_CAP_PROP_FRAME_HEIGHT,1080);
+    capture.set(CV_CAP_PROP_FRAME_WIDTH,1600);
+    capture.set(CV_CAP_PROP_FRAME_HEIGHT,1200);
     
     
     return process(capture, cpu_img1, useGPU);
