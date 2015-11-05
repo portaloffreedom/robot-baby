@@ -1,7 +1,8 @@
-#from hal.fake_hal import FakeHal
+# from hal.fake_hal import FakeHal
 from hal.hal import Hal
 from learning.rlpower_algorithm import RLPowerAlgorithm
 import time
+import json
 import logging
 from hal.outputs.servo import Servo
 
@@ -16,14 +17,20 @@ class RobotBrain:
     TIME_CHECK_TIMEOUT = 30  # in seconds
 
     def __init__(self, config_file_path):
-        # TODO load config from file
+        try:
+            with open(config_file_path) as config_file:
+                config_options = json.load(config_file)
+        except IOError:
+            logging.error("Configuration file could not be read: {}".format(config_file_path))
+            raise SystemExit
+
         self.servos = []
-        for x in [6, 13, 19, 26, 16, 12, 20, 21]:
+        for x in config_options['servo_pins']:
             logging.info("creating servo {}".format(x))
             self.servos.append(Servo(x))
 
-        config_options = []
-        self.HAL = Hal(config_file_path)
+#        config_options = []
+        self.HAL = Hal(config_options)
         self.algorithm = RLPowerAlgorithm(config_options)
 
         self._next_check = time.time() + RobotBrain.TIME_CHECK_TIMEOUT

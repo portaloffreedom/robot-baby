@@ -1,4 +1,5 @@
 import bisect
+import json
 import logging
 import math
 import numpy as np
@@ -13,25 +14,33 @@ class RLPowerAlgorithm:
     epsilon = 10 ** -10
 
     def __init__(self, config_parameters):
-        # TODO: get the following parameters from config file
-        self.RANKING_SIZE = 10
-        self.NUM_SERVOS = 8
+        self.RANKING_SIZE = config_parameters['ranking_size']
+        self.NUM_SERVOS = len(config_parameters['servo_pins'])
         # In the original algorithm they used variance and square-rooted it every time. We're using standard deviation
         # and decay parameter is also a square root of the parameter from original algorithm
-        self._sigma = math.sqrt(0.008)
-        self._sigma_decay = math.sqrt(0.98)
-        self._initial_spline_size = 3
+        self._sigma = math.sqrt(config_parameters['variance'])
+        self._sigma_decay = math.sqrt(config_parameters['sigma_decay_squared'])
+        self._initial_spline_size = config_parameters['initial_spline_size']
+        self._end_spline_size = config_parameters['end_spline_size']
+        self._number_of_fitness_evaluations = config_parameters['number_of_fitness_evaluations']
+        self._fitness_evaluation = config_parameters['fitness_evaluation_method']
+        self._runtime_data_file = config_parameters['runtime_data_file']
         self._current_spline_size = self._initial_spline_size
-        self._end_spline_size = 100
-        self._number_of_fitness_evaluations = 500
         self._current_evaluation = 0
-        self._fitness_evaluation = 'manual'
 
-        self.ranking = []
-        # Spline initialisation
-        self._current_spline = np.array(
-            [[0.5 + random.normalvariate(0, self._sigma) for x in range(self._initial_spline_size)]
-             for y in range(self.NUM_SERVOS)])
+        self._runtime_data = self._load_runtime_data_from_file(self._runtime_data_file)
+        if 'last_spline' in self._runtime_data:
+            self.ranking = self._runtime_data['ranking']
+            self._current_spline = self._runtime_data['last_spline']
+            self._sigma = self._runtime_data['sigma']
+            self._current_spline_size = len(self._current_spline[0])
+            self._current_evaluation = self._runtime_data['evaluation']
+        else:
+            self.ranking = []
+            # Spline initialisation
+            self._current_spline = np.array(
+                [[0.5 + random.normalvariate(0, self._sigma) for x in range(self._initial_spline_size)]
+                    for y in range(self.NUM_SERVOS)])
         self.controller = RLPowerController(self._current_spline)
 
     def next_evaluation(self, controller):
@@ -58,6 +67,7 @@ class RLPowerAlgorithm:
         self._current_spline = self._current_spline + uniform + modifier / total
         self.controller.set_spline(self._current_spline)
         self._sigma *= self._sigma_decay
+        self._save_runtime_data_to_file(self._runtime_data_file)
 
     def recalculate_spline(self, spline, spline_size):
         return np.apply_along_axis(self._interpolate, 1, spline, spline_size + 1)
@@ -90,7 +100,29 @@ class RLPowerAlgorithm:
         elif current_fitness > self.ranking[0][0]:
             bisect.insort(self.ranking, _RankingEntry((current_fitness, current_spline)))
             self.ranking.pop(0)
+        self._save_runtime_data_to_file(self._runtime_data_file)
 
+    def _load_runtime_data_from_file(self, filename):
+        try:
+            with open(filename) as json_data:
+                d = json.load(json_data)
+                ranking_serialized = d['ranking']
+                ranking = [_RankingEntry((elem['fitness'], np.array(elem['spline']))) for elem in ranking_serialized]
+                d['ranking'] = ranking
+                d['last_spline'] = np.array(d['last_spline'])
+                return d
+        except IOError:
+            return {}
+
+    def _save_runtime_data_to_file(self, filename):
+        ranking_serialized = [{'fitness': f, 'spline': s.tolist()} for (f, s) in self.ranking]
+        data = {'ranking': ranking_serialized,
+                'last_spline': self._current_spline.tolist(),
+                'sigma': self._sigma,
+                'evaluation': self._current_evaluation
+                }
+        with open(filename, 'w') as outfile:
+            json.dump(data, outfile)
 
 class _RankingEntry(tuple):
     def __lt__(self, other):
