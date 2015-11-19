@@ -16,7 +16,7 @@ if(HAVE_OPENCL)
 endif()
 
 
-add_executable(robot_localization main.cpp)
+add_executable(robot_localization main.cpp process.cpp qr.cpp)
 
 target_link_libraries(robot_localization ${OPENCV_LINKER_LIBS} ${OPENCV_OCL_SAMPLES_REQUIRED_DEPS})
 
