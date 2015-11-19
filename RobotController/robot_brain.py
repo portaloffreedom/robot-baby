@@ -65,6 +65,6 @@ class RobotBrain:
 
         intended to do an emergency stop for a bad controller that could "kill" the robot
         """
-        self.HAL.off()
+        # self.HAL.off()
         # TODO discard current evaluation
         self._check_next_evaluation(force=True)
