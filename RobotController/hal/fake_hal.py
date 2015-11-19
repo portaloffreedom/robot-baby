@@ -2,7 +2,7 @@ __author__ = 'matteo'
 
 
 class FakeHal:
-    def step(self):
+    def step(self, outputs):
         pass
 
     def off(self):

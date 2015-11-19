@@ -4,7 +4,6 @@ from learning.rlpower_algorithm import RLPowerAlgorithm
 import time
 import json
 import logging
-from hal.outputs.servo import Servo
 
 __author__ = 'matteo'
 
@@ -24,12 +23,6 @@ class RobotBrain:
             logging.error("Configuration file could not be read: {}".format(config_file_path))
             raise SystemExit
 
-        self.servos = []
-        for x in config_options['servo_pins']:
-            logging.info("creating servo {}".format(x))
-            self.servos.append(Servo(x))
-
-#        config_options = []
         self.HAL = Hal(config_options)
         self.algorithm = RLPowerAlgorithm(config_options)
 
@@ -47,13 +40,10 @@ class RobotBrain:
         """
         A life step, composed of several operations
         """
-        self.HAL.step()
         _input = (time.time() - self._start_time) / 4
         _outputs = self.algorithm.controller.get_value(_input)
+        self.HAL.step(_outputs)
 #        logging.info("output: {}".format(_outputs))
-
-        for index, servo in enumerate(self.servos):
-            servo.move_to_position(_outputs[index])
 
         # if 30 seconds passed from last check:
         self._check_next_evaluation()
