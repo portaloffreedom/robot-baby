@@ -126,31 +126,14 @@ int findQr ( VideoCapture &capture )
             if (c >=5) {
                 alignment_marks.push_back(i);
             }
-            
-            /*
-            if (c >= 5)
-            {
-//                 cout<<"found element! "<<i;
-                if (mark == 0) {
-                    A = i;
-//                     cout<<" position A";
-                } else if  (mark == 1) {
-//                     cout<<" position B";
-                    B = i; // i.e., A is already found, assign current contour to B
-                } else if  (mark == 2) {
-//                     cout<<" position C";
-                    C = i; // i.e., A and B are already found, assign current contour to C
-                } else {
-//                     cout<<" !all positions taken!";
-                }
-                mark++;
-                cout<<endl;
-            }
-            */
         }
         mark = alignment_marks.size();
         //cout << "found "<< alignment_marks.size() << " alignment_marks" << endl;
 
+        for (auto i = alignment_marks.begin(); i < alignment_marks.end(); i++) {
+            drawContours( image, contours, (*i) , Scalar(255,200,0), 2, 8, hierarchy, 0 );
+        }
+        
 
         if (mark > 2)        // Ensure we have (atleast 3; namely A,B,C) 'Alignment Markers' discovered
         {
@@ -268,9 +251,9 @@ int findQr ( VideoCapture &capture )
                 }
     
                 //Draw contours on the image
-                drawContours( image, contours, top , Scalar(255,200,0), 2, 8, hierarchy, 0 );
-                drawContours( image, contours, right , Scalar(0,0,255), 2, 8, hierarchy, 0 );
-                drawContours( image, contours, bottom , Scalar(255,0,100), 2, 8, hierarchy, 0 );
+//                 drawContours( image, contours, top ,    Scalar(255,200,0), 2, 8, hierarchy, 0 );
+//                 drawContours( image, contours, right ,  Scalar(0,0,255),   2, 8, hierarchy, 0 );
+//                 drawContours( image, contours, bottom , Scalar(255,0,100), 2, 8, hierarchy, 0 );
 
                 // Insert Debug instructions here
                 if(DBG==1)
