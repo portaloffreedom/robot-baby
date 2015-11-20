@@ -6,6 +6,7 @@
 #include <opencv2/opencv.hpp>
 #include <iostream>
 #include <cmath>
+#include <algorithm>
 
 using namespace cv;
 using namespace std;
@@ -16,13 +17,67 @@ const int CV_QR_SOUTH = 2;
 const int CV_QR_WEST = 3;
 
 float cv_distance(Point2f P, Point2f Q);                    // Get Distance between two points
-float cv_lineEquation(Point2f L, Point2f M, Point2f J);     // Perpendicular Distance of a Point J from line formed by Points L and M; Solution to equation of the line Val = ax+by+c 
+float cv_lineEquation(Point2f L, Point2f M, Point2f J);     // Perpendicular Distance of a Point J from line formed by Points L and M; Solution to equation of the line Val = ax+by+c
 float cv_lineSlope(Point2f L, Point2f M, int& alignement);  // Slope of a line by two Points L and M on it; Slope of line, S = (x1 -x2) / (y1- y2)
 void cv_getVertices(vector<vector<Point> > contours, int c_id,float slope, vector<Point2f>& X);
 void cv_updateCorner(Point2f P, Point2f ref ,float& baseline,  Point2f& corner);
 void cv_updateCornerOr(int orientation, vector<Point2f> IN, vector<Point2f> &OUT);
 bool getIntersectionPoint(Point2f a1, Point2f a2, Point2f b1, Point2f b2, Point2f& intersection);
 float cross(Point2f v1,Point2f v2);
+
+class MarkDistance {
+public:
+    MarkDistance(int A, int B, float distance) :
+        A(A),B(B),distance(distance)
+    {}
+    MarkDistance(int A, int B, const vector<Point2f> &mc) :
+        A(A),B(B)
+    {
+        this->distance = cv_distance(mc[A],mc[B]);
+    }
+
+    bool operator<(const MarkDistance& dist) const {
+        return (this->distance < dist.distance);
+    }
+
+    int A,B;
+    float distance;
+};
+
+class MarkSet {
+public:
+    MarkSet(int i) {
+        elems.push_back(i);
+    }
+
+    void join(const MarkSet &set) {
+        for (int e: set.elems) {
+            this->elems.push_back(e);
+        }
+    };
+
+    bool present(const int e) const {
+        for (int e1: this->elems) {
+            if (e1 == e) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    vector<int> elems;
+};
+
+vector<MarkSet>::iterator searchSet(vector<MarkSet> &markSets, int id) {
+    int i=0;
+    for (auto set = markSets.begin(); set < markSets.end(); set++) {
+        if (set->present(id)) {
+            //return &(*set);
+            return set;
+        }
+        i++;
+    }
+}
 
 // Start of Main Loop
 //------------------------------------------------------------------------------------------------------------------------
@@ -38,26 +93,26 @@ int findQr ( VideoCapture &capture )
 
     //Step    : Capture a frame from Image Input for creating and initializing manipulation variables
     //Info    : Inbuilt functions from OpenCV
-    //Note    : 
-    
+    //Note    :
+
     capture >> image;
     if(image.empty()){ cerr << "ERR: Unable to query image from capture device.\n" << endl;
         return -1;
     }
-    
+
 
     // Creation of Intermediate 'Image' Objects required later
     Mat gray(image.size(), CV_MAKETYPE(image.depth(), 1));            // To hold Grayscale Image
     Mat edges(image.size(), CV_MAKETYPE(image.depth(), 1));           // To hold Grayscale Image
     Mat traces(image.size(), CV_8UC3);                                // For Debug Visuals
     Mat qr,qr_raw,qr_gray,qr_thres;
-        
+
     vector<vector<Point> > contours;
     vector<Vec4i> hierarchy;
 
     int mark,A,B,C,top,right,bottom,median1,median2,outlier;
     float AB,BC,CA, dist,slope, areat,arear,areab, large, padding;
-    
+
     int align,orientation;
 
     int DBG=1;                        // Debug Flag
@@ -66,13 +121,13 @@ int findQr ( VideoCapture &capture )
     const double fontScale = 1;
     const int fontThickness = 1;
     const Size fontSize = getTextSize("features: 40ms", fontFace, fontScale, fontThickness, 0);
-    
+
     int key = 0;
     qr_thres = Mat::zeros(100, 100, CV_8UC1);
     double threashold_1 = 100,
            threashold_2 = 200;
     int aperture_size = 3;
-    
+
     vector<int> alignment_marks;
     while(key != 'q')                // While loop to query for Image Input frame
     {
@@ -80,11 +135,11 @@ int findQr ( VideoCapture &capture )
         traces = Scalar(0,0,0);
         qr_raw = Mat::zeros(100, 100, CV_8UC3 );
         qr = Mat::zeros(100, 100, CV_8UC3 );
-        qr_gray = Mat::zeros(100, 100, CV_8UC1);        
-        
+        qr_gray = Mat::zeros(100, 100, CV_8UC1);
+
         capture >> image;                        // Capture Image from Image Input
 
-        cvtColor(image,gray,CV_RGB2GRAY);        // Convert Image captured from Image Input to GrayScale    
+        cvtColor(image,gray,CV_RGB2GRAY);        // Convert Image captured from Image Input to GrayScale
         Canny(gray, edges, threashold_1 , threashold_2, aperture_size);        // Apply Canny edge detection on the gray image
 
 
@@ -96,8 +151,8 @@ int findQr ( VideoCapture &capture )
         vector<Moments> mu(contours.size());
         vector<Point2f> mc(contours.size());
 
-        for( int i = 0; i < contours.size(); i++ ) {    
-            mu[i] = moments( contours[i], false ); 
+        for( int i = 0; i < contours.size(); i++ ) {
+            mu[i] = moments( contours[i], false );
             mc[i] = Point2f( mu[i].m10/mu[i].m00 , mu[i].m01/mu[i].m00 );
         }
 
@@ -108,9 +163,9 @@ int findQr ( VideoCapture &capture )
         // NOTE: 1. Contour enclosing other contours is assumed to be the three Alignment markings of the QR code.
         // 2. Alternately, the Ratio of areas of the "concentric" squares can also be used for identifying base Alignment markers.
         // The below demonstrates the first method
-        
+
         alignment_marks.clear();
-        
+
         for( int i = 0; i < contours.size(); i++ )
         {
             int k=i;
@@ -130,10 +185,63 @@ int findQr ( VideoCapture &capture )
         mark = alignment_marks.size();
         //cout << "found "<< alignment_marks.size() << " alignment_marks" << endl;
 
-        for (auto i = alignment_marks.begin(); i < alignment_marks.end(); i++) {
-            drawContours( image, contours, (*i) , Scalar(255,200,0), 2, 8, hierarchy, 0 );
+
+        vector<MarkDistance> mark_distance;
+        mark_distance.reserve(mark*mark);
+        for (auto a = alignment_marks.begin(); a < alignment_marks.end(); a++) {
+            for (auto b = alignment_marks.begin(); b < alignment_marks.end(); b++) {
+                if (a < b)
+                    mark_distance.push_back(MarkDistance(*a,*b,mc));
+            }
         }
-        
+
+        std::sort(mark_distance.begin(), mark_distance.end());
+
+
+        // create single-element sets
+        vector<MarkSet> markSet;
+        markSet.reserve(alignment_marks.size());
+        for (auto i = alignment_marks.begin(); i < alignment_marks.end(); i++) {
+            markSet.push_back(MarkSet(*i));
+        }
+
+        //cout<<"distances:";
+        const int max_codes = alignment_marks.size()/3;
+        const int min_joins = max_codes*3;
+        int i=0;
+        for (auto d = mark_distance.begin(); d < mark_distance.end(); d++) {
+            if (i>=min_joins &&
+                d->distance > (mark_distance[min_joins-1].distance*1.5)) {
+                //cout<<"###"<<d->distance;
+                break;
+            }
+
+            // join two sets
+            vector<MarkSet>::iterator set1, set2;
+            set1 = searchSet(markSet, d->A);
+            set2 = searchSet(markSet, d->B);
+            if (set1 != set2) {
+                set1->join(*set2);
+                markSet.erase(set2);
+            }
+
+            //cout<<d->distance<<"; ";
+            i++;
+        }
+        cout<<endl;
+
+        // draw colors:
+        double r,g,b;
+        srand(42);
+        for (auto set : markSet) {
+            r = rand() % 255;
+            g = rand() % 255;
+            b = rand() % 255;
+            for (auto p = set.elems.begin(); p < set.elems.end(); p++) {
+                drawContours( image, contours, (*p) , Scalar(r,g,b), 2, 8, hierarchy, 0 );
+            }
+            i++;
+        }
 
         if (mark > 2)        // Ensure we have (atleast 3; namely A,B,C) 'Alignment Markers' discovered
         {
@@ -148,7 +256,7 @@ int findQr ( VideoCapture &capture )
             AB = cv_distance(mc[A],mc[B]);
             BC = cv_distance(mc[B],mc[C]);
             CA = cv_distance(mc[C],mc[A]);
-            
+
             if ( AB > BC && AB > CA )
             {
                 outlier = C; median1=A; median2=B;
@@ -161,12 +269,12 @@ int findQr ( VideoCapture &capture )
             {
                 outlier = A;  median1=B; median2=C;
             }
-                        
+
             top = outlier;                            // The obvious choice
-        
+
             dist = cv_lineEquation(mc[median1], mc[median2], mc[outlier]);    // Get the Perpendicular distance of the outlier from the longest side
             slope = cv_lineSlope(mc[median1], mc[median2],align);        // Also calculate the slope of the longest side
-            
+
             // Now that we have the orientation of the line formed median1 & median2 and we also have the position of the outlier w.r.t. the line
             // Determine the 'right' and 'bottom' markers
 
@@ -180,14 +288,14 @@ int findQr ( VideoCapture &capture )
                 bottom = median1;
                 right = median2;
                 orientation = CV_QR_NORTH;
-            }    
+            }
             else if (slope > 0 && dist < 0 )        // Orientation - East
             {
                 right = median1;
                 bottom = median2;
                 orientation = CV_QR_EAST;
             }
-            else if (slope < 0 && dist > 0 )        // Orientation - South            
+            else if (slope < 0 && dist > 0 )        // Orientation - South
             {
                 right = median1;
                 bottom = median2;
@@ -200,19 +308,19 @@ int findQr ( VideoCapture &capture )
                 right = median2;
                 orientation = CV_QR_WEST;
             }
-    
-            
+
+
             // To ensure any unintended values do not sneak up when QR code is not present
             float area_top,area_right, area_bottom;
-            
+
             if( top < contours.size() && right < contours.size() && bottom < contours.size() && contourArea(contours[top]) > 10 && contourArea(contours[right]) > 10 && contourArea(contours[bottom]) > 10 )
             {
 
                 vector<Point2f> L,M,O, tempL,tempM,tempO;
-                Point2f N;    
+                Point2f N;
 
                 vector<Point2f> src,dst;        // src - Source Points basically the 4 end co-ordinates of the overlay image
-                                                // dst - Destination Points to transform overlay image    
+                                                // dst - Destination Points to transform overlay image
 
                 Mat warp_matrix;
 
@@ -226,12 +334,12 @@ int findQr ( VideoCapture &capture )
 
                 int iflag = getIntersectionPoint(M[1],M[2],O[3],O[2],N);
 
-            
+
                 src.push_back(L[0]);
                 src.push_back(M[1]);
                 src.push_back(N);
                 src.push_back(O[3]);
-    
+
                 dst.push_back(Point2f(0,0));
                 dst.push_back(Point2f(qr.cols,0));
                 dst.push_back(Point2f(qr.cols, qr.rows));
@@ -242,14 +350,14 @@ int findQr ( VideoCapture &capture )
                     warp_matrix = getPerspectiveTransform(src, dst);
                     warpPerspective(image, qr_raw, warp_matrix, Size(qr.cols, qr.rows));
                     copyMakeBorder( qr_raw, qr, 10, 10, 10, 10,BORDER_CONSTANT, Scalar(255,255,255) );
-                    
+
                     cvtColor(qr,qr_gray,CV_RGB2GRAY);
                     threshold(qr_gray, qr_thres, 127, 255, CV_THRESH_BINARY);
-                    
+
                     //threshold(qr_gray, qr_thres, 0, 255, CV_THRESH_OTSU);
                     //for( int d=0 ; d < 4 ; d++){    src.pop_back(); dst.pop_back(); }
                 }
-    
+
                 //Draw contours on the image
 //                 drawContours( image, contours, top ,    Scalar(255,200,0), 2, 8, hierarchy, 0 );
 //                 drawContours( image, contours, right ,  Scalar(0,0,255),   2, 8, hierarchy, 0 );
@@ -264,13 +372,13 @@ int findQr ( VideoCapture &capture )
                         circle( traces, Point(10,20) , 5 ,  Scalar(0,0,255), -1, 8, 0 );
                     else if (slope < -5)
                         circle( traces, Point(10,20) , 5 ,  Scalar(255,255,255), -1, 8, 0 );
-                        
-                    // Draw contours on Trace image for analysis    
+
+                    // Draw contours on Trace image for analysis
                     drawContours( traces, contours, top , Scalar(255,0,100), 1, 8, hierarchy, 0 );
                     drawContours( traces, contours, right , Scalar(255,0,100), 1, 8, hierarchy, 0 );
                     drawContours( traces, contours, bottom , Scalar(255,0,100), 1, 8, hierarchy, 0 );
 
-                    // Draw points (4 corners) on Trace image for each Identification marker    
+                    // Draw points (4 corners) on Trace image for each Identification marker
                     circle( traces, L[0], 2,  Scalar(255,255,0), -1, 8, 0 );
                     circle( traces, L[1], 2,  Scalar(0,255,0), -1, 8, 0 );
                     circle( traces, L[2], 2,  Scalar(0,0,255), -1, 8, 0 );
@@ -296,7 +404,7 @@ int findQr ( VideoCapture &capture )
 
                     // Show the Orientation of the QR Code wrt to 2D Image Space
                     int fontFace = FONT_HERSHEY_PLAIN;
-                     
+
                     if(orientation == CV_QR_NORTH)
                     {
                         putText(traces, "NORTH", Point(20,30), fontFace, 1, Scalar(0, 255, 0), 1, 8);
@@ -321,36 +429,36 @@ int findQr ( VideoCapture &capture )
         }
         Size dsize(800,600);
         Mat image_rs, traces_rs, edges_rs;
-    
+
         resize(image, image_rs, dsize);
         resize(traces, traces_rs, dsize);
         resize(edges, edges_rs, dsize);
-        
+
         std::stringstream threashold_1_str, threashold_2_str, aperture_size_str;
         threashold_1_str  << "threashold_1: " << threashold_1;
         threashold_2_str  << "threashold_2: " << threashold_2;
         aperture_size_str << "aperture_size: " << aperture_size;
-        
+
         CvPoint str_pos = cvPoint(30, 30);
-        putText(edges_rs, threashold_1_str.str(), str_pos, 
+        putText(edges_rs, threashold_1_str.str(), str_pos,
                     fontFace, fontScale, cvScalar(200,200,250), fontThickness, CV_AA);
-        
+
         str_pos.y += fontSize.height * 1.5;
-        putText(edges_rs, threashold_2_str.str(), str_pos, 
+        putText(edges_rs, threashold_2_str.str(), str_pos,
                     fontFace, fontScale, cvScalar(200,200,250), fontThickness, CV_AA);
-        
+
         str_pos.y += fontSize.height * 1.5;
-        putText(edges_rs, aperture_size_str.str(), str_pos, 
+        putText(edges_rs, aperture_size_str.str(), str_pos,
                     fontFace, fontScale, cvScalar(200,200,250), fontThickness, CV_AA);
-        
-        
+
+
         imshow ( "Image", image_rs );
         imshow ( "Traces", traces_rs );
         imshow ( "QR code", qr_thres );
         imshow ( "edges", edges_rs );
 
         key = waitKey(1);    // OPENCV: wait for 1ms before accessing next frame
-        
+
         switch(key) {
             case 'q':
                 // while loop condition will break;
@@ -400,7 +508,7 @@ int findQr ( VideoCapture &capture )
 
 float cv_distance(Point2f P, Point2f Q)
 {
-    return sqrt(pow(abs(P.x - Q.x),2) + pow(abs(P.y - Q.y),2)) ; 
+    return sqrt(pow(abs(P.x - Q.x),2) + pow(abs(P.y - Q.y),2)) ;
 }
 
 
@@ -415,7 +523,7 @@ float cv_lineEquation(Point2f L, Point2f M, Point2f J)
     a = -((M.y - L.y) / (M.x - L.x));
     b = 1.0;
     c = (((M.y - L.y) /(M.x - L.x)) * L.x) - L.y;
-    
+
     // Now that we have a, b, c from the equation ax + by + c, time to substitute (x,y) by values from the Point J
 
     pdist = (a * J.x + (b * J.y) + c) / sqrt((a * a) + (b * b));
@@ -431,14 +539,14 @@ float cv_lineSlope(Point2f L, Point2f M, int& alignement)
     float dx,dy;
     dx = M.x - L.x;
     dy = M.y - L.y;
-    
+
     if ( dy != 0)
-    {     
+    {
         alignement = 1;
         return (dy / dx);
     }
     else                // Make sure we are not dividing by zero; so use 'alignement' flag
-    {     
+    {
         alignement = 0;
         return 0.0;
     }
@@ -457,7 +565,7 @@ void cv_getVertices(vector<vector<Point> > contours, int c_id, float slope, vect
 {
     Rect box;
     box = boundingRect( contours[c_id]);
-    
+
     Point2f M0,M1,M2,M3;
     Point2f A, B, C, D, W, X, Y, Z;
 
@@ -495,7 +603,7 @@ void cv_getVertices(vector<vector<Point> > contours, int c_id, float slope, vect
 
         for( int i = 0; i < contours[c_id].size(); i++ )
         {
-        pd1 = cv_lineEquation(C,A,contours[c_id][i]);    // Position of point w.r.t the diagonal AC 
+        pd1 = cv_lineEquation(C,A,contours[c_id][i]);    // Position of point w.r.t the diagonal AC
         pd2 = cv_lineEquation(B,D,contours[c_id][i]);    // Position of point w.r.t the diagonal BD
 
         if((pd1 >= 0.0) && (pd2 > 0.0))
@@ -548,7 +656,7 @@ void cv_getVertices(vector<vector<Point> > contours, int c_id, float slope, vect
     quad.push_back(M1);
     quad.push_back(M2);
     quad.push_back(M3);
-    
+
 }
 
 // Function: Compare a point if it more far than previously recorded farthest distance
@@ -563,7 +671,7 @@ void cv_updateCorner(Point2f P, Point2f ref , float& baseline,  Point2f& corner)
         baseline = temp_dist;            // The farthest distance is the new baseline
         corner = P;                        // P is now the farthest point
     }
-    
+
 }
 
 // Function: Sequence the Corners wrt to the orientation of the QR Code
