@@ -228,7 +228,7 @@ int findQr ( VideoCapture &capture )
             //cout<<d->distance<<"; ";
             i++;
         }
-        cout<<endl;
+        //cout<<endl;
 
         // draw colors:
         double r,g,b;
