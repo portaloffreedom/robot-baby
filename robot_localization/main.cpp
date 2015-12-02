@@ -4,9 +4,11 @@
 #include "tuio.h"
 
 int main(int argc, char **argv) {
-    std::cout << "Hello, world!" << std::endl;
-    Tuio tuio(3333);
-    tuio.listen();
+    //Tuio tuio(3333);
+    //tuio.listen();
+    
+    FitnessService fitness_service("", 7890);
+    fitness_service.start_listen();
     
     return 0;
 }

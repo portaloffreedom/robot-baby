@@ -21,9 +21,26 @@
 #ifndef __FITNESS_SERVICE_H__
 #define __FITNESS_SERVICE_H__
 
+#include "connection_listener.h"
+
+enum err {
+    SUCCESS = 0,
+    ERROR = -1,
+};
+
+enum rpcID {
+    RPC_START = 1,    // int -> err
+    RPC_FITNESS = 2,  // (int,int) -> (float, err)
+    RPC_POSITION = 3, // (int) -> (float, float, err)
+};
+
 enum fitness_type {
-    DISTANCE = 0,
-    PATH = 1,
+    DISPLACEMENT = 1, // DISPLACEMENT
+    PATH = 2,         // DISTANCE
+};
+
+struct coordinate {
+    float x, y;
 };
 
 class FitnessService {
@@ -35,12 +52,18 @@ public:
     void set_verbouse(bool verbouse);
     
 private:
-    bool action_start(int id);
-    float action_fitness(int id, fitness_type type);
-    void action_position(int id); // TODO couple of floats returned
+    void action_start(const int id);
+    float action_fitness(const int id, const fitness_type type);
+    coordinate action_position(const int id);
+    
+    void rpc_start(Connection &client);
+    void rpc_fitness(Connection &client);
+    void rpc_position(Connection &client);
     
     const std::string address;
     const int port;
+    ConnectionListener connection_listener;
+    
     bool verbose;
 };
 

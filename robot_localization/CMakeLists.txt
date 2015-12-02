@@ -44,6 +44,9 @@ set("TUIO_SRCS"
 
 set("app_SRCS" main.cpp
     tuio.cpp
+    connection.cpp
+    connection_listener.cpp
+    fitness_service.cpp
 )
 
 
