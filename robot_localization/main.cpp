@@ -11,7 +11,7 @@ int main(int argc, char **argv) {
     try {
         FitnessService fitness_service("", 7890, &tuio);
         fitness_service.start_listen();
-    } catch(ConnectionException ex) {
+    } catch(ConnectionException &ex) {
         std::cerr<<ex.reason<<std::endl;
         exit(1);
     }

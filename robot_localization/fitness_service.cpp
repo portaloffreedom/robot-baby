@@ -95,7 +95,7 @@ void FitnessService::rpc_position(Connection& client)
     
     try {
         position = action_position(id);
-    } catch(IDNotFound ex) {
+    } catch(IDNotFound &ex) {
         client.writeFloat4(0.0);
         client.writeFloat4(0.0);
         client.writeInt4(ERROR);
