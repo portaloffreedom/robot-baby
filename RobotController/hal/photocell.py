@@ -22,6 +22,9 @@ class PCF8591P:
         self.__DACEnabled = 0x00
     
     # Read single ADC Channel
+    # The analog to digital conversion is performed when you make a read request
+    # but the read will return the previous sample so it is always one sample
+    # behind. That is why we need to read twice.
     def readADC(self, __chan = 0):
         __checkedChan = self.__checkChannelNo(__chan)
         self.__bus.write_byte(self.__addr, __checkedChan  | self.__DACEnabled)
