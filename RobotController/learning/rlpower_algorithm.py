@@ -6,6 +6,7 @@ import numpy as np
 import random
 from learning.rlpower_controller import RLPowerController
 from scipy.interpolate import splrep, splev
+from hal.inputs.fitness_querier import FitnessQuerier
 
 __author__ = 'matteo'
 
@@ -28,6 +29,11 @@ class RLPowerAlgorithm:
         self._current_spline_size = self._initial_spline_size
         self._current_evaluation = 0
 
+        # Create an instance of fitness querier
+        if self._fitness_evaluation == 'auto':
+            self._fitness_querier = FitnessQuerier(config_parameters)
+
+        # Recover evaluation data from tmp file
         self._runtime_data = self._load_runtime_data_from_file(self._runtime_data_file)
         if 'last_spline' in self._runtime_data:
             self.ranking = self._runtime_data['ranking']
@@ -86,9 +92,10 @@ class RLPowerAlgorithm:
         # Random fitness (for testing purposes)
         elif self._fitness_evaluation == 'random':
             fitness = 5 + random.normalvariate(0, 2)
-        # TODO: evaluate fitness automatically
         elif self._fitness_evaluation == 'auto':
-            raise NotImplementedError("auto mode fitness evaluation not ready")
+            # TODO: figure out how to handle multiple fitness values
+            fitness = self._fitness_querier.get_fitness()
+            #raise NotImplementedError("auto mode fitness evaluation not ready")
         else:
             logging.error("Unknown fitness evaluation method")
             raise NameError("Unknown fitness evaluation method")
