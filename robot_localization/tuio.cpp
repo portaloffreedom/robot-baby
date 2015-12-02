@@ -31,7 +31,6 @@ void Tuio::run() {
 
 std::tuple<float, float> Tuio::getPositionFromId(const int id) {
     
-    
     std::list<TuioObject*> objectList = tuioClient->getTuioObjects();
     tuioClient->lockObjectList();
     for (std::list<TuioObject*>::iterator iter = objectList.begin(); iter!=objectList.end(); iter++) {
@@ -51,8 +50,7 @@ std::tuple<float, float> Tuio::getPositionFromId(const int id) {
     }
     tuioClient->unlockObjectList();
     
-    //TODO raise error
-    return std::make_tuple(-1, -1);
+    throw IDNotFound(id);
 }
 
 void Tuio::receiveObjects() {

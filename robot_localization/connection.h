@@ -2,8 +2,28 @@
 #define __CONNECTION_H__
 
 #include <string>
+#include <cstring>
+#include <sstream>
 struct sockaddr_in;
 
+class ConnectionException {
+public:
+    ConnectionException(std::string reason, int _errno)
+    {
+        std::stringstream ss;
+        ss << reason << ": " <<strerror(_errno);
+        this->reason = ss.str();
+    }
+    
+    ConnectionException(std::string reason)
+        : ConnectionException(reason, errno) {};
+        
+    ConnectionException() {
+        reason = strerror(errno);
+    }
+    
+    std::string reason;
+};
 
 class Connection {
 public:

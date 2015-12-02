@@ -15,11 +15,8 @@ ConnectionListener::ConnectionListener(const int port)
 {
     socketfd = socket(AF_INET, SOCK_STREAM, 0);
     if (socketfd < 0) {
-        std::cerr<<"Couldn't create the TCP socket"<<std::endl;
-        //TODO raise error
-        exit(1);
+        throw ConnectionException("Couldn't create the TCP socket");
     }
-    
     
     sockaddr_in addr;
     
@@ -38,16 +35,14 @@ ConnectionListener::ConnectionListener(const int port)
     
     int err = bind(socketfd, (struct sockaddr *) &addr, sizeof(struct sockaddr_in));
     if (err < 0) {
-        std::cerr<<"Couldn't bind the socket on port "<<port<<std::endl;
-        //TODO raise error
-        exit(1);
+        std::stringstream ss;
+        ss<<"Couldn't bind the socket on port "<<port;
+        throw ConnectionException(ss.str());
     }
     
     err = listen(socketfd, CONNECTION_QUEUE_SIZE);
     if (err < 0) {
-        std::cerr<<"Error transforming to server socket"<<std::endl;
-        //TODO raise error
-        exit(1);
+        throw ConnectionException("Error transforming to server socket");
     }
 }
 
@@ -66,9 +61,7 @@ Connection ConnectionListener::accept()
 
     client_connection = ::accept(this->socketfd, (sockaddr *) &client_info, &addrlen);
     if (client_connection < 0) {
-        perror("Error while accepting new client");
-        //TODO raise error
-        exit(1);
+        throw ConnectionException("Error while accepting new client");
     }
     
     return Connection(client_connection, client_info);

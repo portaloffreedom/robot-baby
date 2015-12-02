@@ -9,7 +9,6 @@ FitnessService::FitnessService(const std::string address, const int port, Tuio *
   , tuio(tuio)
   , verbose (false)
 {
-    
 }
 
 FitnessService::~FitnessService()
@@ -92,12 +91,21 @@ void FitnessService::rpc_position(Connection& client)
 {
     int id = client.readInt4();
     
-    std::tuple<float, float> position = action_position(id);
+    std::tuple<float, float> position;
+    
+    try {
+        position = action_position(id);
+    } catch(IDNotFound ex) {
+        client.writeFloat4(0.0);
+        client.writeFloat4(0.0);
+        client.writeInt4(ERROR);
+        return;
+    }
     
     client.writeFloat4( std::get<0>(position) );
     client.writeFloat4( std::get<1>(position) );
-    
     client.writeInt4(SUCCESS);
+    
     return;
 }
 

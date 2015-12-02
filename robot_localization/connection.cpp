@@ -45,9 +45,7 @@ void Connection::writeData4(const void *data)
     ssize_t result = writen(socketfd, payload_pointer, sizeof(payload));
     
     if (result < 0 ) {
-        std::cerr<<"Error writing on the stram"<<std::endl;
-        //TODO raise error
-        exit(1);
+        throw ConnectionException("Error writing on the stream");
     }
 }
 
@@ -57,9 +55,7 @@ void Connection::readData4(void *data)
     int *payload_pointer = &payload;
     int byte_read = read(socketfd, payload_pointer, sizeof(payload));
     if (byte_read < 0) {
-        std::cerr<<"Error reading from socket"<<std::endl;
-        //TODO raise error
-        exit(1);
+        throw ConnectionException("Error reading from socket");
     }
     
     *((int*) data) = ntohl(payload);

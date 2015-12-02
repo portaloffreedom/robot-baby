@@ -48,4 +48,13 @@ private:
     OscReceiver *osc_receiver;
 };
 
+
+class IDNotFound {
+public:
+    IDNotFound(const int id)
+      : id(id) {};
+private:
+    int id;
+};
+
 #endif /* __TUIO_H__ */
