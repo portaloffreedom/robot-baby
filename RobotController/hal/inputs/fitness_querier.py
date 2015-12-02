@@ -1,4 +1,5 @@
 import socket
+import struct
 import logging
 
 class FitnessQuerier:
@@ -10,6 +11,24 @@ class FitnessQuerier:
         self._id = config_values['robot_id']
         self._ipaddr = ''
 
+    def start(self):
+        # Create a TCP socket
+        try:
+            s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        except socket.error as err:
+            logging.error("Failed to create socket: {0}".format(err))
+            return
+
+        # Connect to fitness service
+        try:
+            self._ipaddr = socket.gethostbyname(self._server_address)
+            s.connect((self._ipaddr, self._server_port))
+            self._send_message(s, 'start')
+        except socket.gaierror:
+            logging.error("Cannot connect to host: {}".format(self._server_address))
+
+        s.close()
+
     def get_fitness(self):
         # Create a TCP socket
         try:
@@ -17,7 +36,6 @@ class FitnessQuerier:
         except socket.error as err:
             logging.error("Failed to create socket: {0}".format(err))
             return []
-            # TODO: return something, even if socket can't be created
 
         fitness = {}
         # Connect to fitness service
@@ -30,7 +48,26 @@ class FitnessQuerier:
             logging.error("Cannot connect to host: {}".format(self._server_address))
 
         s.close()
-        return fitness.values()
+        return [fitness[m] for m in self._query_type]
+
+    def get_position(self):
+        # Create a TCP socket
+        try:
+            s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        except socket.error as err:
+            logging.error("Failed to create socket: {0}".format(err))
+            return ()
+
+        # Connect to fitness service
+        try:
+            self._ipaddr = socket.gethostbyname(self._server_address)
+            s.connect((self._ipaddr, self._server_port))
+            position = self._send_message(s, 'position')
+        except socket.gaierror:
+            logging.error("Cannot connect to host: {}".format(self._server_address))
+
+        s.close()
+        return position
 
     def _send_message(self, sock, query_type, method=''):
         message = bytearray()
@@ -62,4 +99,7 @@ class FitnessQuerier:
 
         response = sock.recv(1024)
 
-        return response
+        if query_type == 'fitness':
+            return struct.unpack('!f', response)
+        elif query_type == 'position':
+            return struct.unpack('!ff', response)
