@@ -23,31 +23,32 @@ class FitnessQuerier:
         try:
             self._ipaddr = socket.gethostbyname(self._server_address)
             s.connect((self._ipaddr, self._server_port))
-            self._send_message(s, 'start')
+            resp = self._send_message(s, 'start')
         except socket.gaierror:
             logging.error("Cannot connect to host: {}".format(self._server_address))
 
         s.close()
+        return resp
 
     def get_fitness(self):
-        # Create a TCP socket
-        try:
-            s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        except socket.error as err:
-            logging.error("Failed to create socket: {0}".format(err))
-            return []
-
         fitness = {}
-        # Connect to fitness service
-        try:
-            self._ipaddr = socket.gethostbyname(self._server_address)
-            s.connect((self._ipaddr, self._server_port))
-            for method in self._query_type:
-                fitness['method'] = self._send_message(s, 'fitness', method)
-        except socket.gaierror:
-            logging.error("Cannot connect to host: {}".format(self._server_address))
+        for method in self._query_type:
+            # Create a TCP socket
+            try:
+                s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            except socket.error as err:
+                logging.error("Failed to create socket: {0}".format(err))
+                return []
 
-        s.close()
+            # Connect to fitness service
+            try:
+                self._ipaddr = socket.gethostbyname(self._server_address)
+                s.connect((self._ipaddr, self._server_port))
+                fitness[method] = self._send_message(s, 'fitness', method)
+            except socket.gaierror:
+                logging.error("Cannot connect to host: {}".format(self._server_address))
+            s.close()
+
         return [fitness[m] for m in self._query_type]
 
     def get_position(self):
@@ -70,36 +71,40 @@ class FitnessQuerier:
         return position
 
     def _send_message(self, sock, query_type, method=''):
-        message = bytearray()
         if query_type == 'start':
-            message.append(1)
+            qt = 1
+            message = struct.pack('!ll', qt, self._id)
         elif query_type == 'fitness':
             if method == '':
                 raise ValueError("Fitness evaluation method not specified")
-            message.append(2)
-        elif query_type == 'position':
-            message.append(3)
-        else:
-            raise NameError("Unknown query type: {}".format(query_type))
-
-        message.append(self._id)
-
-        if query_type == 'fitness' and method != '':
+            qt = 2
             if method == 'displacement':
-                message.append(1)
-            elif method == 'distance':
-                message.append(2)
+                met = 1
+            elif method == 'path':
+                met = 2
             else:
                 raise NameError("Unknown fitness evaluation method: {}".format(method))
+            message = struct.pack('!lll', qt, self._id, met)
+        elif query_type == 'position':
+            qt = 3
+            message = struct.pack('!ll', qt, self._id)
+        else:
+            raise NameError("Unknown query type: {}".format(query_type))
 
         try:
             sock.sendall(message)
         except socket.error:
             logging.error("Couldn't send query")
 
-        response = sock.recv(1024)
-
         if query_type == 'fitness':
-            return struct.unpack('!f', response)
+            response = sock.recv(4)
+            error = sock.recv(4)
+            return struct.unpack('!f', response), struct.unpack('!l', error)
+        elif query_type == 'start':
+            error = sock.recv(4)
+            return struct.unpack('!l', error)
         elif query_type == 'position':
-            return struct.unpack('!ff', response)
+            response1 = sock.recv(4)
+            response2 = sock.recv(4)
+            error = sock.recv(4)
+            return struct.unpack('!f', response1), struct.unpack('!f', response2), struct.unpack('!l', error)
