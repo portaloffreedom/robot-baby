@@ -29,6 +29,32 @@ void Tuio::run() {
     }
 }
 
+std::tuple<float, float> Tuio::getPositionFromId(const int id) {
+    
+    
+    std::list<TuioObject*> objectList = tuioClient->getTuioObjects();
+    tuioClient->lockObjectList();
+    for (std::list<TuioObject*>::iterator iter = objectList.begin(); iter!=objectList.end(); iter++) {
+        TuioObject *tuioObject = (*iter);
+        if (tuioObject->getSymbolID() == id) {
+            
+            std::list<TuioPoint> path = tuioObject->getPath();
+            TuioPoint last_point = path.front();
+            
+            float x,y;
+            x = last_point.getX();
+            y = last_point.getY();
+            
+            tuioClient->unlockObjectList();
+            return std::make_tuple(x, y);
+        }
+    }
+    tuioClient->unlockObjectList();
+    
+    //TODO raise error
+    return std::make_tuple(-1, -1);
+}
+
 void Tuio::receiveObjects() {
     char id[5];
     std::list<TuioCursor*> cursorList = tuioClient->getTuioCursors();

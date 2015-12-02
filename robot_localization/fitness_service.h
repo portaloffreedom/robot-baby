@@ -22,6 +22,8 @@
 #define __FITNESS_SERVICE_H__
 
 #include "connection_listener.h"
+#include "tuio.h"
+#include <tuple>
 
 enum err {
     SUCCESS = 0,
@@ -39,13 +41,9 @@ enum fitness_type {
     PATH = 2,         // DISTANCE
 };
 
-struct coordinate {
-    float x, y;
-};
-
 class FitnessService {
 public:
-    FitnessService(const std::string address, const int port);
+    FitnessService(const std::string address, const int port, Tuio *tuio);
     ~FitnessService();
     
     void start_listen();
@@ -54,7 +52,7 @@ public:
 private:
     void action_start(const int id);
     float action_fitness(const int id, const fitness_type type);
-    coordinate action_position(const int id);
+    std::tuple<float, float> action_position(const int id);
     
     void rpc_start(Connection &client);
     void rpc_fitness(Connection &client);
@@ -63,6 +61,7 @@ private:
     const std::string address;
     const int port;
     ConnectionListener connection_listener;
+    Tuio *tuio;
     
     bool verbose;
 };

@@ -2,10 +2,11 @@
 #include "fitness_service.h"
 #include <iostream>
 
-FitnessService::FitnessService(const std::string address, const int port)
+FitnessService::FitnessService(const std::string address, const int port, Tuio *tuio)
   : address(address)
   , port(port)
   , connection_listener(port)
+  , tuio(tuio)
   , verbose (false)
 {
     
@@ -58,10 +59,11 @@ float FitnessService::action_fitness(const int id, const fitness_type type)
     return 42.42;
 }
 
-coordinate FitnessService::action_position(const int id)
+std::tuple<float, float> FitnessService::action_position(const int id)
 {
     std::cout<<"position on id "<< id <<std::endl;
-    return {5.3,3.2};
+    
+    return tuio->getPositionFromId(id);
 }
 
 void FitnessService::rpc_start(Connection& client)
@@ -90,10 +92,10 @@ void FitnessService::rpc_position(Connection& client)
 {
     int id = client.readInt4();
     
-    coordinate position = action_position(id);
+    std::tuple<float, float> position = action_position(id);
     
-    client.writeFloat4(position.x);
-    client.writeFloat4(position.y);
+    client.writeFloat4( std::get<0>(position) );
+    client.writeFloat4( std::get<1>(position) );
     
     client.writeInt4(SUCCESS);
     return;

@@ -35,6 +35,7 @@ public:
 
     void listen();
     void gentle_stop() { running = false; }
+    std::tuple<float, float> getPositionFromId(const int id);
 
 private:
     void run();

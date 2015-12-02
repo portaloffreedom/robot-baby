@@ -4,10 +4,10 @@
 #include "tuio.h"
 
 int main(int argc, char **argv) {
-    //Tuio tuio(3333);
+    Tuio tuio(3333);
     //tuio.listen();
     
-    FitnessService fitness_service("", 7890);
+    FitnessService fitness_service("", 7890, &tuio);
     fitness_service.start_listen();
     
     return 0;
