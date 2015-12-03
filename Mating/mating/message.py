@@ -24,16 +24,18 @@ class GenomeMessage(PersonalMessage):
         string.
     """
     def __init__(self, hash_code, filename):
+        def validate_genome(genome):
+            """ Checks if the genome is in the correct format
+                (i.e syntax errors in the .genome file).
+                Returns true if it is, false otherwise.
+            """
+            if genome:
+                return True  # TODO: Implement
+
         with open(filename, 'r') as genome_file:
             genome = genome_file.read()
-            if self.validate_genome(genome):
+            if validate_genome(genome):
                 self.message = genome
             else:
                 raise ValueError('Malformed genome file')
         PersonalMessage.__init__(self, hash_code, self.message)
-
-    def validate_genome(genome):
-        """ Checks if the genome is in the correct format (i.e syntax errors
-            in the .genome file). Returns true if it is, false otherwise.
-        """
-        return True  # TODO: Implement

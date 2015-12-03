@@ -61,8 +61,8 @@ class EvolutionaryRobot(Robot):
         sleep(MESSAGE_INTERVAL_SEC)
         if self.availability and data['hash_code'] != self.hash:
             if data['message'] == MATING_MESSAGE:
-                l('{} received a mating message from {}'\
-                    .format(self.hash, data['hash_code']))
+                l('{} received a mating message from {}'
+                  .format(self.hash, data['hash_code']))
                 return uniform(0, 1) < self.mate_probability
             elif data['message'] == MATING_AGREE_RESPONSE:
                 l('{} agreed to mate with {}'.format(self.hash,
