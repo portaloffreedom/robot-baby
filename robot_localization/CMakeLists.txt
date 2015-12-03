@@ -45,6 +45,8 @@ set("app_SRCS" main.cpp
     connection.cpp
     connection_listener.cpp
     fitness_service.cpp
+    robot_path.cpp
+    shared_data.cpp
 )
 
 

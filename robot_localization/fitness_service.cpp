@@ -1,12 +1,14 @@
 
 #include "fitness_service.h"
 #include <iostream>
+#include <stdexcept>
 
-FitnessService::FitnessService(const std::string address, const int port, Tuio *tuio)
+FitnessService::FitnessService(const std::string address, const int port, Tuio *tuio, SharedData *shared_data)
   : address(address)
   , port(port)
   , connection_listener(port)
   , tuio(tuio)
+  , shared_data(shared_data)
   , verbose (false)
 {
 }
@@ -50,12 +52,30 @@ void FitnessService::start_listen()
 void FitnessService::action_start(const int id)
 {
     std::cout<<"start on id "<< id <<std::endl;
+    
+    shared_data->create(id);
 }
 
 float FitnessService::action_fitness(const int id, const fitness_type type)
 {
     std::cout<<"fitness on id "<< id <<" fitness type "<<type<<std::endl;
-    return 42.42;
+    RobotPath *path = shared_data->get(id);
+    
+    float fitness = 0;
+    
+    switch(type) {
+        case DISPLACEMENT:
+            fitness = path->calculate_displacement();
+            break;
+        case PATH:
+            fitness = path->calculate_path();
+            break;
+        default:
+            std::cerr<<"unsupported fitness type: "<<type<<std::endl;
+            throw std::invalid_argument("unsupported fitness type");
+    }
+    
+    return fitness;
 }
 
 std::tuple<float, float> FitnessService::action_position(const int id)
@@ -79,10 +99,20 @@ void FitnessService::rpc_fitness(Connection& client)
     int id = client.readInt4();
     fitness_type type = (fitness_type) client.readInt4();
     
-    float fitness = action_fitness(id, type);
+    float fitness;
+    try {
+        fitness = action_fitness(id, type);
+    } catch(std::invalid_argument &e) {
+        client.writeFloat4(0);
+        client.writeInt4(ERROR);
+        return;
+    } catch(std::out_of_range &e) {
+        client.writeFloat4(0);
+        client.writeInt4(ERROR);
+        return;
+    }
     
     client.writeFloat4(fitness);
-    
     client.writeInt4(SUCCESS);
     return;
 }

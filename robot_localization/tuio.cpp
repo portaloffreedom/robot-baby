@@ -3,7 +3,8 @@
 #include <iostream>
 #include <cstdlib>
 
-Tuio::Tuio(int port)
+Tuio::Tuio(int port, SharedData *shared_data)
+  : shared_data(shared_data)
 {
     osc_receiver = new UdpReceiver(port);
     //osc_receiver = new TcpReceiver("127.0.0.1",3333);
@@ -166,15 +167,30 @@ void Tuio::receiveObjects() {
     tuioClient->unlockBlobList();
 }
 
+void Tuio::insetTuioObjectInData(TuioObject *tobj) {
+    RobotPath *path;
+    try {
+        path = shared_data->get(tobj->getSymbolID());
+    } catch (std::out_of_range &e) {
+        return;
+    }
+    
+    path->insertElem(tobj->getTuioTime().getTotalMilliseconds(), tobj->getX(), tobj->getY());   
+}
+
 void Tuio::addTuioObject(TuioObject *tobj) {
     if (verbose)
         std::cout << "add obj " << tobj->getSymbolID() << " (" << tobj->getSessionID() << "/"<<  tobj->getTuioSourceID() << ") "<< tobj->getX() << " " << tobj->getY() << " " << tobj->getAngle() << std::endl;
+    
+    insetTuioObjectInData(tobj);
 }
 
 void Tuio::updateTuioObject(TuioObject *tobj) {
     if (verbose)
         std::cout << "set obj " << tobj->getSymbolID() << " (" << tobj->getSessionID() << "/"<<  tobj->getTuioSourceID() << ") "<< tobj->getX() << " " << tobj->getY() << " " << tobj->getAngle() 
         << " " << tobj->getMotionSpeed() << " " << tobj->getRotationSpeed() << " " << tobj->getMotionAccel() << " " << tobj->getRotationAccel() << std::endl;
+    
+    insetTuioObjectInData(tobj);
 }
 
 void Tuio::removeTuioObject(TuioObject *tobj) {

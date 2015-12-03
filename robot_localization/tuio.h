@@ -6,19 +6,26 @@
 #include "TUIO/TuioClient.h"
 #include "TUIO/UdpReceiver.h"
 #include "TUIO/TcpReceiver.h"
+#include "shared_data.h"
 
 using namespace TUIO;
 
 class Tuio: public TuioListener { 
 
 public:
-    Tuio(int port);
+    Tuio(int port, SharedData *shared_data);
     ~Tuio() {
         tuioClient->disconnect();
         delete tuioClient;
         delete osc_receiver;
     }
 
+    void listen();
+    void gentle_stop() { running = false; }
+    std::tuple<float, float> getPositionFromId(const int id);
+
+    
+    // pay attention as all these functions will be called from another thread
     void addTuioObject(TuioObject *tobj);
     void updateTuioObject(TuioObject *tobj);
     void removeTuioObject(TuioObject *tobj);
@@ -30,12 +37,8 @@ public:
     void addTuioBlob(TuioBlob *tblb);
     void updateTuioBlob(TuioBlob *tblb);
     void removeTuioBlob(TuioBlob *tblb);
-    
-    void refresh(TuioTime frameTime);
 
-    void listen();
-    void gentle_stop() { running = false; }
-    std::tuple<float, float> getPositionFromId(const int id);
+    void refresh(TuioTime frameTime);
 
 private:
     void run();
@@ -46,6 +49,10 @@ private:
 
     TuioClient *tuioClient;
     OscReceiver *osc_receiver;
+    SharedData *shared_data;
+    
+    // pay attention as all these functions will be called from another thread
+    void insetTuioObjectInData(TuioObject *tobj);
 };
 
 

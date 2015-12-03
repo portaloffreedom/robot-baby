@@ -21,9 +21,10 @@
 #ifndef __FITNESS_SERVICE_H__
 #define __FITNESS_SERVICE_H__
 
+#include <tuple>
 #include "connection_listener.h"
 #include "tuio.h"
-#include <tuple>
+#include "shared_data.h"
 
 enum err {
     SUCCESS = 0,
@@ -43,7 +44,7 @@ enum fitness_type {
 
 class FitnessService {
 public:
-    FitnessService(const std::string address, const int port, Tuio *tuio);
+    FitnessService(const std::string address, const int port, Tuio *tuio, SharedData *shared_data);
     ~FitnessService();
     
     void start_listen();
@@ -62,6 +63,7 @@ private:
     const int port;
     ConnectionListener connection_listener;
     Tuio *tuio;
+    SharedData *shared_data;
     
     bool verbose;
 };
