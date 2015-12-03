@@ -1,7 +1,7 @@
 DEFAULT_PACKET_SIZE = 1024
 
-UDP_IP = 'localhost'
+UDP_IP = '255.255.255.255'
 UDP_PORT = 5152
 
-TCP_IP = 'localhost'
+TCP_IP = '127.0.0.1'
 TCP_PORT = 5251
