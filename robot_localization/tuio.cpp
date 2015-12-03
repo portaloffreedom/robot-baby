@@ -37,12 +37,17 @@ std::tuple<float, float> Tuio::getPositionFromId(const int id) {
         TuioObject *tuioObject = (*iter);
         if (tuioObject->getSymbolID() == id) {
             
-            std::list<TuioPoint> path = tuioObject->getPath();
-            TuioPoint last_point = path.front();
-            
             float x,y;
+            /*
+            std::list<TuioPoint> path = tuioObject->getPath();
+            TuioPoint last_point = path.back();
+            
             x = last_point.getX();
             y = last_point.getY();
+            */
+            TuioPoint position = tuioObject->getPosition();
+            x = position.getX();
+            y = position.getY();
             
             tuioClient->unlockObjectList();
             return std::make_tuple(x, y);
