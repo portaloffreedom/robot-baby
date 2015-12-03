@@ -4,7 +4,7 @@ from socket import (socket, AF_INET, SOCK_DGRAM, SOL_SOCKET, SO_REUSEADDR,
 from threading import Thread
 
 from mating.message import Message
-from mating.network import DEFAULT_PACKET_SIZE, UDP_IP, UDP_PORT
+from mating.network import DEFAULT_PACKET_SIZE, UDP_PORT
 
 
 class UDPServerThread(Thread):
@@ -15,7 +15,7 @@ class UDPServerThread(Thread):
         """ Should override criterion and response functions in offsping. """
         Thread.__init__(self)
         self.s = socket(AF_INET, SOCK_DGRAM)
-        self.address = (UDP_IP, UDP_PORT)
+        self.address = ('', UDP_PORT)
         self.s.setsockopt(SOL_SOCKET, SO_REUSEADDR, 1)
         self.s.setsockopt(SOL_SOCKET, SO_REUSEPORT, 1)
         self.s.setsockopt(SOL_SOCKET, SO_BROADCAST, 1)
