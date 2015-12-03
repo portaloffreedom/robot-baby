@@ -26,7 +26,7 @@ class UDPClientThread(Thread):
             self.s.sendto(json.dumps(data.__dict__), self.address)
 
 
-class TCPClient():
+class TCPClient(Thread):
     def __init__(self, message=None):
         """ Should override message function in offsping. """
         Thread.__init__(self)
@@ -36,7 +36,7 @@ class TCPClient():
 
     def send(self):
         self.s.connect(self.address)
-        data = self.message()
+        data = self.message
         self.s.send(json.dumps(data.__dict__))
         self.s.close()
 

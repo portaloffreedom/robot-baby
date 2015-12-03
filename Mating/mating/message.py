@@ -1,3 +1,5 @@
+import codecs
+
 MESSAGE_INTERVAL_SEC = 2
 
 
@@ -32,7 +34,7 @@ class GenomeMessage(PersonalMessage):
             if genome:
                 return True  # TODO: Implement
 
-        with open(filename, 'r') as genome_file:
+        with codecs.open(filename, 'r', 'utf-8') as genome_file:
             genome = genome_file.read()
             if validate_genome(genome):
                 self.message = genome

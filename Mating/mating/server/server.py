@@ -1,17 +1,18 @@
 import json
 from socket import socket, AF_INET, SOCK_STREAM
 
+from mating.logging import l
 from mating.network import DEFAULT_PACKET_SIZE, TCP_IP, TCP_PORT
 
 
 def run_mating_server():
     def handle_received_data(packet, mates):
-        for data in packet:
-            dhash = str(data['hash_code'])
-            if mates[dhash]:
-                mates[dhash].append(data['message'])
-            else:
-                mates[dhash] = [data['message']]
+        dhash = str(packet['hash_code'])
+        l('Mating server received {}'.format(dhash))
+        if mates.get(dhash):
+            mates[dhash].append(packet['message'])
+        else:
+            mates[dhash] = [packet['message']]
 
     s = socket(AF_INET, SOCK_STREAM)
     s.bind((TCP_IP, TCP_PORT))
@@ -22,11 +23,12 @@ def run_mating_server():
     mates = {}
     while True:
         packet = conn.recv(DEFAULT_PACKET_SIZE)
-        handle_received_data(json.loads(packet), mates)
+        if packet:
+            handle_received_data(json.loads(packet), mates)
         for pair_id in mates:
             # If both robots have agreed to mate
             if len(mates[pair_id]) == 2:
-                print mates[pair_id]
+                l(mates[pair_id])
                 pass  # TODO: Call the Cpp module that does the crossover
 
     conn.close()
