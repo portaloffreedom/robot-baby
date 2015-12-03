@@ -7,10 +7,8 @@ if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang" OR CMAKE_COMPILER_IS_GNUCXX)
     check_cxx_compiler_flag(--std=c++0x SUPPORTS_STD_CXX01)
     if(SUPPORTS_STD_CXX11)
         set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} --std=c++11")
-        set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} --std=c++11")
     elseif(SUPPORTS_STD_CXX01)
         set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} --std=c++0x")
-        set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} --std=c++0x")
     else()
         message(ERROR "Compiler does not support --std=c++11 or --std=c++0x.")
     endif()
@@ -51,5 +49,7 @@ set("app_SRCS" main.cpp
 
 
 add_executable(robot_localization ${app_SRCS} ${TUIO_SRCS} ${OSCPACK_SRCS})
+
+add_executable(client-test client-test.c)
 
 install(TARGETS robot_localization RUNTIME DESTINATION bin)
