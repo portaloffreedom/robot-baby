@@ -12,63 +12,49 @@ class FitnessQuerier:
         self._ipaddr = ''
 
     def start(self):
-        # Create a TCP socket
         try:
-            s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        except socket.error as err:
-            logging.error("Failed to create socket: {0}".format(err))
-            return
-
-        # Connect to fitness service
-        try:
-            self._ipaddr = socket.gethostbyname(self._server_address)
-            s.connect((self._ipaddr, self._server_port))
+            s = self._create_socket()
             resp = self._send_message(s, 'start')
-        except socket.gaierror:
-            logging.error("Cannot connect to host: {}".format(self._server_address))
+            s.close()
+        except (socket.error, socket.gaierror):
+            resp = -1
 
-        s.close()
         return resp
 
     def get_fitness(self):
         fitness = {}
         for method in self._query_type:
-            # Create a TCP socket
             try:
-                s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-            except socket.error as err:
-                logging.error("Failed to create socket: {0}".format(err))
-                return []
-
-            # Connect to fitness service
-            try:
-                self._ipaddr = socket.gethostbyname(self._server_address)
-                s.connect((self._ipaddr, self._server_port))
+                s = self._create_socket()
                 fitness[method] = self._send_message(s, 'fitness', method)
-            except socket.gaierror:
-                logging.error("Cannot connect to host: {}".format(self._server_address))
-            s.close()
-
+                s.close()
+            except (socket.error, socket.gaierror):
+                pass
         return [fitness[m] for m in self._query_type]
 
     def get_position(self):
-        # Create a TCP socket
+        try:
+            s = self._create_socket()
+            position = self._send_message(s, 'position')
+            s.close()
+        except (socket.error, socket.gaierror):
+            return ()
+
+        return position
+
+    def _create_socket(self):
         try:
             s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         except socket.error as err:
             logging.error("Failed to create socket: {0}".format(err))
-            return ()
+            raise
 
-        # Connect to fitness service
         try:
             self._ipaddr = socket.gethostbyname(self._server_address)
             s.connect((self._ipaddr, self._server_port))
-            position = self._send_message(s, 'position')
         except socket.gaierror:
             logging.error("Cannot connect to host: {}".format(self._server_address))
-
-        s.close()
-        return position
+            raise
 
     def _send_message(self, sock, query_type, method=''):
         if query_type == 'start':

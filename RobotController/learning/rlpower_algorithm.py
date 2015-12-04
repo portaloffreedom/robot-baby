@@ -32,6 +32,7 @@ class RLPowerAlgorithm:
         # Create an instance of fitness querier
         if self._fitness_evaluation == 'auto':
             self._fitness_querier = FitnessQuerier(config_parameters)
+            self._fitness_querier.start()
 
         # Recover evaluation data from tmp file
         self._runtime_data = self._load_runtime_data_from_file(self._runtime_data_file)
@@ -52,6 +53,7 @@ class RLPowerAlgorithm:
     def next_evaluation(self, controller):
         logging.info("current spline size: {}".format(self._current_spline_size))
         current_fitness = self.get_current_fitness()
+        logging.info("Current position: {}".format(self._fitness_querier.get_position()))
         self.save_in_ranking(current_fitness, self._current_spline)
         self._current_evaluation += 1
         if math.floor((self._end_spline_size - self._initial_spline_size)/self._number_of_fitness_evaluations *
@@ -94,8 +96,8 @@ class RLPowerAlgorithm:
             fitness = 5 + random.normalvariate(0, 2)
         elif self._fitness_evaluation == 'auto':
             # TODO: figure out how to handle multiple fitness values
-            fitness = self._fitness_querier.get_fitness()
-            #raise NotImplementedError("auto mode fitness evaluation not ready")
+            fitness = self._fitness_querier.get_fitness()[0]
+            # raise NotImplementedError("auto mode fitness evaluation not ready")
         else:
             logging.error("Unknown fitness evaluation method")
             raise NameError("Unknown fitness evaluation method")
