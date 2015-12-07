@@ -76,6 +76,7 @@ class RLPowerAlgorithm:
         self.controller.set_spline(self._current_spline)
         self._sigma *= self._sigma_decay
         self._save_runtime_data_to_file(self._runtime_data_file)
+        self._fitness_querier.start()
 
     def recalculate_spline(self, spline, spline_size):
         return np.apply_along_axis(self._interpolate, 1, spline, spline_size + 1)
@@ -96,7 +97,8 @@ class RLPowerAlgorithm:
             fitness = 5 + random.normalvariate(0, 2)
         elif self._fitness_evaluation == 'auto':
             # TODO: figure out how to handle multiple fitness values
-            fitness = self._fitness_querier.get_fitness()[0]
+            fitness = self._fitness_querier.get_fitness()[0][0]
+            print(fitness)
             # raise NotImplementedError("auto mode fitness evaluation not ready")
         else:
             logging.error("Unknown fitness evaluation method")

@@ -26,7 +26,7 @@ class FitnessQuerier:
         for method in self._query_type:
             try:
                 s = self._create_socket()
-                fitness[method] = self._send_message(s, 'fitness', method)
+                fitness[method] = self._send_message(s, 'fitness', method)[0]
                 s.close()
             except (socket.error, socket.gaierror):
                 pass
@@ -55,6 +55,7 @@ class FitnessQuerier:
         except socket.gaierror:
             logging.error("Cannot connect to host: {}".format(self._server_address))
             raise
+        return s
 
     def _send_message(self, sock, query_type, method=''):
         if query_type == 'start':
