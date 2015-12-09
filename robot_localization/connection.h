@@ -10,19 +10,27 @@ class ConnectionException {
 public:
     ConnectionException(std::string reason, int _errno)
     {
-        std::stringstream ss;
-        ss << reason << ": " <<strerror(_errno);
-        this->reason = ss.str();
+        init(reason, _errno);
     }
     
     ConnectionException(std::string reason)
-        : ConnectionException(reason, errno) {};
-        
+    {
+        init(reason, errno);
+    }
+
     ConnectionException() {
         reason = strerror(errno);
     }
-    
+
     std::string reason;
+
+private:
+    void init(std::string reason, int _errno)
+    {
+        std::stringstream ss;
+        ss << reason << ": " << strerror(_errno);
+        this->reason = ss.str();
+    }
 };
 
 class Connection {
