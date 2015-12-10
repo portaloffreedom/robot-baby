@@ -1,6 +1,6 @@
 import codecs
 
-MESSAGE_INTERVAL_SEC = 2
+MESSAGE_INTERVAL_SEC = 0.5
 
 
 class Message:

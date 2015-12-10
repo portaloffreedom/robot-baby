@@ -1,4 +1,3 @@
-from random import uniform
 from time import sleep
 from uuid import uuid4
 
@@ -8,13 +7,10 @@ from mating.robot.client import TCPClient, UDPClientThread
 from mating.robot.server import UDPServerThread
 
 
-MATING_MESSAGE = 'MATE'
-
-MATING_AGREE_RESPONSE = 'YES'
-MATING_DISAGREE_RESPONSE = 'NO'
+AVAILABLE = 1
 
 
-class Robot():
+class Robot(object):
     """ Abstract class that implements a basic robot. Should be subclassed. """
 
     def __init__(self, name=None):
@@ -36,8 +32,9 @@ class Robot():
     def server_criterion(self, data):
         return data['hash_code'] != self.hash
 
-    def server_response(self):
-        return PersonalMessage(self.hash, '')
+    def server_response(self, data):
+        if data:
+            return PersonalMessage(self.hash, '')
 
     def client_message(self):
         return PersonalMessage(self.hash, '')
@@ -45,12 +42,11 @@ class Robot():
 
 class EvolutionaryRobot(Robot):
 
-    # mate_probability defaults to 1, we may change this in the future
-    def __init__(self, name, mate_probability=1):
+    def __init__(self, name):
         Robot.__init__(self, name)
         self.genome_file = '{}.genome'.format(name)
-        self.availability = True  # Availability to mate
-        self.mate_probability = mate_probability
+        self.mate_hash = None
+        self.availability = True
 
     def initialize_parameters(self):
         self.server.criterion = self.server_criterion
@@ -58,38 +54,34 @@ class EvolutionaryRobot(Robot):
         self.client.message = self.client_message
 
     def server_criterion(self, data):
-        sleep(MESSAGE_INTERVAL_SEC)
-        if self.availability and data['hash_code'] != self.hash:
-            if data['message'] == MATING_MESSAGE:
-                l('{} received a mating message from {}'
-                  .format(self.hash, data['hash_code']))
-                return uniform(0, 1) < self.mate_probability
-            elif data['message'] == MATING_AGREE_RESPONSE:
-                l('{} agreed to mate with {}'.format(self.hash,
-                                                     data['hash_code']))
-                return hasattr(self, 'mate_hash')\
-                    and data['hash_code'] == self.mate_hash
-
-        return False
+        return data['hash_code'] != self.hash
 
     def server_response(self, data):
-        sleep(MESSAGE_INTERVAL_SEC)
-        if data['message'] == MATING_MESSAGE:
-            self.mate_hash = data['hash_code']
-            l('Registered {} as potential mate'.format(self.mate_hash))
-            return PersonalMessage(self.hash, MATING_AGREE_RESPONSE)
-        elif data['message'] == MATING_AGREE_RESPONSE:
-            self.availability = False
-            l('Agreed to mate with {}'.format(self.mate_hash))
-            self.agree_to_mate()
-            return PersonalMessage(self.hash, MATING_AGREE_RESPONSE)
-
-        return PersonalMessage(self.hash, MATING_DISAGREE_RESPONSE)
+        message = None
+        if data['message'] == AVAILABLE:
+            if not self.mate_hash:
+                message = data['hash_code']
+        if data['message'] == self.hash:
+            if (self.mate_hash
+                    and data['hash_code'] == self.mate_hash
+                    and self.availability):
+                self.agree_to_mate()
+                self.availability = False
+            else:
+                self.mate_hash = data['hash_code']
+            message = data['hash_code']
+        return PersonalMessage(self.hash, message)
 
     def client_message(self):
         sleep(MESSAGE_INTERVAL_SEC)
-        l('{} sending mating message'.format(self.hash))
-        return PersonalMessage(self.hash, MATING_MESSAGE)
+        message = None
+        if not self.mate_hash:
+            l('SENT: {}, mating call'.format(self.hash))
+            message = AVAILABLE
+        else:
+            l('SENT: {}, {}'.format(self.hash, self.mate_hash))
+            message = self.mate_hash
+        return PersonalMessage(self.hash, message)
 
     def agree_to_mate(self):
         """ Once the robots agree to mate, send their genomes to the mating
