@@ -18,17 +18,16 @@ def run_mating_server():
     s.bind((TCP_IP, TCP_PORT))
     s.listen(1)
 
-    conn, addr = s.accept()
     # Initialize an empty dictionary - mating pairs will be stored here
     mates = {}
     while True:
+        conn, addr = s.accept()
         packet = conn.recv(DEFAULT_PACKET_SIZE)
         if packet:
             handle_received_data(json.loads(packet), mates)
         for pair_id in mates:
             # If both robots have agreed to mate
             if len(mates[pair_id]) == 2:
-                l(mates[pair_id])
+                l('Mating server formed a pair {}'.format(mates[pair_id]))
                 pass  # TODO: Call the Cpp module that does the crossover
-
-    conn.close()
+        conn.close()

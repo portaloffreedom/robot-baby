@@ -29,12 +29,13 @@ class UDPServerThread(Thread):
         # Listen to the network
         while True:
             packet, addr = self.s.recvfrom(DEFAULT_PACKET_SIZE)
-            # If packet received satisfies criteria
-            rcv_data = json.loads(packet)
-            if self.criterion(data=rcv_data):
-                rsp_data = self.response(data=rcv_data)
-                # Respond
-                self.s.sendto(json.dumps(rsp_data.__dict__), self.address)
+            if packet:
+                # If packet received satisfies criteria
+                rcv_data = json.loads(packet)
+                if self.criterion(data=rcv_data):
+                    rsp_data = self.response(data=rcv_data)
+                    # Respond
+                    self.s.sendto(json.dumps(rsp_data.__dict__), self.address)
 
 
 def default_response(**kwargs):
