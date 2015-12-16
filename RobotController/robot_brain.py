@@ -58,7 +58,8 @@ class RobotBrain:
         current_check = time.time()
         if force or current_check > self._next_check:
             logging.info("next movement values current {}, next {}".format(current_check, self._next_check))
-            self.algorithm.next_evaluation(self.HAL.sensor.readADC(0))
+            self.algorithm.next_evaluation(1+(self.HAL.sensor.readADC(0)/-255)) # 255-0 to 0-1
+            #TODO make HAL smarter in light readings
             self._next_check = current_check + RobotBrain.TIME_CHECK_TIMEOUT
         self.HAL.led.setColor(self.HAL.led._green)
 

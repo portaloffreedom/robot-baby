@@ -52,7 +52,10 @@ class RLPowerAlgorithm:
 
     def next_evaluation(self, light_sensor_value=0):
         logging.info("current spline size: {}".format(self._current_spline_size))
-        current_fitness = self.get_current_fitness() + 0.1 * light_sensor_value
+        movement_fitness = self.get_current_fitness()
+        light_fitness = light_sensor_value
+        current_fitness = movement_fitness + light_fitness
+        logging.info("Last evaluation fitness: {} (movement: {} + light: {})".format(current_fitness, movement_fitness, light_fitness))
         logging.info("Current position: {}".format(self._fitness_querier.get_position()))
         self.save_in_ranking(current_fitness, self._current_spline)
         self._current_evaluation += 1
@@ -98,8 +101,7 @@ class RLPowerAlgorithm:
         elif self._fitness_evaluation == 'auto':
             # TODO: figure out how to handle multiple fitness values
             fitness = self._fitness_querier.get_fitness()[0][0]
-            print(fitness)
-            # raise NotImplementedError("auto mode fitness evaluation not ready")
+            #logging.info("fitness: {}".format(fitness))
         else:
             logging.error("Unknown fitness evaluation method")
             raise NameError("Unknown fitness evaluation method")
