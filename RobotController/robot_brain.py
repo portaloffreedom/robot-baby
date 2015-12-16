@@ -25,6 +25,7 @@ class RobotBrain:
 
         self.HAL = Hal(config_options)
         self.algorithm = RLPowerAlgorithm(config_options)
+        self.HAL.led.setColor(self.HAL.led._green)
 
         self._next_check = time.time() + RobotBrain.TIME_CHECK_TIMEOUT
         self._start_time = time.time()
@@ -53,11 +54,13 @@ class RobotBrain:
         Check if is a moment for a new evaluation and starts a new one
         :param force: forces the new evaluation to start
         """
+        self.HAL.led.setColor(self.HAL.led._magenta)
         current_check = time.time()
         if force or current_check > self._next_check:
             logging.info("next movement values current {}, next {}".format(current_check, self._next_check))
             self.algorithm.next_evaluation(self)
             self._next_check = current_check + RobotBrain.TIME_CHECK_TIMEOUT
+        self.HAL.led.setColor(self.HAL.led._green)
 
     def stop_current_evaluation(self):
         """

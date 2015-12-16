@@ -1,4 +1,5 @@
 from hal.outputs.servo import Servo
+from hal.outputs.rgbled import RGBLED
 import logging
 
 __author__ = 'matteo'
@@ -6,6 +7,7 @@ __author__ = 'matteo'
 
 class Hal:
     def __init__(self, config_options):
+        self.led = RGBLED(config_options)
         self._servos = []
         self._n_servo = len(config_options['servo_pins'])
         for x in config_options['servo_pins']:
