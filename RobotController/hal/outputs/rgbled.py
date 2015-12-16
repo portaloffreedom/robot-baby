@@ -2,6 +2,9 @@
 from time import sleep
 import RPi.GPIO as GPIO
 
+# Needed for main() test harnesses
+import json
+
 #Common Cathode RGB-LEDs (Cathode=Active Low)
 RGB_ENABLE = 0
 RGB_DISABLE = 1
@@ -15,52 +18,55 @@ RGB_MAGENTA = [RGB_RED,RGB_BLUE]
 RGB_YELLOW = [RGB_RED,RGB_GREEN]
 RGB_WHITE = [RGB_RED,RGB_GREEN,RGB_BLUE]
 
-RGB = [RGB_RED,RGB_GREEN,RGB_BLUE]
-RGB_LIST = [RGB_RED,RGB_GREEN,RGB_BLUE,RGB_CYAN,RGB_MAGENTA,RGB_YELLOW,RGB_WHITE]
+class RGBLED:
+  """Class for controlling RGB LED indicator using discrete signals sent to GPIO pins
 
-def ledSetup():
-  #Set up the wiring
-  GPIO.setwarnings(False)
-  GPIO.setmode(GPIO.BCM)
-  # Setup Ports
-  for val in RGB:
-    GPIO.setup(val, GPIO.OUT)
-  ledClear()
+    Attributes:
+      config_options: Array containing GPIO pin numbers in Broadcomm standard
+  """
+  def __init__(self, config_options=None):
+    self._red = config_options['red_pin'] if config_options is not None else RGB_RED
+    self._green = config_options['green_pin'] if config_options is not None else RGB_GREEN
+    self._blue = config_options['blue_pin'] if config_options is not None else RGB_BLUE
+    self._cyan = [self._green, self._blue]
+    self._magenta = [self._red, self._blue]
+    self._yellow = [self._red, self._green]
+    self._white = [self._red, self._green, self._blue]
 
-def setColor(color):
-  ledClear()
-  if isinstance(color,int):
-    GPIO.output(color, RGB_ENABLE)
-  else:
-    for c in color:
-      GPIO.output(c, RGB_ENABLE)
+  def ledSetup(self):
+    # Set up the wiring
+    GPIO.setwarnings(False)
+    GPIO.setmode(GPIO.BCM)
+    # Setup Ports
+    for val in self._white:
+      GPIO.setup(val, GPIO.OUT)
+    self.ledClear()
 
-def ledClear():
-  for val in RGB:
-    GPIO.output(val, RGB_DISABLE)
+  def setColor(self, color):
+    self.ledClear()
+    if isinstance(color,int):
+      GPIO.output(color, RGB_ENABLE)
+    else:
+      for c in color:
+        GPIO.output(c, RGB_ENABLE)
 
-def ledCleanup():
-  ledClear()
-  GPIO.cleanup(RGB)
+  def ledClear(self):
+    for val in self._white:
+      GPIO.output(val, RGB_DISABLE)
 
-def main():
-  ledSetup()
-  for num in range(0,5):
-    setColor(RGB_RED)
-    sleep(1)
-    setColor(RGB_GREEN)
-    sleep(1)
-    setColor(RGB_BLUE)
-    sleep(1)
-    setColor(RGB_CYAN)
-    sleep(1)
-    setColor(RGB_MAGENTA)
-    sleep(1)
-    setColor(RGB_YELLOW)
-    sleep(1)
-  ledCleanup()
+  def ledCleanup(self):
+    self.ledClear()
+    GPIO.cleanup(self._white)
 
 # Test harnesses 
 if __name__=='__main__':
-  main()
+  try:
+     with open('../../robot_1.cfg') as config_file:
+       config_option = json.load(config_file)
+  except IOError:
+     logging.error("Configuration file could not be read: {}".format('../../robot_1.cfg'))
+     raise SystemExit
+
+  rgbled = RGBLED(config_option)
+  rgbled.setColor(rgbled._cyan)
 #End
