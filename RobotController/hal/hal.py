@@ -10,8 +10,8 @@ __author__ = 'matteo'
 class Hal:
     def __init__(self, config_options):
         self.led = RGBLED(config_options)
-        self.photocell = photocell(SMBus(1), 0x48)
-        self.photocell.enableDAC()
+        self.sensor = photocell(SMBus(1), 0x48)
+        self.sensor.enableDAC()
         self._servos = []
         self._n_servo = len(config_options['servo_pins'])
         for x in config_options['servo_pins']:
