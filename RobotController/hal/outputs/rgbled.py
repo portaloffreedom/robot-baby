@@ -32,6 +32,7 @@ class RGBLED:
     self._magenta = [self._red, self._blue]
     self._yellow = [self._red, self._green]
     self._white = [self._red, self._green, self._blue]
+    self.ledSetup()
 
   def ledSetup(self):
     # Set up the wiring
