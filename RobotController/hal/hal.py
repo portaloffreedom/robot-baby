@@ -1,5 +1,7 @@
+from smbus import SMBus
 from hal.outputs.servo import Servo
 from hal.outputs.rgbled import RGBLED
+from hal.photocell import PCF8591P as photocell
 import logging
 
 __author__ = 'matteo'
@@ -8,6 +10,8 @@ __author__ = 'matteo'
 class Hal:
     def __init__(self, config_options):
         self.led = RGBLED(config_options)
+        self.photocell = photocell(SMBus(1), 0x48)
+        self.photocell.enableDAC()
         self._servos = []
         self._n_servo = len(config_options['servo_pins'])
         for x in config_options['servo_pins']:

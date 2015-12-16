@@ -50,9 +50,9 @@ class RLPowerAlgorithm:
                     for y in range(self.NUM_SERVOS)])
         self.controller = RLPowerController(self._current_spline)
 
-    def next_evaluation(self, controller):
+    def next_evaluation(self, light_sensor_value=0):
         logging.info("current spline size: {}".format(self._current_spline_size))
-        current_fitness = self.get_current_fitness()
+        current_fitness = self.get_current_fitness() + 0.1 * light_sensor_value
         logging.info("Current position: {}".format(self._fitness_querier.get_position()))
         self.save_in_ranking(current_fitness, self._current_spline)
         self._current_evaluation += 1
