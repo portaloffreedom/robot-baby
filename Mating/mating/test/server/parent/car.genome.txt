@@ -1,8 +1,8 @@
-0 CoreComponent E0 0
-	0 FixedBrick F0 0
-		0 FixedBrick F1 0
-			0 FixedBrick F2 0
-				1 ActiveWheg G0 0 0.04
-				2 ActiveWheg G1 0 0.04
-	2 ActiveWheg G2 0 0.04
-	3 ActiveWheg G3 0 0.04
+0 CoreComponent E0 0 RED
+	0 FixedBrick F0 0 RED
+		0 FixedBrick F1 0 RED
+			0 FixedBrick F2 0 RED
+				1 ActiveWheg G0 0 0.04 RED
+				2 ActiveWheg G1 0 0.04 RED
+	2 ActiveWheg G2 0 0.04 RED
+	3 ActiveWheg G3 0 0.04 RED

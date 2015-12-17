@@ -1,13 +1,13 @@
-0 CoreComponent E0 0
-	0 ActiveHinge I0 1
-		0 FixedBrick F0 0
-	1 ActiveHinge I1 0
-		0 FixedBrick F1 0
-			0 ActiveHinge I2 1
-				0 FixedBrick F2 0
-					0 ActiveHinge I3 0
-						0 FixedBrick F3 0
-							0 ActiveHinge I4 1
-								0 FixedBrick F4 0
-									0 ActiveHinge I5 0
-										0 FixedBrick F5 0
+0 CoreComponent E0 0 YELLOW
+	0 ActiveHinge I0 1 YELLOW
+		0 FixedBrick F0 0 YELLOW
+	1 ActiveHinge I1 0 YELLOW
+		0 FixedBrick F1 0 YELLOW
+			0 ActiveHinge I2 1 YELLOW
+				0 FixedBrick F2 0 YELLOW
+					0 ActiveHinge I3 0 YELLOW
+						0 FixedBrick F3 0 YELLOW
+							0 ActiveHinge I4 1 YELLOW
+								0 FixedBrick F4 0 YELLOW
+									0 ActiveHinge I5 0 YELLOW
+										0 FixedBrick F5 0 YELLOW
