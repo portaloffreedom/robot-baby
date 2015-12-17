@@ -64,11 +64,11 @@ class RobotBrain:
             self.algorithm.next_evaluation(1+(self.HAL.sensor.readADC(0)/-255)) # 255-0 to 0-1
             #TODO make HAL smarter in light readings
             self._next_check = current_check + RobotBrain.TIME_CHECK_TIMEOUT
-        if light_level < threshold:
+        if light_level < RobotBrain.LIGHT_THRESHOLD:
             self.HAL.led.setColor(self.HAL.led._green)
         else:
             self.HAL.led.setColor(self.HAL.led._red)
-            self.mating_client = EvolutionaryRobot(config_options['robot_name'])
+            self.mating_client = EvolutionaryRobot('spider')
 
     def stop_current_evaluation(self):
         """

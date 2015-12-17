@@ -1,6 +1,6 @@
 import json
 from socket import (socket, AF_INET, SOCK_DGRAM, SOL_SOCKET, SO_REUSEADDR,
-                    SO_BROADCAST, SO_REUSEPORT)
+                    SO_BROADCAST)
 from threading import Thread
 
 from mating.message import Message
@@ -17,7 +17,7 @@ class UDPServerThread(Thread):
         self.s = socket(AF_INET, SOCK_DGRAM)
         self.address = ('', UDP_PORT)
         self.s.setsockopt(SOL_SOCKET, SO_REUSEADDR, 1)
-        self.s.setsockopt(SOL_SOCKET, SO_REUSEPORT, 1)
+        #self.s.setsockopt(SOL_SOCKET, SO_REUSEPORT, 1)
         self.s.setsockopt(SOL_SOCKET, SO_BROADCAST, 1)
         self.s.bind(self.address)
         # If criterion has not been set, use the default one
