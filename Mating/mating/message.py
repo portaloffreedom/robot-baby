@@ -37,7 +37,7 @@ class GenomeMessage(PersonalMessage):
         with codecs.open(filename, 'r', 'utf-8') as genome_file:
             genome = genome_file.read()
             if validate_genome(genome):
-                self.message = genome
+                self.message = filename
             else:
                 raise ValueError('Malformed genome file')
         PersonalMessage.__init__(self, hash_code, self.message)

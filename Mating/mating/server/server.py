@@ -1,8 +1,14 @@
 import json
+import os
+import uuid
 from socket import socket, AF_INET, SOCK_STREAM
 
 from mating.logging import l
 from mating.network import DEFAULT_PACKET_SIZE, TCP_IP, TCP_PORT
+
+
+MATING_CMD = ('./RobotCrossover parent/{}.txt parent/{}.txt '
+              'confs/evolConf-full.txt -{}.genome.txt')
 
 
 def run_mating_server():
@@ -29,5 +35,8 @@ def run_mating_server():
             # If both robots have agreed to mate
             if len(mates[pair_id]) == 2:
                 l('Mating server formed a pair {}'.format(mates[pair_id]))
-                pass  # TODO: Call the Cpp module that does the crossover
+                # Call the Cpp module that does the crossover
+                os.system(MATING_CMD.format(mates[pair_id][0],
+                                            mates[pair_id][1],
+                                            str(uuid.uuid4())))
         conn.close()
