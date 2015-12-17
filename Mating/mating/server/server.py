@@ -30,13 +30,15 @@ def run_mating_server():
         conn, addr = s.accept()
         packet = conn.recv(DEFAULT_PACKET_SIZE)
         if packet:
-            handle_received_data(json.loads(packet), mates)
+            handle_received_data(json.loads(packet.decode()), mates)
         for pair_id in mates:
             # If both robots have agreed to mate
             if len(mates[pair_id]) == 2:
                 l('Mating server formed a pair {}'.format(mates[pair_id]))
-                # Call the Cpp module that does the crossover
-                os.system(MATING_CMD.format(mates[pair_id][0],
+                command = MATING_CMD.format(mates[pair_id][0],
                                             mates[pair_id][1],
-                                            str(uuid.uuid4())))
+                                            str(uuid.uuid4()))
+                l('Running command {}'.format(command))
+                # Call the Cpp module that does the crossover
+                os.system(command)
         conn.close()

@@ -24,7 +24,7 @@ class UDPClientThread(Thread):
         while True:
             data = self.message()
             if data:
-                self.s.sendto(json.dumps(data.__dict__), self.address)
+                self.s.sendto(json.dumps(data.__dict__).encode(), self.address)
 
 
 class TCPClient(Thread):
@@ -39,7 +39,7 @@ class TCPClient(Thread):
         self.s.connect(self.address)
         data = self.message
         if data:
-            self.s.send(json.dumps(data.__dict__))
+            self.s.send(json.dumps(data.__dict__).encode())
         self.s.close()
 
 
