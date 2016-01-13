@@ -19,17 +19,6 @@ Tuio::Tuio(int port, SharedData *shared_data)
     }
 }
 
-void Tuio::listen() {
-    run();
-}
-
-void Tuio::run() {
-    running=true;
-    while (running) {
-        receiveObjects();
-    }
-}
-
 std::tuple<float, float> Tuio::getPositionFromId(const int id) {
     
     std::list<TuioObject*> objectList = tuioClient->getTuioObjects();
@@ -57,114 +46,6 @@ std::tuple<float, float> Tuio::getPositionFromId(const int id) {
     tuioClient->unlockObjectList();
     
     throw IDNotFound(id);
-}
-
-void Tuio::receiveObjects() {
-    char id[5];
-    std::list<TuioCursor*> cursorList = tuioClient->getTuioCursors();
-    tuioClient->lockCursorList();
-    for (std::list<TuioCursor*>::iterator iter = cursorList.begin(); iter!=cursorList.end(); iter++) {
-        TuioCursor *tuioCursor = (*iter);
-        std::list<TuioPoint> path = tuioCursor->getPath();
-        if (path.size()>0) {
-    
-            TuioPoint last_point = path.front();
-//             glBegin(GL_LINES);
-//             glColor3f(0.0, 0.0, 1.0);
-            
-            for (std::list<TuioPoint>::iterator point = path.begin(); point!=path.end(); point++) {
-//                 glVertex3f(last_point.getScreenX(width), last_point.getScreenY(height), 0.0f);
-//                 glVertex3f(point->getScreenX(width), point->getScreenY(height), 0.0f);
-                last_point.update(point->getX(),point->getY());
-            }
-//             glEnd();
-            
-            // draw the finger tip
-//             glColor3f(0.75, 0.75, 0.75);
-//             glPushMatrix();
-//             glTranslatef(last_point.getScreenX(width), last_point.getScreenY(height), 0.0);
-//             glBegin(GL_TRIANGLE_FAN);
-            for(double a = 0.0f; a <= 2*M_PI; a += 0.2f) {
-//                 glVertex2d(cos(a) * height/100.0f, sin(a) * height/100.0f);
-            }
-//             glEnd();
-//             glPopMatrix();
-            
-//             glColor3f(0.0, 0.0, 0.0);
-//             glRasterPos2f(tuioCursor->getScreenX(width),tuioCursor->getScreenY(height));
-//             sprintf(id,"%d",tuioCursor->getCursorID());
-//             drawString(id);
-        }
-    }
-    tuioClient->unlockCursorList();
-    
-    // draw the objects
-    std::list<TuioObject*> objectList = tuioClient->getTuioObjects();
-    tuioClient->lockObjectList();
-    for (std::list<TuioObject*>::iterator iter = objectList.begin(); iter!=objectList.end(); iter++) {
-        TuioObject *tuioObject = (*iter);
-        int pos_size = height/25.0f;
-        int neg_size = -1*pos_size;
-        float xpos  = tuioObject->getScreenX(width);
-        float ypos  = tuioObject->getScreenY(height);
-        float angle = tuioObject->getAngleDegrees();
-        
-//         glColor3f(0.0, 0.0, 0.0);
-//         glPushMatrix();
-//         glTranslatef(xpos, ypos, 0.0);
-//         glRotatef(angle, 0.0, 0.0, 1.0);
-//         glBegin(GL_QUADS);
-//         glVertex2f(neg_size, neg_size);
-//         glVertex2f(neg_size, pos_size);
-//         glVertex2f(pos_size, pos_size);
-//         glVertex2f(pos_size, neg_size);
-//         glEnd();
-//         glPopMatrix();
-        
-//         glColor3f(1.0, 1.0, 1.0);
-//         glRasterPos2f(xpos,ypos+5);
-//         sprintf(id,"%d",tuioObject->getSymbolID());
-//         drawString(id);
-    }
-    tuioClient->unlockObjectList();
-    
-    // draw the blobs
-    std::list<TuioBlob*> blobList = tuioClient->getTuioBlobs();
-    tuioClient->lockBlobList();
-    for (std::list<TuioBlob*>::iterator iter = blobList.begin(); iter!=blobList.end(); iter++) {
-        TuioBlob *tuioBlob = (*iter);
-        float blob_width = tuioBlob->getScreenWidth(width)/2;
-        float blob_height = tuioBlob->getScreenHeight(height)/2;
-        float xpos  = tuioBlob->getScreenX(width);
-        float ypos  = tuioBlob->getScreenY(height);
-        float angle = tuioBlob->getAngleDegrees();
-        
-//         glColor3f(0.25, 0.25, 0.25);
-//         glPushMatrix();
-//         glTranslatef(xpos, ypos, 0.0);
-//         glRotatef(angle, 0.0, 0.0, 1.0);
-        
-        /*glBegin(GL_QUADS);
-         glVertex2f(blob_width/-2, blob_height/-2);
-         glVertex2f(blob_width/-2, blob_height/2);
-         glVertex2f(blob_width/2, blob_height/2);
-         glVertex2f(blob_width/2, blob_height/-2);
-         glEnd();*/
-        
-//         glBegin(GL_TRIANGLE_FAN);
-        for(double a = 0.0f; a <= 2*M_PI; a += 0.2f) {
-//             glVertex2d(cos(a) * blob_width, sin(a) * blob_height);
-        }
-//         glEnd();
-        
-//         glPopMatrix();
-        
-//         glColor3f(1.0, 1.0, 1.0);
-//         glRasterPos2f(xpos,ypos+5);
-//         sprintf(id,"%d",tuioBlob->getBlobID());
-//         drawString(id);
-    }
-    tuioClient->unlockBlobList();
 }
 
 void Tuio::insetTuioObjectInData(TuioObject *tobj) {

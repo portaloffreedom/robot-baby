@@ -20,8 +20,6 @@ public:
         delete osc_receiver;
     }
 
-    void listen();
-    void gentle_stop() { running = false; }
     std::tuple<float, float> getPositionFromId(const int id);
 
     
@@ -41,9 +39,7 @@ public:
     void refresh(TuioTime frameTime);
 
 private:
-    void run();
-    void receiveObjects();
-    bool verbose, running;
+    bool verbose;
 
     int width, height;
 
