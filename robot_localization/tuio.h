@@ -7,6 +7,7 @@
 #include "TUIO/UdpReceiver.h"
 #include "TUIO/TcpReceiver.h"
 #include "shared_data.h"
+#include <fstream>
 
 using namespace TUIO;
 
@@ -18,6 +19,7 @@ public:
         tuioClient->disconnect();
         delete tuioClient;
         delete osc_receiver;
+        position_log.close();
     }
 
     std::tuple<float, float> getPositionFromId(const int id);
@@ -47,6 +49,8 @@ private:
     OscReceiver *osc_receiver;
     SharedData *shared_data;
     
+    std::ofstream position_log;
+
     // pay attention as all these functions will be called from another thread
     void insetTuioObjectInData(TuioObject *tobj);
 };

@@ -2,6 +2,7 @@
 #include "common.h"
 #include <iostream>
 #include <cstdlib>
+#include <ctime>
 
 Tuio::Tuio(int port, SharedData *shared_data)
   : shared_data(shared_data)
@@ -17,6 +18,19 @@ Tuio::Tuio(int port, SharedData *shared_data)
         std::cerr<<"Error connecting! (port: "<<port<<')'<<std::endl;
         std::exit(TUIO_ERROR_EXIT_CODE);
     }
+
+
+    // current date/time based on current system
+    time_t now = time(0);
+    // convert now to string form
+    char* dt = ctime(&now);
+
+    // remove final '\n'
+    size_t end = strlen(dt);
+    dt[end-1] = '\0';
+
+    position_log = std::ofstream("positions log " + std::string(dt) + ".csv");
+    position_log << "ID, time, x, y, speed, orientation" << std::endl;
 }
 
 std::tuple<float, float> Tuio::getPositionFromId(const int id) {
@@ -56,7 +70,21 @@ void Tuio::insetTuioObjectInData(TuioObject *tobj) {
         return;
     }
     
-    path->insertElem(tobj->getTuioTime().getTotalMilliseconds(), tobj->getX(), tobj->getY());   
+    path->insertElem(tobj->getTuioTime().getTotalMilliseconds(), tobj->getX(), tobj->getY());
+
+
+    // ID
+    position_log << tobj->getSymbolID() << ", ";
+    // time
+    position_log << tobj->getTuioTime().getTotalMilliseconds() << ", ";
+    // x
+    position_log << tobj->getX() << ", ";
+    // y
+    position_log << tobj->getY() << ", ";
+    // speed x
+    position_log << tobj->getMotionSpeed() << ", ";
+    // orientation
+    position_log << tobj->getAngleDegrees() << std::endl;
 }
 
 void Tuio::addTuioObject(TuioObject *tobj) {
@@ -122,6 +150,8 @@ void Tuio::refresh(TUIO::TuioTime frameTime)
 {
     if (verbose)
         std::cout << "REFRESH? " << frameTime.getTotalMilliseconds() << std::endl;
+
+    position_log.flush();
 }
 
 
