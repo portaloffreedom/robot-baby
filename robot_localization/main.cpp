@@ -9,7 +9,6 @@ int main(int argc, char **argv) {
     SharedData shared_data;
     
     Tuio tuio(3333, &shared_data);
-    //tuio.listen();
     
     try {
         FitnessService fitness_service("", 7890, &tuio, &shared_data);
