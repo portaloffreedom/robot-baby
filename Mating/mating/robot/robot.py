@@ -47,6 +47,7 @@ class EvolutionaryRobot(Robot):
         self.genome_file = '{}.genome'.format(name)
         self.mate_hash = None
         self.availability = True
+        l('ROBOT {} start:'.format(self.hash))
 
     def initialize_parameters(self):
         self.server.criterion = self.server_criterion
@@ -62,9 +63,10 @@ class EvolutionaryRobot(Robot):
             if not self.mate_hash:
                 message = data['hash_code']
         if data['message'] == self.hash:
-            if (self.mate_hash
-                    and data['hash_code'] == self.mate_hash
-                    and self.availability):
+            if (self.mate_hash and
+                    data['hash_code'] == self.mate_hash and
+                    self.availability):
+                l('AGREED: {}, {}'.format(self.hash, self.mate_hash))
                 self.agree_to_mate()
                 self.availability = False
             else:
@@ -76,10 +78,8 @@ class EvolutionaryRobot(Robot):
         sleep(MESSAGE_INTERVAL_SEC)
         message = None
         if not self.mate_hash:
-            l('SENT: {}, mating call'.format(self.hash))
             message = AVAILABLE
         else:
-            l('SENT: {}, {}'.format(self.hash, self.mate_hash))
             message = self.mate_hash
         return PersonalMessage(self.hash, message)
 
