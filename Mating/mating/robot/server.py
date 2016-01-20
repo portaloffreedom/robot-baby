@@ -1,6 +1,5 @@
 import json
-from socket import (socket, AF_INET, SOCK_DGRAM, SOL_SOCKET, SO_REUSEADDR,
-                    SO_BROADCAST)
+from socket import socket, AF_INET, SOCK_DGRAM, SOL_SOCKET, SO_BROADCAST
 from threading import Thread
 
 from mating.message import Message
@@ -16,8 +15,6 @@ class UDPServerThread(Thread):
         Thread.__init__(self)
         self.s = socket(AF_INET, SOCK_DGRAM)
         self.address = ('', UDP_PORT)
-        self.s.setsockopt(SOL_SOCKET, SO_REUSEADDR, 1)
-        #self.s.setsockopt(SOL_SOCKET, SO_REUSEPORT, 1)
         self.s.setsockopt(SOL_SOCKET, SO_BROADCAST, 1)
         self.s.bind(self.address)
         # If criterion has not been set, use the default one
@@ -36,7 +33,7 @@ class UDPServerThread(Thread):
                     rsp_data = self.response(data=rcv_data)
                     # Respond
                     self.s.sendto(json.dumps(rsp_data.__dict__).encode(),
-                                  self.address)
+                                  ('<broadcast>', UDP_PORT))
 
 
 def default_response(**kwargs):
