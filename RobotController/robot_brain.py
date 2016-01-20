@@ -32,6 +32,8 @@ class RobotBrain:
         self._next_check = time.time() + RobotBrain.TIME_CHECK_TIMEOUT
         self._start_time = time.time()
 
+        self.mating_client = None
+
     def live(self):
         """
         life big cycle
@@ -68,7 +70,8 @@ class RobotBrain:
             self.HAL.led.setColor(self.HAL.led._green)
         else:
             self.HAL.led.setColor(self.HAL.led._red)
-            self.mating_client = EvolutionaryRobot('spider')
+            if self.mating_client is None:
+                self.mating_client = EvolutionaryRobot('spider')
 
     def stop_current_evaluation(self):
         """
