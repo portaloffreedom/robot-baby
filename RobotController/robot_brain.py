@@ -1,6 +1,7 @@
 # from hal.fake_hal import FakeHal
 from hal.hal import Hal
 from learning.rlpower_algorithm import RLPowerAlgorithm
+from mating.robot.robot import EvolutionaryRobot
 import time
 import json
 import logging
@@ -14,6 +15,7 @@ class RobotBrain:
     """
 
     TIME_CHECK_TIMEOUT = 30  # in seconds
+    LIGHT_THRESHOLD = 0.8
 
     def __init__(self, config_file_path):
         try:
@@ -56,12 +58,17 @@ class RobotBrain:
         """
         self.HAL.led.setColor(self.HAL.led._magenta)
         current_check = time.time()
+        light_level = 1+(self.HAL.sensor.readADC(0)/-255)
         if force or current_check > self._next_check:
             logging.info("next movement values current {}, next {}".format(current_check, self._next_check))
             self.algorithm.next_evaluation(1+(self.HAL.sensor.readADC(0)/-255)) # 255-0 to 0-1
             #TODO make HAL smarter in light readings
             self._next_check = current_check + RobotBrain.TIME_CHECK_TIMEOUT
-        self.HAL.led.setColor(self.HAL.led._green)
+        if light_level < RobotBrain.LIGHT_THRESHOLD:
+            self.HAL.led.setColor(self.HAL.led._green)
+        else:
+            self.HAL.led.setColor(self.HAL.led._red)
+            self.mating_client = EvolutionaryRobot('spider')
 
     def stop_current_evaluation(self):
         """
