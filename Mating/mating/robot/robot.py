@@ -44,7 +44,8 @@ class EvolutionaryRobot(Robot):
 
     def __init__(self, name):
         Robot.__init__(self, name)
-        self.genome_file = '{}.genome'.format(name)
+        self.genome_dir = '../ParentGenomes/'
+        self.genome_file = '{}{}.genome'.format(self.genome_dir, name)
         self.mate_hash = None
         self.availability = True
         l('ROBOT {} start:'.format(self.hash))

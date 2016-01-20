@@ -29,6 +29,8 @@ class RobotBrain:
         self.algorithm = RLPowerAlgorithm(config_options)
         self.HAL.led.setColor(self.HAL.led._green)
 
+        self.robot_name = config_options['robot_name']
+
         self._next_check = time.time() + RobotBrain.TIME_CHECK_TIMEOUT
         self._start_time = time.time()
 
@@ -71,7 +73,7 @@ class RobotBrain:
         else:
             self.HAL.led.setColor(self.HAL.led._red)
             if self.mating_client is None:
-                self.mating_client = EvolutionaryRobot('spider')
+                self.mating_client = EvolutionaryRobot(self.robot_name)
 
     def stop_current_evaluation(self):
         """
