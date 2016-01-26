@@ -100,7 +100,6 @@ class RLPowerAlgorithm:
         elif self._fitness_evaluation == 'random':
             fitness = 5 + random.normalvariate(0, 2)
         elif self._fitness_evaluation == 'auto':
-            # TODO: figure out how to handle multiple fitness values
             fitness = self._fitness_querier.get_fitness()
             #logging.info("fitness: {}".format(fitness))
         else:
