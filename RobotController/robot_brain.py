@@ -14,8 +14,6 @@ class RobotBrain:
     Here you can find the main loop function, called live
     """
 
-    TIME_CHECK_TIMEOUT = 30  # in seconds
-    LIGHT_THRESHOLD = 0.8
 
     def __init__(self, config_file_path):
         try:
@@ -30,8 +28,10 @@ class RobotBrain:
         self.HAL.led.setColor(self.HAL.led._green)
 
         self.robot_name = config_options['robot_name']
+        self.TIME_CHECK_TIMEOUT = config_options['evaluation_time']
+        self.LIGHT_THRESHOLD = config_options['light_mating_threshold']
 
-        self._next_check = time.time() + RobotBrain.TIME_CHECK_TIMEOUT
+        self._next_check = time.time() + self.TIME_CHECK_TIMEOUT
         self._start_time = time.time()
 
         self.mating_client = None
@@ -67,8 +67,8 @@ class RobotBrain:
             logging.info("next movement values current {}, next {}".format(current_check, self._next_check))
             self.algorithm.next_evaluation(1+(self.HAL.sensor.readADC(0)/-255)) # 255-0 to 0-1
             #TODO make HAL smarter in light readings
-            self._next_check = current_check + RobotBrain.TIME_CHECK_TIMEOUT
-        if light_level < RobotBrain.LIGHT_THRESHOLD:
+            self._next_check = current_check + self.TIME_CHECK_TIMEOUT
+        if light_level < self.LIGHT_THRESHOLD:
             self.HAL.led.setColor(self.HAL.led._green)
         else:
             self.HAL.led.setColor(self.HAL.led._red)
