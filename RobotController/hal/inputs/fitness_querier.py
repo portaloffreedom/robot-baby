@@ -27,7 +27,7 @@ class FitnessQuerier:
         for method, weight in zip(self._query_type, self._fitness_weights):
             try:
                 s = self._create_socket()
-                fitness[method] = weight * self._send_message(s, 'fitness', method)[0]
+                fitness[method] = weight * self._send_message(s, 'fitness', method)[0][0]
                 s.close()
             except (socket.error, socket.gaierror):
                 pass
