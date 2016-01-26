@@ -8,6 +8,7 @@ class FitnessQuerier:
         self._server_address = config_values['fitness_service_addr']
         self._server_port = config_values['fitness_service_port']
         self._query_type = config_values['fitness_type']
+        self._fitness_weights = config_values['fitness_weights']
         self._id = config_values['robot_id']
         self._ipaddr = ''
 
@@ -23,14 +24,14 @@ class FitnessQuerier:
 
     def get_fitness(self):
         fitness = {}
-        for method in self._query_type:
+        for method, weight in zip(self._query_type, self._fitness_weights):
             try:
                 s = self._create_socket()
-                fitness[method] = self._send_message(s, 'fitness', method)[0]
+                fitness[method] = weight * self._send_message(s, 'fitness', method)[0][0]
                 s.close()
             except (socket.error, socket.gaierror):
                 pass
-        return [fitness[m] for m in self._query_type]
+        return sum([fitness[m] for m in self._query_type])
 
     def get_position(self):
         try:
