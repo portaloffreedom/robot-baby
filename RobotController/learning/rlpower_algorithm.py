@@ -29,6 +29,7 @@ class RLPowerAlgorithm:
         self._light_fitness_weight = config_parameters['light_fitness_weight']
         self._current_spline_size = self._initial_spline_size
         self._current_evaluation = 0
+        self.aging_parameter = config_parameters['fitness_evaluation_aging_parameter']
 
         # Create an instance of fitness querier
         if self._fitness_evaluation == 'auto':
@@ -58,14 +59,15 @@ class RLPowerAlgorithm:
         current_fitness = movement_fitness + light_fitness
         logging.info("Last evaluation fitness: {} (movement: {} + light: {})".format(current_fitness, movement_fitness, light_fitness))
         logging.info("Current position: {}".format(self._fitness_querier.get_position()))
+        self._age_old_ranking()
         self.save_in_ranking(current_fitness, self._current_spline)
         self._current_evaluation += 1
         if math.floor((self._end_spline_size - self._initial_spline_size)/self._number_of_fitness_evaluations *
                               self._current_evaluation) + 3 > self._current_spline_size:
             self._current_spline_size += 1
             self._current_spline = self.recalculate_spline(self._current_spline, self._current_spline_size)
-            for number, (fitness, rspline) in enumerate(self.ranking):
-                self.ranking[number] = _RankingEntry((fitness, self.recalculate_spline(rspline, self._current_spline_size)))
+            for number, rank_entry in enumerate(self.ranking):
+                self.ranking[number] = _RankingEntry(rank_entry.fitness, self.recalculate_spline(rank_entry.spline, self._current_spline_size))
         # Add random noise to the spline
         uniform = np.array(
             [[random.normalvariate(0, self._sigma) for x in range(self._current_spline_size)]
@@ -73,9 +75,9 @@ class RLPowerAlgorithm:
         # Add a weighted average of the best splines seen so far
         total = self.epsilon  # something similar to 0, but not 0 ( division by 0 is evil )
         modifier = np.zeros(self._current_spline.shape)
-        for (fitness, spline) in self.ranking:
-            total += fitness
-            modifier += (spline - self._current_spline) * fitness
+        for rank_entry in self.ranking:
+            total += rank_entry.fitness
+            modifier += (rank_entry.pline - self._current_spline) * rank_entry.fitness
         self._current_spline = self._current_spline + uniform + modifier / total
         self.controller.set_spline(self._current_spline)
         self._sigma *= self._sigma_decay
@@ -91,6 +93,10 @@ class RLPowerAlgorithm:
         tck = splrep(x, spline, per=True)
         x2 = np.linspace(0, 1, spline_size)
         return splev(x2, tck)[:-1]
+
+    def _age_old_ranking(self):
+        for rank in self.ranking:
+            rank.fitness *= self.aging_parameter
 
     def get_current_fitness(self):
         # Manual fitness evaluation
@@ -109,18 +115,19 @@ class RLPowerAlgorithm:
 
     def save_in_ranking(self, current_fitness, current_spline):
         if len(self.ranking) < self.RANKING_SIZE:
-            bisect.insort(self.ranking, _RankingEntry((current_fitness, current_spline)))
+            bisect.insort(self.ranking, _RankingEntry(current_fitness, current_spline))
         elif current_fitness > self.ranking[0][0]:
-            bisect.insort(self.ranking, _RankingEntry((current_fitness, current_spline)))
+            bisect.insort(self.ranking, _RankingEntry(current_fitness, current_spline))
             self.ranking.pop(0)
         self._save_runtime_data_to_file(self._runtime_data_file)
 
-    def _load_runtime_data_from_file(self, filename):
+    @staticmethod
+    def _load_runtime_data_from_file(filename):
         try:
             with open(filename) as json_data:
                 d = json.load(json_data)
                 ranking_serialized = d['ranking']
-                ranking = [_RankingEntry((elem['fitness'], np.array(elem['spline']))) for elem in ranking_serialized]
+                ranking = [_RankingEntry(elem['fitness'], np.array(elem['spline'])) for elem in ranking_serialized]
                 d['ranking'] = ranking
                 d['last_spline'] = np.array(d['last_spline'])
                 return d
@@ -128,7 +135,7 @@ class RLPowerAlgorithm:
             return {}
 
     def _save_runtime_data_to_file(self, filename):
-        ranking_serialized = [{'fitness': f, 'spline': s.tolist()} for (f, s) in self.ranking]
+        ranking_serialized = [{'fitness': rank_entry.f, 'spline': rank_entry.s.tolist()} for rank_entry in self.ranking]
         data = {'ranking': ranking_serialized,
                 'last_spline': self._current_spline.tolist(),
                 'sigma': self._sigma,
@@ -137,9 +144,14 @@ class RLPowerAlgorithm:
         with open(filename, 'w') as outfile:
             json.dump(data, outfile)
 
-class _RankingEntry(tuple):
+
+class _RankingEntry:
+    def __init__(self, fitness, spline):
+        self.fitness = fitness
+        self.spline = spline
+
     def __lt__(self, other):
-        return other[0] > self[0]
+        return other.fitness > self.fitness
 
     def __gt__(self, other):
         return not self.__lt__(other)
