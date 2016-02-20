@@ -58,7 +58,7 @@ class Watchdog:
 # Usage example
 if __name__ == "__main__":
     wdog = Watchdog(
-            'ls -la',
-            '| wc -l',
-            '.')
+            './robogen-file-viewer',
+            'conf.txt',
+            'clinic')
     wdog.run()
