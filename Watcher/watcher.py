@@ -60,5 +60,5 @@ if __name__ == "__main__":
     wdog = Watchdog(
             './robogen-file-viewer',
             'conf.txt',
-            'clinic')
+            '/tmp')
     wdog.run()
