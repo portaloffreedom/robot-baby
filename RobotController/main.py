@@ -21,11 +21,11 @@ def noop_interrupt_handler(signum, frame):
 def interrupt_handler(signum, frame):
     signal.signal(signal.SIGINT, noop_interrupt_handler)
     logging.info("changing evaluation")
-    controller.stop_current_evaluation()
     command = input(INTERRUPT_MESSAGE + "\n")
     if command == 'q':
         controller.suicide()
         #sys.exit(0)
+    controller.stop_current_evaluation()
     signal.signal(signal.SIGINT, interrupt_handler)
 
 
