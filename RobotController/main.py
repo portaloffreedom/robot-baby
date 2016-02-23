@@ -24,7 +24,8 @@ def interrupt_handler(signum, frame):
     controller.stop_current_evaluation()
     command = input(INTERRUPT_MESSAGE + "\n")
     if command == 'q':
-        sys.exit(0)
+        controller.suicide()
+        #sys.exit(0)
     signal.signal(signal.SIGINT, interrupt_handler)
 
 
