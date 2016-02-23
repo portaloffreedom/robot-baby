@@ -52,33 +52,52 @@ class RLPowerAlgorithm:
                     for y in range(self.NUM_SERVOS)])
         self.controller = RLPowerController(self._current_spline)
 
-    def next_evaluation(self, light_sensor_value=0):
-        logging.info("current spline size: {}".format(self._current_spline_size))
-        movement_fitness = self.get_current_fitness()
-        light_fitness = self._light_fitness_weight * light_sensor_value
-        current_fitness = movement_fitness + light_fitness
-        logging.info("Last evaluation fitness: {} (movement: {} + light: {})".format(current_fitness, movement_fitness, light_fitness))
-        logging.info("Current position: {}".format(self._fitness_querier.get_position()))
-        self._age_old_ranking()
-        self.save_in_ranking(current_fitness, self._current_spline)
-        self._current_evaluation += 1
-        if math.floor((self._end_spline_size - self._initial_spline_size)/self._number_of_fitness_evaluations *
-                              self._current_evaluation) + 3 > self._current_spline_size:
-            self._current_spline_size += 1
-            self._current_spline = self.recalculate_spline(self._current_spline, self._current_spline_size)
-            for number, rank_entry in enumerate(self.ranking):
-                self.ranking[number] = _RankingEntry(rank_entry.fitness, self.recalculate_spline(rank_entry.spline, self._current_spline_size))
-        # Add random noise to the spline
-        uniform = np.array(
-            [[random.normalvariate(0, self._sigma) for x in range(self._current_spline_size)]
-             for y in range(self.NUM_SERVOS)])
+    def _generate_spline(self):
         # Add a weighted average of the best splines seen so far
         total = self.epsilon  # something similar to 0, but not 0 ( division by 0 is evil )
         modifier = np.zeros(self._current_spline.shape)
         for rank_entry in self.ranking:
             total += rank_entry.fitness
             modifier += (rank_entry.pline - self._current_spline) * rank_entry.fitness
-        self._current_spline = self._current_spline + uniform + modifier / total
+
+        # random noise for the spline
+        noise = np.array(
+            [[random.normalvariate(0, self._sigma) for x in range(self._current_spline_size)]
+             for y in range(self.NUM_SERVOS)])
+
+        return self._current_spline + noise + modifier / total
+
+    def skip_evaluation(self):
+        logging.info("Skipping evaluation, starting new one")
+        self._current_spline = self._generate_spline()
+        self.controller.set_spline(self._current_spline)
+        self._fitness_querier.start()
+
+    def next_evaluation(self, light_sensor_value=0):
+        self._current_evaluation += 1
+        logging.info("current spline size: {}".format(self._current_spline_size))
+
+        # generate fitness
+        movement_fitness = self.get_current_fitness()
+        light_fitness = self._light_fitness_weight * light_sensor_value
+        current_fitness = movement_fitness + light_fitness
+        logging.info("Last evaluation fitness: {} (movement: {} + light: {})".format(current_fitness, movement_fitness, light_fitness))
+        logging.info("Current position: {}".format(self._fitness_querier.get_position()))
+
+        # save old evaluation
+        self._age_old_ranking()
+        self.save_in_ranking(current_fitness, self._current_spline)
+
+        # check if is time to increase the number of evaluations
+        if math.floor((self._end_spline_size - self._initial_spline_size)/self._number_of_fitness_evaluations *
+                              self._current_evaluation) + 3 > self._current_spline_size:
+            self._current_spline_size += 1
+            self._current_spline = self.recalculate_spline(self._current_spline, self._current_spline_size)
+            for number, rank_entry in enumerate(self.ranking):
+                self.ranking[number] = _RankingEntry(rank_entry.fitness, self.recalculate_spline(rank_entry.spline, self._current_spline_size))
+
+        # update values
+        self._current_spline = self._generate_spline()
         self.controller.set_spline(self._current_spline)
         self._sigma *= self._sigma_decay
         self._save_runtime_data_to_file(self._runtime_data_file)

@@ -14,7 +14,6 @@ class RobotBrain:
     Here you can find the main loop function, called live
     """
 
-
     def __init__(self, config_file_path):
         try:
             with open(config_file_path) as config_file:
@@ -35,13 +34,15 @@ class RobotBrain:
         self._start_time = time.time()
 
         self.mating_client = None
+        self._stop = False
 
     def live(self):
         """
         life big cycle
         """
-        while True:
+        while not self._stop:
             self.life_step()
+        self._die()
 
     def life_step(self):
         """
@@ -60,13 +61,16 @@ class RobotBrain:
         Check if is a moment for a new evaluation and starts a new one
         :param force: forces the new evaluation to start
         """
-        self.HAL.led.setColor(self.HAL.led._magenta)
         current_check = time.time()
-        light_level = 1+(self.HAL.sensor.readADC(0)/-255)
+        light_level = 1 + (self.HAL.sensor.readADC(0) / -255)
         if force or current_check > self._next_check:
+            self.HAL.led.setColor(self.HAL.led._magenta)
             logging.info("next movement values current {}, next {}".format(current_check, self._next_check))
-            self.algorithm.next_evaluation(1+(self.HAL.sensor.readADC(0)/-255)) # 255-0 to 0-1
-            #TODO make HAL smarter in light readings
+            if force:
+                # TODO make HAL smarter in light readings
+                self.algorithm.next_evaluation(1 + (self.HAL.sensor.readADC(0) / -255))  # 255-0 to 0-1
+            else:
+                self.algorithm.skip_evaluation()
             self._next_check = current_check + self.TIME_CHECK_TIMEOUT
         if light_level < self.LIGHT_THRESHOLD:
             self.HAL.led.setColor(self.HAL.led._green)
@@ -82,5 +86,10 @@ class RobotBrain:
         intended to do an emergency stop for a bad controller that could "kill" the robot
         """
         # self.HAL.off()
-        # TODO discard current evaluation
         self._check_next_evaluation(force=True)
+
+    def _die(self):
+        self.HAL.off()
+
+    def suicide(self):
+        self._stop = True

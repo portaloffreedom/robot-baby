@@ -2,5 +2,6 @@ DEFAULT_PACKET_SIZE = 1024
 
 UDP_PORT = 5152
 
-TCP_IP = 'AEs-MacBook-Pro'
+# TCP_IP = 'AEs-MacBook-Pro'
+TCP_IP = '192.168.1.27'
 TCP_PORT = 5251
