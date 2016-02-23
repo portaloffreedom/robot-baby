@@ -58,7 +58,7 @@ class RLPowerAlgorithm:
         modifier = np.zeros(self._current_spline.shape)
         for rank_entry in self.ranking:
             total += rank_entry.fitness
-            modifier += (rank_entry.pline - self._current_spline) * rank_entry.fitness
+            modifier += (rank_entry.spline - self._current_spline) * rank_entry.fitness
 
         # random noise for the spline
         noise = np.array(
@@ -154,7 +154,7 @@ class RLPowerAlgorithm:
             return {}
 
     def _save_runtime_data_to_file(self, filename):
-        ranking_serialized = [{'fitness': rank_entry.f, 'spline': rank_entry.s.tolist()} for rank_entry in self.ranking]
+        ranking_serialized = [{'fitness': rank_entry.fitness, 'spline': rank_entry.spline.tolist()} for rank_entry in self.ranking]
         data = {'ranking': ranking_serialized,
                 'last_spline': self._current_spline.tolist(),
                 'sigma': self._sigma,
