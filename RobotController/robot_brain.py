@@ -67,10 +67,10 @@ class RobotBrain:
             self.HAL.led.setColor(self.HAL.led._magenta)
             logging.info("next movement values current {}, next {}".format(current_check, self._next_check))
             if force:
+                self.algorithm.skip_evaluation()
+            else:
                 # TODO make HAL smarter in light readings
                 self.algorithm.next_evaluation(1 + (self.HAL.sensor.readADC(0) / -255))  # 255-0 to 0-1
-            else:
-                self.algorithm.skip_evaluation()
             self._next_check = current_check + self.TIME_CHECK_TIMEOUT
         if light_level < self.LIGHT_THRESHOLD:
             self.HAL.led.setColor(self.HAL.led._green)
