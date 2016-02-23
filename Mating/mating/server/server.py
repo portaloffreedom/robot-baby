@@ -8,7 +8,7 @@ from mating.network import DEFAULT_PACKET_SIZE, TCP_IP, TCP_PORT
 
 
 MATING_CMD = ('./RobotCrossover parent/{}.txt parent/{}.txt '
-              'confs/evolConf-full.txt -{}.genome')
+              'confs/evolConf-full.txt -/tmp/{}.genome.txt')
 
 
 def run_mating_server():
