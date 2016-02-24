@@ -151,7 +151,7 @@ class RLPowerAlgorithm:
     def save_in_ranking(self, current_fitness, current_spline):
         if len(self.ranking) < self.RANKING_SIZE:
             bisect.insort(self.ranking, _RankingEntry(current_fitness, current_spline))
-        elif current_fitness > self.ranking[0][0]:
+        elif current_fitness > self.ranking[0].fitness:
             bisect.insort(self.ranking, _RankingEntry(current_fitness, current_spline))
             self.ranking.pop(0)
         self._save_runtime_data_to_file(self._runtime_data_file)
