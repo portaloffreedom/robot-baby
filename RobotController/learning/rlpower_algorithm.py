@@ -12,7 +12,7 @@ __author__ = 'matteo'
 
 
 class RLPowerAlgorithm:
-    epsilon = 10 ** -10
+    EPSILON = 10 ** -10
 
     def __init__(self, config_parameters):
         self.RANKING_SIZE = config_parameters['ranking_size']
@@ -30,6 +30,8 @@ class RLPowerAlgorithm:
         self._current_spline_size = self._initial_spline_size
         self._current_evaluation = 0
         self.aging_parameter = config_parameters['fitness_evaluation_aging_parameter']
+        fitness_weights = config_parameters['fitness_weights']
+        self._average_norm_factor = fitness_weights[0] + fitness_weights[1] + self._light_fitness_weight + self.EPSILON
 
         # Create an instance of fitness querier
         if self._fitness_evaluation == 'auto':
@@ -52,17 +54,31 @@ class RLPowerAlgorithm:
                     for y in range(self.NUM_SERVOS)])
         self.controller = RLPowerController(self._current_spline)
 
+    def _total_ranking_fitness(self):
+        total = 0.0
+        for rank in self.ranking:
+            total += rank.fitness
+        return total
+
+    def _average_ranking_fitness(self):
+        return self._total_ranking_fitness() / len(self.ranking)
+
     def _generate_spline(self):
         # Add a weighted average of the best splines seen so far
-        total = self.epsilon  # something similar to 0, but not 0 ( division by 0 is evil )
+        total = self.EPSILON  # something similar to 0, but not 0 ( division by 0 is evil )
         modifier = np.zeros(self._current_spline.shape)
         for rank_entry in self.ranking:
             total += rank_entry.fitness
             modifier += (rank_entry.spline - self._current_spline) * rank_entry.fitness
 
         # random noise for the spline
+        randomness_factor = self._sigma
+        # the lower the overall fitness, the higher the randomness factor
+        randomness_factor /= (self._average_ranking_fitness() / self._average_norm_factor) + self.EPSILON
+        randomness_factor = max(randomness_factor, self._sigma)
+
         noise = np.array(
-            [[random.normalvariate(0, self._sigma) for x in range(self._current_spline_size)]
+            [[random.normalvariate(0, randomness_factor) for x in range(self._current_spline_size)]
              for y in range(self.NUM_SERVOS)])
 
         return self._current_spline + noise + modifier / total
