@@ -31,7 +31,8 @@ class RLPowerAlgorithm:
         self._current_evaluation = 0
         self.aging_parameter = config_parameters['fitness_evaluation_aging_parameter']
         fitness_weights = config_parameters['fitness_weights']
-        self._average_norm_factor = fitness_weights[0] + fitness_weights[1] + self._light_fitness_weight + self.EPSILON
+        self._average_norm_factor = 2 / \
+            (fitness_weights[0] + fitness_weights[1] + self._light_fitness_weight + self.EPSILON)
 
         # Create an instance of fitness querier
         if self._fitness_evaluation == 'auto':
