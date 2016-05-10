@@ -1,3 +1,4 @@
+import datetime
 import bisect
 import json
 import logging
@@ -25,12 +26,17 @@ class RLPowerAlgorithm:
         self._end_spline_size = config_parameters['end_spline_size']
         self._number_of_fitness_evaluations = config_parameters['number_of_fitness_evaluations']
         self._fitness_evaluation = config_parameters['fitness_evaluation_method']
-        self._runtime_data_file = config_parameters['runtime_data_file']
         self._light_fitness_weight = config_parameters['light_fitness_weight']
         self._current_spline_size = self._initial_spline_size
         self._current_evaluation = 0
 
-        # Create an instance of fitness querier
+        self._runtime_data_file = config_parameters['runtime_data_file']
+        self._hist_filename = config_parameters['hist_filename']
+        self._hist_freq_save = config_parameters['hist_freq_save']
+
+        self._start_date = datetime.datetime.now().strftime("%Y-%m-%d %H:%M")
+
+            # Create an instance of fitness querier
         if self._fitness_evaluation == 'auto':
             self._fitness_querier = FitnessQuerier(config_parameters)
             self._fitness_querier.start()
@@ -99,6 +105,7 @@ class RLPowerAlgorithm:
         self.controller.set_spline(self._current_spline)
         self._sigma *= self._sigma_decay
         self._save_runtime_data_to_file(self._runtime_data_file)
+        self._save_history()
         self._fitness_querier.start()
 
     def recalculate_spline(self, spline, spline_size):
@@ -155,6 +162,22 @@ class RLPowerAlgorithm:
                 }
         with open(filename, 'w') as outfile:
             json.dump(data, outfile)
+
+    def _save_history(self):
+        """
+        Saves the current state of the RLPower algorithm into a new file, saving the history of the evolution
+
+        if the configuration "hist_freq_save" is <= 0, this feature is disabled
+
+
+        """
+        if self._hist_freq_save <= 0:
+            return
+        if self._current_evaluation % self._hist_freq_save == 0:
+            self._save_runtime_data_to_file(
+                "{} {}_{}.json".format(self._start_date, self._hist_filename, self._current_evaluation)
+            )
+
 
 class _RankingEntry(tuple):
     def __lt__(self, other):
