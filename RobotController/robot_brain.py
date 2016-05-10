@@ -8,6 +8,7 @@ import logging
 
 __author__ = 'matteo'
 
+MATE_STEPS_THRESHOLD = 10
 
 class RobotBrain:
     """Class for controlling the whole life of the robot.
@@ -19,7 +20,8 @@ class RobotBrain:
             with open(config_file_path) as config_file:
                 config_options = json.load(config_file)
         except IOError:
-            logging.error("Configuration file could not be read: {}".format(config_file_path))
+            logging.error("Configuration file could not be read: {}"
+                          .format(config_file_path))
             raise SystemExit
 
         self.HAL = Hal(config_options)
@@ -36,6 +38,8 @@ class RobotBrain:
 
         self.mating_client = None
         self._stop = False
+
+        self.evaluations_after_mating = 0
 
     def live(self):
         """
@@ -66,25 +70,37 @@ class RobotBrain:
         Check if is a moment for a new evaluation and starts a new one
         :param force: forces the new evaluation to start
         """
+
         current_check = time.time()
         if force or current_check > self._next_check:
             self.HAL.led.setColor(self.HAL.led._magenta)
-            logging.info("next movement values current {}, next {}".format(current_check, self._next_check))
+            logging.info("Next movement values current {}, next {}"
+                         .format(current_check, self._next_check))
             if force:
                 self.algorithm.skip_evaluation()
             else:
                 # TODO make HAL smarter in light readings
-                self.algorithm.next_evaluation(1 + (self.HAL.sensor.readADC(0) / -255))  # 255-0 to 0-1
+                self.algorithm.next_evaluation(
+                    1 + (self.HAL.sensor.readADC(0) / -255))  # 255-0 to 0-1
             self._next_check = current_check + self.TIME_CHECK_TIMEOUT
 
     def _check_mating_conditions(self):
+        if self.mating_client and self.mating_client.availability:
+            self.mating_client.server.join()
+            self.mating_client.client.join()
+            self.mating_client = None
+
         light_level = 1 + (self.HAL.sensor.readADC(0) / -255)
         if light_level < self.LIGHT_THRESHOLD:
             self.HAL.led.setColor(self.HAL.led._green)
         else:
             self.HAL.led.setColor(self.HAL.led._red)
-            if self.mating_client is None:
+            if not self.mating_client and\
+                    self.evaluations_after_mating < MATE_STEPS_THRESHOLD:
+                self.evaluations_after_mating = 0
                 self.mating_client = EvolutionaryRobot(self.robot_name)
+            else:
+                self.evaluations_after_mating += 1
 
     def stop_current_evaluation(self):
         """
