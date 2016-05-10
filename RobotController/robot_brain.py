@@ -1,5 +1,6 @@
 # from hal.fake_hal import FakeHal
 from hal.hal import Hal
+from hal.outputs import StatusLED
 from learning.rlpower_algorithm import RLPowerAlgorithm
 from mating.robot.robot import EvolutionaryRobot
 import time
@@ -9,6 +10,7 @@ import logging
 __author__ = 'matteo'
 
 MATE_STEPS_THRESHOLD = 10
+
 
 class RobotBrain:
     """Class for controlling the whole life of the robot.
@@ -26,7 +28,8 @@ class RobotBrain:
 
         self.HAL = Hal(config_options)
         self.algorithm = RLPowerAlgorithm(config_options)
-        self.HAL.led.setColor(self.HAL.led._green)
+        # self.HAL.led.set_color(self.HAL.led._green)
+        # self.HAL.led.set_status(StatusLED.normal)
 
         self.robot_name = config_options['robot_name']
         self.TIME_CHECK_TIMEOUT = config_options['evaluation_time']
@@ -56,7 +59,8 @@ class RobotBrain:
         _input = (time.time() - self._start_time) / 4
         _outputs = self.algorithm.controller.get_value(_input)
         self.HAL.step(_outputs)
-#        logging.info("output: {}".format(_outputs))
+        # logging.info("output: {}".format(_outputs))
+        self.HAL.led.set_status(StatusLED.normal)
 
         # check if new evaluation is needed and if so, change it
         if not self._offline:
@@ -70,10 +74,9 @@ class RobotBrain:
         Check if is a moment for a new evaluation and starts a new one
         :param force: forces the new evaluation to start
         """
-
         current_check = time.time()
         if force or current_check > self._next_check:
-            self.HAL.led.setColor(self.HAL.led._magenta)
+            self.HAL.led.set_status(StatusLED.evaluating)
             logging.info("Next movement values current {}, next {}"
                          .format(current_check, self._next_check))
             if force:
@@ -91,14 +94,15 @@ class RobotBrain:
             self.mating_client = None
 
         light_level = 1 + (self.HAL.sensor.readADC(0) / -255)
-        if light_level < self.LIGHT_THRESHOLD:
-            self.HAL.led.setColor(self.HAL.led._green)
-        else:
-            self.HAL.led.setColor(self.HAL.led._red)
-            if not self.mating_client and\
-                    self.evaluations_after_mating < MATE_STEPS_THRESHOLD:
+        if light_level > self.LIGHT_THRESHOLD:
+            self.HAL.led.set_status(StatusLED.horny)
+            if not self.mating_client and \
+                            self.evaluations_after_mating < MATE_STEPS_THRESHOLD:
                 self.evaluations_after_mating = 0
-                self.mating_client = EvolutionaryRobot(self.robot_name)
+                self.mating_client = EvolutionaryRobot(
+                    self.robot_name,
+                    lambda: self.HAL.led.set_status(StatusLED.mating)
+                )
             else:
                 self.evaluations_after_mating += 1
 

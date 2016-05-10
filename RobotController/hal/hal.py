@@ -1,6 +1,6 @@
 from smbus import SMBus
 from hal.outputs.servo import Servo
-from hal.outputs.rgbled import RGBLED
+from hal.outputs.StatusLED import StatusLED
 from hal.photocell import PCF8591P as photocell
 import logging
 
@@ -9,7 +9,7 @@ __author__ = 'matteo'
 
 class Hal:
     def __init__(self, config_options):
-        self.led = RGBLED(config_options)
+        self.led = StatusLED(config_options)
         self.sensor = photocell(SMBus(1), 0x48)
         self.sensor.enableDAC()
         self._servos = []

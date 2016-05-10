@@ -42,13 +42,14 @@ class Robot(object):
 
 class EvolutionaryRobot(Robot):
 
-    def __init__(self, name):
+    def __init__(self, name, mating_function):
         Robot.__init__(self, name)
         self.genome_dir = '../ParentGenomes/'
         self.genome_file = '{}{}.genome'.format(self.genome_dir, name)
         self.mate_hash = None
         self.availability = True
         l('ROBOT {} start:'.format(self.hash))
+        self._mating_function = mating_function
 
     def initialize_parameters(self):
         self.server.criterion = self.server_criterion
@@ -93,3 +94,5 @@ class EvolutionaryRobot(Robot):
         ))
         l('{} sending genome to the mating server'.format(self.hash))
         cli.send()  # TODO: Add fallback to connection errors/failures
+        self._mating_function()
+
