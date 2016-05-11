@@ -18,13 +18,12 @@ class StatusLED(RGBLED):
         super().__init__(config_options)
 
         self._status = None
-        self._last_update = datetime.datetime.now()
+        self._last_update = datetime.datetime.now() - (STATUS_TIMEOUT*2)
         self.set_status(STATUS.normal)
 
     def set_status(self, status):
         if self._status == status:
             return
-        self._status = status
 
         if status == STATUS.normal:
             # if not enough time passed since last update
@@ -43,5 +42,6 @@ class StatusLED(RGBLED):
             print("invalid status update: {}".format(status), file=sys.stderr)
             return
 
+        self._status = status
         self._last_update = datetime.datetime.now()
         self.set_color(color)
