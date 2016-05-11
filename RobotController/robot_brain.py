@@ -60,7 +60,7 @@ class RobotBrain:
         _outputs = self.algorithm.controller.get_value(_input)
         self.HAL.step(_outputs)
         # logging.info("output: {}".format(_outputs))
-        self.HAL.led.set_status(StatusLED.normal)
+        self.HAL.led.set_status(StatusLED.STATUS.normal)
 
         # check if new evaluation is needed and if so, change it
         if not self._offline:
@@ -76,7 +76,7 @@ class RobotBrain:
         """
         current_check = time.time()
         if force or current_check > self._next_check:
-            self.HAL.led.set_status(StatusLED.evaluating)
+            self.HAL.led.set_status(StatusLED.STATUS.evaluating)
             logging.info("Next movement values current {}, next {}"
                          .format(current_check, self._next_check))
             if force:
@@ -95,13 +95,13 @@ class RobotBrain:
 
         light_level = 1 + (self.HAL.sensor.readADC(0) / -255)
         if light_level > self.LIGHT_THRESHOLD:
-            self.HAL.led.set_status(StatusLED.horny)
+            self.HAL.led.set_status(StatusLED.STATUS.horny)
             if not self.mating_client and \
                             self.evaluations_after_mating < MATE_STEPS_THRESHOLD:
                 self.evaluations_after_mating = 0
                 self.mating_client = EvolutionaryRobot(
                     self.robot_name,
-                    lambda: self.HAL.led.set_status(StatusLED.mating)
+                    lambda: self.HAL.led.set_status(StatusLED.STATUS.mating)
                 )
             else:
                 self.evaluations_after_mating += 1
